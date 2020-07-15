@@ -76,6 +76,7 @@ const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
           const lessons = (schedule.get(date) || []).filter(
             (lesson: ILesson) =>
               user.lessonGroup === LessonGroup.NONE ||
+              lesson.groupOnLesson === LessonGroup.NONE ||
               lesson.groupOnLesson === user.lessonGroup,
           );
 
