@@ -23,6 +23,14 @@ import * as COLORS from '../utils/colors';
 import {dateToDateString, getRangeDates} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
 
+interface IDayTitleProps {
+  isFirst: boolean;
+}
+
+interface ILessonBlockProps {
+  isFirst: boolean;
+}
+
 const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
   const navigation = useNavigation();
 
@@ -85,28 +93,21 @@ const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
           // TODO: DayTitle под один компонент
           return (
             <React.Fragment key={date}>
-              {index === 0 ? (
-                <DayTitleFirst>{dateToDateString(currDate)}</DayTitleFirst>
-              ) : (
-                <DayTitle>{dateToDateString(currDate)}</DayTitle>
-              )}
+              {
+                <DayTitle isFirst={index === 0}>
+                  {dateToDateString(currDate)}
+                </DayTitle>
+              }
 
               {/* Why not working bind in navigate??? */}
               {Array.isArray(lessons) && lessons.length > 0 ? (
                 lessons.map((ls: ILesson, indx: number) => (
-                  <React.Fragment key={ls.id}>
-                    {indx === 0 ? (
-                      <LessonBlockFirst
-                        onClick={onClickLessonBlock.bind(null, ls)}
-                        {...ls}
-                      />
-                    ) : (
-                      <LessonBlock
-                        onClick={onClickLessonBlock.bind(null, ls)}
-                        {...ls}
-                      />
-                    )}
-                  </React.Fragment>
+                  <LessonBlock
+                    key={ls.id}
+                    isFirst={indx === 0}
+                    onClick={onClickLessonBlock.bind(null, ls)}
+                    {...ls}
+                  />
                 ))
               ) : (
                 <ScheduleEmptyDayComponent key={date} text="Пар нет" />
@@ -136,25 +137,17 @@ const ScheduleScreenContent = styled.ScrollView`
   margin-top: 10px;
 `;
 
-const DayTitle = styled.Text`
+const DayTitle = styled.Text<IDayTitleProps>`
   font-size: 16px;
 
-  padding-top: 15px;
+  padding-top: ${(props) => (props.isFirst ? '0px' : '15px')};
   padding-bottom: 15px;
 
   text-decoration: underline;
 `;
 
-const DayTitleFirst = styled(DayTitle)`
-  padding-top: 0px;
-`;
-
-const LessonBlock = styled(SheduleLessonComponent)`
-  margin-top: 8px;
-`;
-
-const LessonBlockFirst = styled(LessonBlock)`
-  margin-top: 0px;
+const LessonBlock = styled(SheduleLessonComponent)<ILessonBlockProps>`
+  margin-top: ${(props) => (props.isFirst ? '0px' : '8px')};
 `;
 
 // State
