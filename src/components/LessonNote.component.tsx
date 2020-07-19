@@ -8,12 +8,16 @@ import {INote} from '../models/Note.model';
 
 import * as COLORS from '../utils/colors';
 
+interface INoteTextProps {
+  isDone: boolean;
+}
+
 const LessonNoteComponent = ({text, isChecked}: INote) => {
   return (
     <NoteContainer>
       <CommonToggleNoteComponent isDone={isChecked} size={20} />
 
-      <NoteText>{text}</NoteText>
+      <NoteText isDone={isChecked}>{text}</NoteText>
     </NoteContainer>
   );
 };
@@ -23,8 +27,11 @@ const NoteContainer = styled.View`
   background-color: ${COLORS.WHITE};
 `;
 
-const NoteText = styled.Text`
+const NoteText = styled.Text<INoteTextProps>`
   margin-left: 20px;
+
+  color: ${(props) => (props.isDone ? COLORS.MEDIUM_GRAY : COLORS.BLACK)};
+  text-decoration: ${(props) => (props.isDone ? 'line-through' : 'none')};
 `;
 
 export default LessonNoteComponent;
