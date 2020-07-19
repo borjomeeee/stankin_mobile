@@ -22,6 +22,7 @@ export const initialState = {
     lastUpdateSchedule: new Date().getDate(),
 
     isLoading: false,
+    error: '',
   },
 
   user: new User(),
@@ -35,18 +36,12 @@ export type IUserInitialState = typeof initialState.user;
 export type IScheduleInitialState = typeof initialState.schedule;
 export type INotesInitialState = typeof initialState.notes;
 
-// export type IShedulePersistedInitialState = [number, ILesson[]][];
-// export type INotesPersistedInitialState = [number, INote[]][];
-
 const transformMapsState = createTransform(
   (state: Map<number, any[]>) => {
     return JSON.stringify(Array.from(state || new Map<number, any[]>()));
   },
-  (state: string) => {
-    return new Map<number, ILesson[]>(
-      JSON.parse(state.length > 0 ? state : '[]'),
-    );
-  },
+  (state: string) =>
+    new Map<number, ILesson[]>(JSON.parse(state.length > 0 ? state : '[]')),
   {whitelist: ['schedule', 'notes']},
 );
 

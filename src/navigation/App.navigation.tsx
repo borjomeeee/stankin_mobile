@@ -57,9 +57,7 @@ const AppNavigation = ({
   app,
   user,
   sheckUpdate,
-  state,
 }: ConnectedProps<typeof connector>) => {
-  console.log(state);
   // Check updates application
   useEffect(() => {
     if (user.group.id) {

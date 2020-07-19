@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {View, TouchableWithoutFeedback, Animated} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
@@ -8,7 +8,10 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
-import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
+import {
+  toggleIsCheckNoteAction,
+  removeNoteAction,
+} from '../actions/Notes.actions';
 
 import CommonNotesEmptyComponent from './CommonNotesEmpty.component';
 
@@ -24,21 +27,22 @@ interface ICommomNotesComponent {
   noteComponent: (props: INote) => React.ReactElement;
 }
 
-interface INotesDatedContainerProps {
-  isFirst: boolean;
+interface INoteSectionListItem {
+  key: string;
+  item: INote;
 }
 
-interface INotesData {
-  notCheckedNotes: Map<string, INote[]>;
-  checkedNotes: INote[];
-}
+const sortByDate = (
+  [dateNum1, _1]: [number, INote[]],
+  [dateNum2, _2]: [number, INote[]],
+) => (dateNum1 < dateNum2 ? -1 : 1);
 
-// TODO: Сделать анимацию для удаления дедлайнов
 const CommomNotesComponent = ({
   notes,
   lesson,
 
   onToggleNote,
+  onRemoveNote,
 
   noteComponent,
   ...props
@@ -46,49 +50,44 @@ const CommomNotesComponent = ({
   ConnectedProps<typeof connector> &
   React.ComponentProps<typeof View>) => {
   const [visibleCheckedNotes, setVisibleCheckedNotes] = useState<boolean>(true);
+
+  // const notesOpacityState = useState(new Animated.Value(0))[0];
   const successDropState = useState(new Animated.Value(1))[0];
 
   const NoteComponent = noteComponent;
 
-  // TODO: Сделать все под один reduce
-  const [checkedNotes, notCheckedNotes] = useMemo(() => {
-    const sortByDate = (
-      [dateNum1, _1]: [number, INote[]],
-      [dateNum2, _2]: [number, INote[]],
-    ) => (dateNum1 < dateNum2 ? -1 : 1);
+  const currNotes = Array.from(notes)
+    .sort(sortByDate)
+    .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
+      dateNum,
+      nts.filter((note: INote) => !lesson || note.subject === lesson.title),
+    ])
+    .filter(([_, nts]: [number, INote[]]) => nts.length > 0);
 
-    // ************ //
-    const currNotes = Array.from(notes)
-      .sort(sortByDate)
-      .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
-        dateNum,
-        nts.filter((note: INote) => !lesson || note.subject === lesson.title),
-      ])
-      .filter(([_, nts]: [number, INote[]]) => nts.length > 0);
+  const checkedNotes = currNotes
+    .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
+      dateNum,
+      nts.filter((note: INote) => note.isChecked),
+    ])
+    .reduce(
+      (acc: INote[], [_, nts]: [number, INote[]]) => [...acc, ...nts],
+      new Array<INote>(0),
+    );
 
-    // ************ //
-    const tmpChecked = currNotes
-      .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
-        dateNum,
-        nts.filter((note: INote) => note.isChecked),
-      ])
-      .reduce(
-        (acc: INote[], [_, nts]: [number, INote[]]) => [...acc, ...nts],
-        new Array<INote>(0),
-      );
-    // ************ //
-    const notChecked = currNotes
-      .filter(
-        ([_, nts]: [number, INote[]]) =>
-          !nts.every((note: INote) => note.isChecked),
-      )
-      .map(([dateNum, nts]: [number, INote[]]) => ({
-        title: dateToDateString(new Date(dateNum)),
-        data: nts.filter((note: INote) => !note.isChecked),
-      }));
-
-    return [tmpChecked, notChecked];
-  }, [lesson, notes]);
+  const notCheckedNotes = currNotes
+    .filter(
+      ([_, nts]: [number, INote[]]) =>
+        !nts.every((note: INote) => note.isChecked),
+    )
+    .map(([dateNum, nts]: [number, INote[]], index: number) => ({
+      title: dateToDateString(new Date(dateNum)),
+      data: nts
+        .filter((note: INote) => !note.isChecked)
+        .map((note: INote) => ({
+          key: `${index}.${note.id}`,
+          item: note,
+        })),
+    }));
 
   // Handlers
   const onToggleVisibleCheckedNotes = () => {
@@ -110,15 +109,14 @@ const CommomNotesComponent = ({
     <NotesBlockContainer {...props}>
       <SwipeListView
         useSectionList={true}
-        useAnimatedList={true}
         sections={notCheckedNotes}
         ListEmptyComponent={() => <CommonNotesEmptyComponent />}
-        keyExtractor={(item: INote) => item.id}
-        renderItem={({item}: {item: INote}) => (
+        keyExtractor={(item: INoteSectionListItem) => item.key}
+        renderItem={({item}: {item: INoteSectionListItem}) => (
           <NotesElement
-            key={item.id}
-            onPress={onToggleNote.bind(null, item.id)}>
-            <NoteComponent {...item} />
+            key={item.item.id}
+            onPress={onToggleNote.bind(null, item.item.id)}>
+            <NoteComponent {...item.item} />
           </NotesElement>
         )}
         ItemSeparatorComponent={() => <ItemSeparator />}
@@ -126,8 +124,9 @@ const CommomNotesComponent = ({
         renderSectionHeader={({section: {title}}) => (
           <NotesDatedTitle>{title}</NotesDatedTitle>
         )}
-        renderHiddenItem={() => (
-          <HiddenTrashContainer>
+        renderHiddenItem={(rowKey) => (
+          <HiddenTrashContainer
+            onPress={onRemoveNote.bind(null, rowKey.item.item.id)}>
             <Icon name="delete" color={COLORS.WHITE} size={25} />
           </HiddenTrashContainer>
         )}
@@ -173,14 +172,35 @@ const CommomNotesComponent = ({
             },
           ],
         }}>
-        {visibleCheckedNotes &&
+        {/* {visibleCheckedNotes &&
           checkedNotes.map((note: INote) => (
             <NotesElement
               key={note.id}
               onPress={onToggleNote.bind(null, note.id)}>
               <NoteComponent {...note} />
             </NotesElement>
-          ))}
+          ))} */}
+        <SwipeListView
+          useFlatList={true}
+          data={checkedNotes}
+          keyExtractor={(item: INote) => item.id}
+          renderItem={({item}: {item: INote}) => (
+            <NotesElement
+              key={item.id}
+              onPress={onToggleNote.bind(null, item.id)}>
+              <NoteComponent {...item} />
+            </NotesElement>
+          )}
+          ItemSeparatorComponent={() => <ItemSeparator />}
+          renderHiddenItem={(rowKey) => (
+            <HiddenTrashContainer
+              onPress={onRemoveNote.bind(null, rowKey.item.id)}>
+              <Icon name="delete" color={COLORS.WHITE} size={25} />
+            </HiddenTrashContainer>
+          )}
+          rightOpenValue={-45}
+          disableRightSwipe
+        />
       </Animated.View>
     </NotesBlockContainer>
   );
@@ -197,10 +217,10 @@ const ItemSeparator = styled.View`
 `;
 
 const SectionSeparator = styled.View`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
-const HiddenTrashContainer = styled.View`
+const HiddenTrashContainer = styled.TouchableOpacity`
   background-color: ${COLORS.RED};
   height: 100%;
 
@@ -248,6 +268,7 @@ const mapStateToProps = (state: IInitialState) => ({
 
 const mapDispatchToProps = {
   onToggleNote: (id: string) => toggleIsCheckNoteAction(id),
+  onRemoveNote: (id: string) => removeNoteAction(id),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

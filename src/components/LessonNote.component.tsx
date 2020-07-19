@@ -2,8 +2,11 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-import {INote} from '../models/Note.model';
 import CommonToggleNoteComponent from './CommonToggleNote.component';
+
+import {INote} from '../models/Note.model';
+
+import * as COLORS from '../utils/colors';
 
 const LessonNoteComponent = ({text, isChecked}: INote) => {
   return (
@@ -17,6 +20,7 @@ const LessonNoteComponent = ({text, isChecked}: INote) => {
 
 const NoteContainer = styled.View`
   flex-direction: row;
+  background-color: ${COLORS.WHITE};
 `;
 
 const NoteText = styled.Text`
