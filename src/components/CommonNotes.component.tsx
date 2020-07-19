@@ -6,6 +6,7 @@ import {IInitialState} from '../redux/store';
 
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
 
@@ -27,8 +28,12 @@ interface INotesDatedContainerProps {
   isFirst: boolean;
 }
 
-// TODO: Сделать пустой компонент для выполненных дедлайнов
-// TODO: Сделать кнопку показать еще для выполненных дедлайнов
+interface INotesData {
+  notCheckedNotes: Map<string, INote[]>;
+  checkedNotes: INote[];
+}
+
+// TODO: Сделать анимацию для удаления дедлайнов
 const CommomNotesComponent = ({
   notes,
   lesson,
@@ -41,19 +46,12 @@ const CommomNotesComponent = ({
   ConnectedProps<typeof connector> &
   React.ComponentProps<typeof View>) => {
   const [visibleCheckedNotes, setVisibleCheckedNotes] = useState<boolean>(true);
-
-  const [
-    visibleExpandedCheckedNotes,
-    setVisibleExpandedCheckedNotes,
-  ] = useState<boolean>(false);
-
   const successDropState = useState(new Animated.Value(1))[0];
-  const successExpandedDropState = useState(new Animated.Value(0))[0];
 
   const NoteComponent = noteComponent;
 
   // TODO: Сделать все под один reduce
-  const [checked, notCheckedNotes] = useMemo(() => {
+  const [checkedNotes, notCheckedNotes] = useMemo(() => {
     const sortByDate = (
       [dateNum1, _1]: [number, INote[]],
       [dateNum2, _2]: [number, INote[]],
@@ -61,6 +59,7 @@ const CommomNotesComponent = ({
 
     // ************ //
     const currNotes = Array.from(notes)
+      .sort(sortByDate)
       .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
         dateNum,
         nts.filter((note: INote) => !lesson || note.subject === lesson.title),
@@ -79,11 +78,14 @@ const CommomNotesComponent = ({
       );
     // ************ //
     const notChecked = currNotes
-      .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
-        dateNum,
-        nts.filter((note: INote) => !note.isChecked),
-      ])
-      .sort(sortByDate);
+      .filter(
+        ([_, nts]: [number, INote[]]) =>
+          !nts.every((note: INote) => note.isChecked),
+      )
+      .map(([dateNum, nts]: [number, INote[]]) => ({
+        title: dateToDateString(new Date(dateNum)),
+        data: nts.filter((note: INote) => !note.isChecked),
+      }));
 
     return [tmpChecked, notChecked];
   }, [lesson, notes]);
@@ -104,97 +106,57 @@ const CommomNotesComponent = ({
     }).start(callback);
   };
 
-  const onToggleVisibleExpandedCheckedNotes = () => {
-    let callback;
-    if (visibleExpandedCheckedNotes) {
-      callback = () =>
-        setVisibleExpandedCheckedNotes(!visibleExpandedCheckedNotes);
-    } else {
-      setVisibleExpandedCheckedNotes(!visibleExpandedCheckedNotes);
-    }
-
-    Animated.timing(successExpandedDropState, {
-      toValue: +!visibleExpandedCheckedNotes,
-      duration: 200,
-      useNativeDriver: true,
-    }).start(callback);
-  };
-
-  // Components
-  const [checkedNotes, expandedCheckedNotes] = checked.reduce(
-    (acc: [INote[], INote[]], note: INote, index: number) => {
-      if (index < 5) {
-        acc[0].push(note);
-      } else {
-        acc[1].push(note);
-      }
-      return acc;
-    },
-    [new Array<INote>(0), new Array<INote>(0)],
-  );
-
   return (
     <NotesBlockContainer {...props}>
-      {notCheckedNotes.every(
-        ([_, nts]: [number, INote[]]) => nts.length === 0,
-      ) ? (
-        <CommonNotesEmptyComponent />
-      ) : (
-        Array.from(notCheckedNotes).map(
-          ([dateNum, nts]: [number, INote[]], index: number) => {
-            if (nts.length === 0) {
-              return <React.Fragment key={dateNum} />;
-            }
+      <SwipeListView
+        useSectionList={true}
+        useAnimatedList={true}
+        sections={notCheckedNotes}
+        ListEmptyComponent={() => <CommonNotesEmptyComponent />}
+        keyExtractor={(item: INote) => item.id}
+        renderItem={({item}: {item: INote}) => (
+          <NotesElement
+            key={item.id}
+            onPress={onToggleNote.bind(null, item.id)}>
+            <NoteComponent {...item} />
+          </NotesElement>
+        )}
+        ItemSeparatorComponent={() => <ItemSeparator />}
+        SectionSeparatorComponent={() => <SectionSeparator />}
+        renderSectionHeader={({section: {title}}) => (
+          <NotesDatedTitle>{title}</NotesDatedTitle>
+        )}
+        renderHiddenItem={() => (
+          <HiddenTrashContainer>
+            <Icon name="delete" color={COLORS.WHITE} size={25} />
+          </HiddenTrashContainer>
+        )}
+        rightOpenValue={-45}
+        disableRightSwipe
+      />
 
-            return (
-              <NotesDatedContainer key={dateNum} isFirst={index === 0}>
-                <NotesDatedTitle>
-                  {dateToDateString(new Date(dateNum))}
-                </NotesDatedTitle>
+      <TouchableWithoutFeedback
+        onPress={onToggleVisibleCheckedNotes.bind(null)}>
+        <NotesSuccessful>
+          <NotesSuccessfulTtile>{`Выполненные (${checkedNotes.length})`}</NotesSuccessfulTtile>
 
-                <NotesDatedElementsBlock>
-                  {nts.map((note: INote) => (
-                    <NotesElement
-                      key={note.id}
-                      onPress={onToggleNote.bind(null, note.id)}>
-                      <NoteComponent {...note} />
-                    </NotesElement>
-                  ))}
-                </NotesDatedElementsBlock>
-              </NotesDatedContainer>
-            );
-          },
-        )
-      )}
-
-      {checkedNotes.length > 0 && (
-        <TouchableWithoutFeedback
-          onPress={onToggleVisibleCheckedNotes.bind(null)}>
-          <NotesSuccessful>
-            <NotesSuccessfulTtile>Выполненные</NotesSuccessfulTtile>
-
-            <NotesSuccessfulIcon>
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      rotate: successDropState.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '180deg'],
-                      }),
-                    },
-                  ],
-                }}>
-                <Icon
-                  name="keyboard-arrow-down"
-                  color={COLORS.BLACK}
-                  size={25}
-                />
-              </Animated.View>
-            </NotesSuccessfulIcon>
-          </NotesSuccessful>
-        </TouchableWithoutFeedback>
-      )}
+          <NotesSuccessfulIcon>
+            <Animated.View
+              style={{
+                transform: [
+                  {
+                    rotate: successDropState.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '180deg'],
+                    }),
+                  },
+                ],
+              }}>
+              <Icon name="keyboard-arrow-down" color={COLORS.BLACK} size={25} />
+            </Animated.View>
+          </NotesSuccessfulIcon>
+        </NotesSuccessful>
+      </TouchableWithoutFeedback>
 
       <Animated.View
         style={{
@@ -219,60 +181,6 @@ const CommomNotesComponent = ({
               <NoteComponent {...note} />
             </NotesElement>
           ))}
-
-        <Animated.View
-          style={{
-            opacity: successExpandedDropState.interpolate({
-              inputRange: [0, 0.5, 1],
-              outputRange: [0, 0, 1],
-            }),
-            transform: [
-              {
-                translateY: successExpandedDropState.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-100, 0],
-                }),
-              },
-            ],
-          }}>
-          {expandedCheckedNotes.length > 0 &&
-            visibleExpandedCheckedNotes &&
-            expandedCheckedNotes.map((note: INote) => (
-              <NotesElement
-                key={note.id}
-                onPress={onToggleNote.bind(null, note.id)}>
-                <NoteComponent {...note} />
-              </NotesElement>
-            ))}
-        </Animated.View>
-        {expandedCheckedNotes.length > 0 && (
-          <ExpandedNotesContainer onPress={onToggleVisibleExpandedCheckedNotes}>
-            <ExpandedNotesRow>
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      rotate: successExpandedDropState.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '180deg'],
-                      }),
-                    },
-                  ],
-                }}>
-                <Icon
-                  name="keyboard-arrow-down"
-                  color={COLORS.MEDIUM_GRAY}
-                  size={25}
-                />
-              </Animated.View>
-              <ExpandedNotesTitle>
-                {visibleExpandedCheckedNotes
-                  ? 'Скрыть'
-                  : `Показаьть еще ${expandedCheckedNotes.length} дедлайн`}
-              </ExpandedNotesTitle>
-            </ExpandedNotesRow>
-          </ExpandedNotesContainer>
-        )}
       </Animated.View>
     </NotesBlockContainer>
   );
@@ -283,8 +191,24 @@ const NotesBlockContainer = styled.View`
   margin-bottom: 70px;
 `;
 
-const NotesDatedContainer = styled.View<INotesDatedContainerProps>`
-  margin-top: ${(props) => (props.isFirst ? '0px' : '20px')};
+const ItemSeparator = styled.View`
+  height: 1px;
+  background-color: ${COLORS.LIGHT_GRAY};
+`;
+
+const SectionSeparator = styled.View`
+  margin-bottom: 30px;
+`;
+
+const HiddenTrashContainer = styled.View`
+  background-color: ${COLORS.RED};
+  height: 100%;
+
+  align-items: flex-end;
+  justify-content: center;
+  padding-right: 10px;
+
+  /* align-items: center; */
 `;
 
 const NotesDatedTitle = styled.Text`
@@ -292,21 +216,20 @@ const NotesDatedTitle = styled.Text`
   text-decoration: underline;
 `;
 
-const NotesDatedElementsBlock = styled.View`
-  margin-top: 15px;
-`;
-
 const NotesElement = styled.TouchableOpacity`
   flex-direction: row;
+  align-items: center;
 
-  margin-top: 10px;
+  background-color: ${COLORS.WHITE};
+
+  padding: 10px 0px;
 `;
 
 const NotesSuccessful = styled.View`
   flex-direction: row;
   align-self: flex-start;
 
-  margin-top: 30px;
+  margin-bottom: 10px;
 `;
 
 const NotesSuccessfulTtile = styled.Text`
@@ -316,22 +239,6 @@ const NotesSuccessfulTtile = styled.Text`
 
 const NotesSuccessfulIcon = styled.View`
   margin-left: 30px;
-`;
-
-const ExpandedNotesContainer = styled.TouchableOpacity`
-  margin-top: 10px;
-`;
-
-const ExpandedNotesRow = styled.View`
-  margin-left: 10px;
-  flex-direction: row;
-
-  align-items: center;
-`;
-
-const ExpandedNotesTitle = styled.Text`
-  color: ${COLORS.MEDIUM_GRAY};
-  margin-left: 10px;
 `;
 
 // State

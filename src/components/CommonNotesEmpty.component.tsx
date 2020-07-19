@@ -20,6 +20,7 @@ const CommonNotesEmptyComponent = () => {
 };
 
 const NotesEmptyContainer = styled.View`
+  margin-bottom: 15px;
   padding: 15px 60px;
 
   border: 1px solid ${COLORS.LIGHT_GRAY};
