@@ -112,6 +112,7 @@ const CommomNotesComponent = ({
       useNativeDriver: true,
     }).start(() => {
       act();
+
       notesOpacityState.setValue(0);
     });
   };
@@ -209,47 +210,52 @@ const CommomNotesComponent = ({
               },
             ],
           }}>
-          <SwipeListView
-            useFlatList={true}
-            data={checkedNotes}
-            keyExtractor={(item: INote) => item.id}
-            renderItem={({item}: {item: INote}) => (
-              <NotesElement
-                key={item.id}
-                activeOpacity={1}
-                onPress={onChangeNotesItem.bind(
-                  null,
-                  onToggleNote.bind(null, item.id),
-                )}>
-                <NoteComponent {...item} />
-              </NotesElement>
-            )}
-            ItemSeparatorComponent={() => <ItemSeparator />}
-            renderHiddenItem={(rowKey) => (
-              <Animated.View
-                style={{
-                  opacity:
-                    successDropState.interpolate({
-                      inputRange: [0, 0.1, 1],
-                      outputRange: [0, 0, 0],
-                    }) ||
-                    notesOpacityState.interpolate({
-                      inputRange: [0, 0.1, 1],
-                      outputRange: [1, 0, 0],
-                    }),
-                }}>
-                <HiddenTrashContainer
+          {visibleCheckedNotes && (
+            <SwipeListView
+              useFlatList={true}
+              data={checkedNotes}
+              keyExtractor={(item: INote) => item.id}
+              renderItem={({item}: {item: INote}) => (
+                <NotesElement
+                  key={item.id}
+                  activeOpacity={1}
                   onPress={onChangeNotesItem.bind(
                     null,
-                    onRemoveNote.bind(null, rowKey.item.id),
+                    onToggleNote.bind(null, item.id),
                   )}>
-                  <Icon name="delete" color={COLORS.WHITE} size={25} />
-                </HiddenTrashContainer>
-              </Animated.View>
-            )}
-            rightOpenValue={-45}
-            disableRightSwipe
-          />
+                  <NoteComponent {...item} />
+                </NotesElement>
+              )}
+              ItemSeparatorComponent={() => <ItemSeparator />}
+              renderHiddenItem={(rowKey) => (
+                <Animated.View
+                  style={{
+                    opacity: notesOpacityState.interpolate({
+                      inputRange: [0, 0.001, 1],
+                      outputRange: [1, 0, 0],
+                    }),
+                  }}>
+                  <Animated.View
+                    style={{
+                      opacity: successDropState.interpolate({
+                        inputRange: [0, 0.999, 1],
+                        outputRange: [0, 0, 1],
+                      }),
+                    }}>
+                    <HiddenTrashContainer
+                      onPress={onChangeNotesItem.bind(
+                        null,
+                        onRemoveNote.bind(null, rowKey.item.id),
+                      )}>
+                      <Icon name="delete" color={COLORS.WHITE} size={25} />
+                    </HiddenTrashContainer>
+                  </Animated.View>
+                </Animated.View>
+              )}
+              rightOpenValue={-45}
+              disableRightSwipe
+            />
+          )}
         </Animated.View>
       </NotesBlockContainer>
     </Animated.View>
