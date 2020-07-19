@@ -51,7 +51,7 @@ const CommomNotesComponent = ({
   React.ComponentProps<typeof View>) => {
   const [visibleCheckedNotes, setVisibleCheckedNotes] = useState<boolean>(true);
 
-  // const notesOpacityState = useState(new Animated.Value(0))[0];
+  const notesOpacityState = useState(new Animated.Value(0))[0];
   const successDropState = useState(new Animated.Value(1))[0];
 
   const NoteComponent = noteComponent;
@@ -105,104 +105,154 @@ const CommomNotesComponent = ({
     }).start(callback);
   };
 
+  const onChangeNotesItem = (act: () => void) => {
+    Animated.timing(notesOpacityState, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      act();
+      notesOpacityState.setValue(0);
+    });
+  };
+
   return (
-    <NotesBlockContainer {...props}>
-      <SwipeListView
-        useSectionList={true}
-        sections={notCheckedNotes}
-        ListEmptyComponent={() => <CommonNotesEmptyComponent />}
-        keyExtractor={(item: INoteSectionListItem) => item.key}
-        renderItem={({item}: {item: INoteSectionListItem}) => (
-          <NotesElement
-            key={item.item.id}
-            onPress={onToggleNote.bind(null, item.item.id)}>
-            <NoteComponent {...item.item} />
-          </NotesElement>
-        )}
-        ItemSeparatorComponent={() => <ItemSeparator />}
-        SectionSeparatorComponent={() => <SectionSeparator />}
-        renderSectionHeader={({section: {title}}) => (
-          <NotesDatedTitle>{title}</NotesDatedTitle>
-        )}
-        renderHiddenItem={(rowKey) => (
-          <HiddenTrashContainer
-            onPress={onRemoveNote.bind(null, rowKey.item.item.id)}>
-            <Icon name="delete" color={COLORS.WHITE} size={25} />
-          </HiddenTrashContainer>
-        )}
-        rightOpenValue={-45}
-        disableRightSwipe
-      />
-
-      <TouchableWithoutFeedback
-        onPress={onToggleVisibleCheckedNotes.bind(null)}>
-        <NotesSuccessful>
-          <NotesSuccessfulTtile>{`Выполненные (${checkedNotes.length})`}</NotesSuccessfulTtile>
-
-          <NotesSuccessfulIcon>
-            <Animated.View
-              style={{
-                transform: [
-                  {
-                    rotate: successDropState.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: ['0deg', '180deg'],
-                    }),
-                  },
-                ],
-              }}>
-              <Icon name="keyboard-arrow-down" color={COLORS.BLACK} size={25} />
-            </Animated.View>
-          </NotesSuccessfulIcon>
-        </NotesSuccessful>
-      </TouchableWithoutFeedback>
-
-      <Animated.View
-        style={{
-          opacity: successDropState.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: [0, 0, 1],
-          }),
-          transform: [
-            {
-              translateY: successDropState.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-100, 0],
-              }),
-            },
-          ],
-        }}>
-        {/* {visibleCheckedNotes &&
-          checkedNotes.map((note: INote) => (
-            <NotesElement
-              key={note.id}
-              onPress={onToggleNote.bind(null, note.id)}>
-              <NoteComponent {...note} />
-            </NotesElement>
-          ))} */}
+    <Animated.View
+      style={{
+        opacity: notesOpacityState.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0],
+        }),
+      }}>
+      <NotesBlockContainer {...props}>
         <SwipeListView
-          useFlatList={true}
-          data={checkedNotes}
-          keyExtractor={(item: INote) => item.id}
-          renderItem={({item}: {item: INote}) => (
+          useSectionList={true}
+          sections={notCheckedNotes}
+          ListEmptyComponent={() => <CommonNotesEmptyComponent />}
+          keyExtractor={(item: INoteSectionListItem) => item.key}
+          renderItem={({item}: {item: INoteSectionListItem}) => (
             <NotesElement
-              key={item.id}
-              onPress={onToggleNote.bind(null, item.id)}>
-              <NoteComponent {...item} />
+              key={item.item.id}
+              activeOpacity={1}
+              onPress={onChangeNotesItem.bind(
+                null,
+                onToggleNote.bind(null, item.item.id),
+              )}>
+              <NoteComponent {...item.item} />
             </NotesElement>
           )}
           ItemSeparatorComponent={() => <ItemSeparator />}
+          SectionSeparatorComponent={() => <SectionSeparator />}
+          renderSectionHeader={({section: {title}}) => (
+            <NotesDatedTitle>{title}</NotesDatedTitle>
+          )}
           renderHiddenItem={(rowKey) => (
-            <HiddenTrashContainer
-              onPress={onRemoveNote.bind(null, rowKey.item.id)}>
-              <Icon name="delete" color={COLORS.WHITE} size={25} />
-            </HiddenTrashContainer>
+            <Animated.View
+              style={{
+                opacity: notesOpacityState.interpolate({
+                  inputRange: [0, 0.1, 1],
+                  outputRange: [1, 0, 0],
+                }),
+              }}>
+              <HiddenTrashContainer
+                onPress={onChangeNotesItem.bind(
+                  null,
+                  onRemoveNote.bind(null, rowKey.item.item.id),
+                )}>
+                <Icon name="delete" color={COLORS.WHITE} size={25} />
+              </HiddenTrashContainer>
+            </Animated.View>
           )}
           rightOpenValue={-45}
           disableRightSwipe
         />
-      </Animated.View>
-    </NotesBlockContainer>
+
+        <TouchableWithoutFeedback
+          onPress={onToggleVisibleCheckedNotes.bind(null)}>
+          <NotesSuccessful>
+            <NotesSuccessfulTtile>{`Выполненные (${checkedNotes.length})`}</NotesSuccessfulTtile>
+
+            <NotesSuccessfulIcon>
+              <Animated.View
+                style={{
+                  transform: [
+                    {
+                      rotate: successDropState.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0deg', '180deg'],
+                      }),
+                    },
+                  ],
+                }}>
+                <Icon
+                  name="keyboard-arrow-down"
+                  color={COLORS.BLACK}
+                  size={25}
+                />
+              </Animated.View>
+            </NotesSuccessfulIcon>
+          </NotesSuccessful>
+        </TouchableWithoutFeedback>
+
+        <Animated.View
+          style={{
+            opacity: successDropState.interpolate({
+              inputRange: [0, 0.5, 1],
+              outputRange: [0, 0, 1],
+            }),
+            transform: [
+              {
+                translateY: successDropState.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-100, 0],
+                }),
+              },
+            ],
+          }}>
+          <SwipeListView
+            useFlatList={true}
+            data={checkedNotes}
+            keyExtractor={(item: INote) => item.id}
+            renderItem={({item}: {item: INote}) => (
+              <NotesElement
+                key={item.id}
+                activeOpacity={1}
+                onPress={onChangeNotesItem.bind(
+                  null,
+                  onToggleNote.bind(null, item.id),
+                )}>
+                <NoteComponent {...item} />
+              </NotesElement>
+            )}
+            ItemSeparatorComponent={() => <ItemSeparator />}
+            renderHiddenItem={(rowKey) => (
+              <Animated.View
+                style={{
+                  opacity:
+                    successDropState.interpolate({
+                      inputRange: [0, 0.1, 1],
+                      outputRange: [0, 0, 0],
+                    }) ||
+                    notesOpacityState.interpolate({
+                      inputRange: [0, 0.1, 1],
+                      outputRange: [1, 0, 0],
+                    }),
+                }}>
+                <HiddenTrashContainer
+                  onPress={onChangeNotesItem.bind(
+                    null,
+                    onRemoveNote.bind(null, rowKey.item.id),
+                  )}>
+                  <Icon name="delete" color={COLORS.WHITE} size={25} />
+                </HiddenTrashContainer>
+              </Animated.View>
+            )}
+            rightOpenValue={-45}
+            disableRightSwipe
+          />
+        </Animated.View>
+      </NotesBlockContainer>
+    </Animated.View>
   );
 };
 
@@ -226,9 +276,8 @@ const HiddenTrashContainer = styled.TouchableOpacity`
 
   align-items: flex-end;
   justify-content: center;
-  padding-right: 10px;
 
-  /* align-items: center; */
+  padding-right: 10px;
 `;
 
 const NotesDatedTitle = styled.Text`
