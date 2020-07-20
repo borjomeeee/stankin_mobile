@@ -1,3 +1,5 @@
+import {AppErrorTypes} from '../enums/App.enums';
+
 export const mySubstrWithPoints = (str: string, len: number): string => {
   return str.length > len ? str.substring(0, len - 3) + '...' : str;
 };
@@ -120,5 +122,16 @@ export const getDayFromNum = (num: number): string => {
       return 'Суббота';
     default:
       return 'Понедельник';
+  }
+};
+
+export const convertAppErrorToString = (error: AppErrorTypes) => {
+  switch (error) {
+    case AppErrorTypes.ERROR:
+      return 'Ошибка!';
+    case AppErrorTypes.WARNING:
+      return 'Предупреждение!';
+    default:
+      return '';
   }
 };

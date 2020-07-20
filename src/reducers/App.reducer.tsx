@@ -4,36 +4,36 @@ import {AppActionType} from '../utils/types';
 import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILED,
-  LOAD_USER_FROM_LOCAL_SUCCESS,
-  LOAD_USER_FROM_LOCAL_FAILED,
-  LOAD_DATA_FROM_LOCAL,
   LOGIN_USER,
+  CHECK_UPDATES_FAILED,
+  DOWNLOAD_SHEDULE,
+  DOWNLOAD_SHEDULE_FAILED,
+  DOWNLOAD_SHEDULE_SUCCESS,
+  CLEAR_ERROR,
 } from '../utils/constants';
+
+import {AppErrorTypes} from '../enums/App.enums';
 
 export default (
   state: IAppInitialState = initialState.app,
   action: AppActionType,
 ): IAppInitialState => {
   switch (action.type) {
-    case LOAD_DATA_FROM_LOCAL:
     case LOGIN_USER:
+    case DOWNLOAD_SHEDULE:
       return {...state, isLoading: true};
 
     case LOGIN_USER_FAILED:
-    case LOAD_USER_FROM_LOCAL_FAILED:
-      return {...state, isLoading: false};
-
     case LOGIN_USER_SUCCESS:
-    case LOAD_USER_FROM_LOCAL_SUCCESS:
+    case DOWNLOAD_SHEDULE_FAILED:
+    case DOWNLOAD_SHEDULE_SUCCESS:
       return {...state, isLoading: false};
 
-    // case DOWNLOAD_SHEDULE_FAILED:
-    // case LOAD_SHEDULE_FROM_LOCAL_FAILED:
-    //   return {...state, sheduleIsLoaded: false};
+    case CHECK_UPDATES_FAILED:
+      return {...state, error: {type: action.payload.error, text: 'Error!'}};
 
-    // case DOWNLOAD_SHEDULE_SUCCESS:
-    // case LOAD_SHEDULE_FROM_LOCAL_SUCCESS:
-    //   return {...state, sheduleIsLoaded: true};
+    case CLEAR_ERROR:
+      return {...state, error: {type: AppErrorTypes.NONE, text: ''}};
     default:
       return state;
   }

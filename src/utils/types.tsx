@@ -20,17 +20,25 @@ import {
   removeNoteAction,
 } from '../actions/Notes.actions';
 
-import {loadDataFromLocalAction} from '../actions/App.actions';
+import {
+  checkUpdatesAction,
+  checkUpdatesFailedAction,
+  checkUpdatesSuccessAction,
+  clearErrorAction,
+} from 'src/actions/App.actions';
 
 export type AppActionType =
-  | ReturnType<typeof loadDataFromLocalAction>
   | ReturnType<typeof loginUserAction>
   | ReturnType<typeof loginUserFailedAction>
   | ReturnType<typeof loginUserSuccessAction>
   | ReturnType<typeof downloadSheduleAction>
   | ReturnType<typeof downloadSheduleSuccessAction>
   | ReturnType<typeof downloadSheduleFailedAction>
-  | ReturnType<typeof logoutUserAction>;
+  | ReturnType<typeof checkUpdatesAction>
+  | ReturnType<typeof checkUpdatesSuccessAction>
+  | ReturnType<typeof checkUpdatesFailedAction>
+  | ReturnType<typeof logoutUserAction>
+  | ReturnType<typeof clearErrorAction>;
 
 export type UserActionType =
   | ReturnType<typeof loginUserAction>

@@ -23,6 +23,8 @@ import AppModal from '../screens/AppModal.screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {checkUpdatesAction} from '../actions/App.actions';
 
+import {AppErrorTypes} from '../enums/App.enums';
+
 import * as COLORS from '../utils/colors';
 
 const MainTabs = createBottomTabNavigator();
@@ -94,7 +96,7 @@ const AppNavigation = ({
 }: ConnectedProps<typeof connector>) => {
   // Check updates application
   useEffect(() => {
-    if (Number.isInteger(user.group.id)) {
+    if (user.group.id) {
       sheckUpdate(user.group.id);
     }
   }, [user.group.id, sheckUpdate]);
@@ -104,15 +106,14 @@ const AppNavigation = ({
       initialRouteName="Main"
       mode="modal"
       screenOptions={MainNavigationOptions}>
-      {app.isLoading ? (
-        <AppStack.Screen name="Loading" component={LoadingScreen} />
+      {app.error.type !== AppErrorTypes.NONE ? (
+        <AppStack.Screen name="AppModal" component={AppModal} />
       ) : !user.isAuth ? (
         <AppStack.Screen name="Auth" component={AuthScreen} />
+      ) : app.isLoading ? (
+        <AppStack.Screen name="Loading" component={LoadingScreen} />
       ) : (
-        <>
-          <AppStack.Screen name="Main" component={MainNavigation} />
-          <AppStack.Screen name="AppModal" component={AppModal} />
-        </>
+        <AppStack.Screen name="Main" component={MainNavigation} />
       )}
     </AppStack.Navigator>
   );

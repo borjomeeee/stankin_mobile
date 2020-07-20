@@ -8,13 +8,13 @@ import {
   checkUpdatesFailedAction,
 } from '../actions/App.actions';
 
+import {AppErrorTypes} from '../enums/App.enums';
+
 export function* checkUpdateSaga({}: ICheckUpdatesSagaProps) {
   const data = {
     last_update_schedule: new Date(1970, 1, 1),
     app_version: '1.0.0',
   };
-
-  const error = 'Выбранной группы не существует';
 
   try {
     yield delay(1000);
@@ -26,10 +26,10 @@ export function* checkUpdateSaga({}: ICheckUpdatesSagaProps) {
         checkUpdatesSuccessAction(data.last_update_schedule, data.app_version),
       );
     } else {
-      yield put(checkUpdatesFailedAction(error));
+      yield put(checkUpdatesFailedAction(AppErrorTypes.ERROR));
     }
   } catch {
-    yield put(checkUpdatesFailedAction('Ошибка проверки авторизации'));
+    yield put(checkUpdatesFailedAction(AppErrorTypes.ERROR));
   }
 }
 

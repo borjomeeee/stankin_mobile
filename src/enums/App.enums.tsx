@@ -5,8 +5,9 @@ export enum NetworkError {
   DOWNLOAD_ERROR,
 }
 
-export enum AppModalTypes {
+export enum AppErrorTypes {
   ERROR,
   WARNING,
   PUSH_UP,
+  NONE = 1,
 }

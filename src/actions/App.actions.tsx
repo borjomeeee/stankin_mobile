@@ -1,32 +1,16 @@
 import {
-  LOAD_DATA_FROM_LOCAL,
-  LOAD_DATA_FROM_LOCAL_SUCCESS,
-  LOAD_DATA_FROM_LOCAL_FAILED,
   CHECK_UPDATES,
   IAction,
   CHECK_UPDATES_SUCCESS,
   CHECK_UPDATES_FAILED,
+  CLEAR_ERROR,
 } from '../utils/constants';
+
+import {AppErrorTypes} from '../enums/App.enums';
 
 export interface ICheckUpdatesSagaProps extends IAction {
   paylaod: {groupId: string};
 }
-
-export const loadDataFromLocalAction = () =>
-  ({
-    type: LOAD_DATA_FROM_LOCAL,
-  } as const);
-
-export const loadDataFromLocalActionSuccess = () =>
-  ({
-    type: LOAD_DATA_FROM_LOCAL_SUCCESS,
-  } as const);
-
-export const loadDataFromLocalFailed = (error: string) =>
-  ({
-    type: LOAD_DATA_FROM_LOCAL_FAILED,
-    payload: {err: error},
-  } as const);
 
 export const checkUpdatesAction = (groupId: string) =>
   ({
@@ -43,8 +27,13 @@ export const checkUpdatesSuccessAction = (
     payload: {lastUpdate, appVersion},
   } as const);
 
-export const checkUpdatesFailedAction = (error: string) =>
+export const checkUpdatesFailedAction = (error: AppErrorTypes) =>
   ({
     type: CHECK_UPDATES_FAILED,
     payload: {error},
+  } as const);
+
+export const clearErrorAction = () =>
+  ({
+    type: CLEAR_ERROR,
   } as const);

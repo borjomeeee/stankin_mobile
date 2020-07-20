@@ -15,7 +15,7 @@ import User from '../models/User.model';
 import {INote} from '../models/Note.model';
 import {ILesson} from '../models/Lesson.model';
 
-import {AppModalTypes} from '../enums/App.enums';
+import {AppErrorTypes} from '../enums/App.enums';
 
 // Initial state
 export const initialState = {
@@ -25,7 +25,7 @@ export const initialState = {
 
     isLoading: false,
     error: {
-      type: AppModalTypes,
+      type: AppErrorTypes.NONE,
       text: '',
     },
   },
@@ -48,23 +48,30 @@ const transformMapsState = createTransform(
     return JSON.stringify(Array.from(state || new Map<number, any[]>()));
   },
   (state: string) =>
-    new Map<number, ILesson[]>(JSON.parse(state.length > 0 ? state : '[]')),
+    new Map<number, any[]>(JSON.parse(state.length > 0 ? state : '[]')),
   {whitelist: ['schedule', 'notes']},
 );
 
-const persistConfig = {
+const storePersistConfig = {
   key: 'root',
   storage: AsyncStorage,
   transforms: [transformMapsState],
 };
+
+const AppPersistConfig = {
+  key: 'app',
+  storage: AsyncStorage,
+  whitelist: ['version', 'lastUpdateSchedule'],
+};
+
 const reducers = combineReducers({
-  app: AppReducer,
+  app: persistReducer(AppPersistConfig, AppReducer),
   user: UserReducer,
   schedule: SheduleReducer,
   notes: NotesReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(storePersistConfig, reducers);
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
