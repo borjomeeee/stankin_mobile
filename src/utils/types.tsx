@@ -47,7 +47,10 @@ export type UserActionType =
   | ReturnType<typeof logoutUserAction>
   | ReturnType<typeof setUserGroupOnClassesAction>
   | ReturnType<typeof setUserGroupOnClassesSuccessAction>
-  | ReturnType<typeof setUserGroupOnClassesFailedAction>;
+  | ReturnType<typeof setUserGroupOnClassesFailedAction>
+  | ReturnType<typeof checkUpdatesAction>
+  | ReturnType<typeof checkUpdatesSuccessAction>
+  | ReturnType<typeof checkUpdatesFailedAction>;
 
 export type SheduleActionType =
   | ReturnType<typeof downloadSheduleAction>

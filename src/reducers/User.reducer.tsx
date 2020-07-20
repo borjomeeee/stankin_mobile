@@ -7,6 +7,7 @@ import {
   LOGIN_USER_FAILED,
   LOGOUT_USER,
   SET_USER_GROUP_ON_CLASSES,
+  CHECK_UPDATES_FAILED,
 } from '../utils/constants';
 
 export default (
@@ -18,12 +19,14 @@ export default (
       return {...action.payload.user};
     case LOGIN_USER_FAILED:
       return {...state};
-    // case LOAD_USER_FROM_LOCAL_SUCCESS:
-    //   return new User({...action.payload.user});
+
     case LOGOUT_USER:
       return new User();
     case SET_USER_GROUP_ON_CLASSES:
       return {...state, lessonGroup: action.payload.group};
+
+    case CHECK_UPDATES_FAILED:
+      return {...state, isAuth: false};
   }
   return state;
 };

@@ -10,6 +10,7 @@ import {
   DOWNLOAD_SHEDULE_FAILED,
   DOWNLOAD_SHEDULE_SUCCESS,
   CLEAR_ERROR,
+  CHECK_UPDATES_SUCCESS,
 } from '../utils/constants';
 
 import {AppErrorTypes} from '../enums/App.enums';
@@ -28,6 +29,13 @@ export default (
     case DOWNLOAD_SHEDULE_FAILED:
     case DOWNLOAD_SHEDULE_SUCCESS:
       return {...state, isLoading: false};
+
+    case CHECK_UPDATES_SUCCESS:
+      return {
+        ...state,
+        lastUpdateSchedule: +action.payload.lastUpdate,
+        version: action.payload.appVersion,
+      };
 
     case CHECK_UPDATES_FAILED:
       return {...state, error: {type: action.payload.error, text: 'Error!'}};

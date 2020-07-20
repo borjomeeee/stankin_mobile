@@ -9,7 +9,7 @@ import {
 import {AppErrorTypes} from '../enums/App.enums';
 
 export interface ICheckUpdatesSagaProps extends IAction {
-  paylaod: {groupId: string};
+  payload: {groupId: string};
 }
 
 export const checkUpdatesAction = (groupId: string) =>

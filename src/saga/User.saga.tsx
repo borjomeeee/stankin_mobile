@@ -1,4 +1,4 @@
-import {takeLeading, put, delay} from 'redux-saga/effects';
+import {takeLeading, put} from 'redux-saga/effects';
 
 import {
   ILoginSaga,
@@ -13,29 +13,25 @@ import User from '../models/User.model';
 import Group from '../models/Group.model';
 
 export function* loginSaga({payload}: ILoginSaga) {
-  const data = {
-    username: 'Спиридонов Андрей',
-    group_title: 'ИДБ-18-07',
-    group_id: 'Группа 1',
-    last_update_group: new Date(),
-  };
-  const message = 'Auth error';
   try {
-    yield delay(1000);
-    // Send data and get mini info about user
+    const res = yield fetch('http://130.193.50.137:5000/api/login', {
+      method: 'POST',
+      body: JSON.stringify({login: payload.login, password: payload.password}),
+    });
 
-    let ok = true;
-    if (ok) {
+    if (res.status === 200) {
+      const data = yield res.json();
+
       yield put(
         loginUserSuccessAction(
           new User(
             payload.login,
             payload.password,
-            data.username,
+            data['username'],
             new Group(
-              data.group_id,
-              data.group_title,
-              data.last_update_group.getTime(),
+              data['group_id'],
+              data['group_title'],
+              +data['last_update_group'],
             ),
             true,
           ),
@@ -45,8 +41,10 @@ export function* loginSaga({payload}: ILoginSaga) {
       yield put(
         downloadSheduleAction(payload.login, payload.password, data.group_id),
       );
+    } else if (res.status === 401) {
+      yield put(loginUserFailedAction('Auth error'));
     } else {
-      yield put(loginUserFailedAction(message));
+      yield put(loginUserFailedAction('Server error'));
     }
   } catch {
     yield put(loginUserFailedAction('Ошибка авторизации'));

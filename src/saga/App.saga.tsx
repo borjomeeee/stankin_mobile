@@ -1,4 +1,4 @@
-import {takeEvery, put, delay} from 'redux-saga/effects';
+import {takeEvery, put} from 'redux-saga/effects';
 
 import {CHECK_UPDATES} from '../utils/constants';
 
@@ -10,25 +10,27 @@ import {
 
 import {AppErrorTypes} from '../enums/App.enums';
 
-export function* checkUpdateSaga({}: ICheckUpdatesSagaProps) {
-  const data = {
-    last_update_schedule: new Date(1970, 1, 1),
-    app_version: '1.0.0',
-  };
-
+export function* checkUpdateSaga({payload}: ICheckUpdatesSagaProps) {
   try {
-    yield delay(1000);
-    // Check updates application
+    const res = yield fetch('http://130.193.50.137:5000/api/hello-user', {
+      method: 'POST',
+      body: JSON.stringify({groupId: payload.groupId}),
+    });
 
-    let ok = true;
-    if (ok) {
+    if (res.status === 200) {
+      const data = yield res.json();
+
       yield put(
-        checkUpdatesSuccessAction(data.last_update_schedule, data.app_version),
+        checkUpdatesSuccessAction(
+          new Date(+data['last_update_schedule']),
+          data['app_version'],
+        ),
       );
     } else {
       yield put(checkUpdatesFailedAction(AppErrorTypes.ERROR));
     }
-  } catch {
+  } catch (e) {
+    console.log(e);
     yield put(checkUpdatesFailedAction(AppErrorTypes.ERROR));
   }
 }
