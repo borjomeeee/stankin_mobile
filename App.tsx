@@ -23,7 +23,7 @@ import LoadingScreen from './src/screens/Loading.screen';
 const App = () => {
   return (
     <Provider store={Persisted.store}>
-      <PersistGate loading={LoadingScreen} persistor={Persisted.persistor}>
+      <PersistGate loading={<LoadingScreen />} persistor={Persisted.persistor}>
         <NavigationContainer>
           <AppNavigation />
         </NavigationContainer>

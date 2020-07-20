@@ -3,6 +3,10 @@ import {
   createBottomTabNavigator,
   BottomTabBarOptions,
 } from '@react-navigation/bottom-tabs';
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from '@react-navigation/stack';
 
 import {connect, ConnectedProps} from 'react-redux';
 
@@ -14,15 +18,17 @@ import SettingsNavigation from './Settings.navigation';
 
 import AuthScreen from '../screens/Auth.screen';
 import LoadingScreen from '../screens/Loading.screen';
+import AppModal from '../screens/AppModal.screen';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {checkUpdatesAction} from '../actions/App.actions';
 
 import * as COLORS from '../utils/colors';
 
-const Tab = createBottomTabNavigator();
+const MainTabs = createBottomTabNavigator();
+const AppStack = createStackNavigator();
 
-// Navigation options
+// Main navigation options
 const AppNavigationBarOptions: BottomTabBarOptions = {
   keyboardHidesTabBar: true,
   adaptive: true,
@@ -52,7 +58,35 @@ const SettingsNavigationTabOptions = {
   ),
 };
 
-// Component
+const MainNavigation = () => {
+  return (
+    <MainTabs.Navigator
+      initialRouteName="Shedule"
+      tabBarOptions={AppNavigationBarOptions}>
+      <MainTabs.Screen
+        name="Notes"
+        options={NotesNavigationTabOptions}
+        component={NotesNavigation}
+      />
+      <MainTabs.Screen
+        name="Shedule"
+        options={SheduleNavigationTabOptions}
+        component={SheduleNavigation}
+      />
+      <MainTabs.Screen
+        name="Settings"
+        options={SettingsNavigationTabOptions}
+        component={SettingsNavigation}
+      />
+    </MainTabs.Navigator>
+  );
+};
+
+// App navigation options
+const MainNavigationOptions: StackNavigationOptions = {
+  headerShown: false,
+};
+
 const AppNavigation = ({
   app,
   user,
@@ -60,39 +94,27 @@ const AppNavigation = ({
 }: ConnectedProps<typeof connector>) => {
   // Check updates application
   useEffect(() => {
-    if (user.group.id) {
+    if (Number.isInteger(user.group.id)) {
       sheckUpdate(user.group.id);
     }
   }, [user.group.id, sheckUpdate]);
 
-  if (app.isLoading) {
-    return <LoadingScreen />;
-  }
-
-  if (!user.isAuth) {
-    return <AuthScreen />;
-  }
-
   return (
-    <Tab.Navigator
-      initialRouteName="Shedule"
-      tabBarOptions={AppNavigationBarOptions}>
-      <Tab.Screen
-        name="Notes"
-        options={NotesNavigationTabOptions}
-        component={NotesNavigation}
-      />
-      <Tab.Screen
-        name="Shedule"
-        options={SheduleNavigationTabOptions}
-        component={SheduleNavigation}
-      />
-      <Tab.Screen
-        name="Settings"
-        options={SettingsNavigationTabOptions}
-        component={SettingsNavigation}
-      />
-    </Tab.Navigator>
+    <AppStack.Navigator
+      initialRouteName="Main"
+      mode="modal"
+      screenOptions={MainNavigationOptions}>
+      {app.isLoading ? (
+        <AppStack.Screen name="Loading" component={LoadingScreen} />
+      ) : !user.isAuth ? (
+        <AppStack.Screen name="Auth" component={AuthScreen} />
+      ) : (
+        <>
+          <AppStack.Screen name="Main" component={MainNavigation} />
+          <AppStack.Screen name="AppModal" component={AppModal} />
+        </>
+      )}
+    </AppStack.Navigator>
   );
 };
 
