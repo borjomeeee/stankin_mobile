@@ -15,6 +15,8 @@ import User from '../models/User.model';
 import {INote} from '../models/Note.model';
 import {ILesson} from '../models/Lesson.model';
 
+import {AppModalTypes} from '../enums/App.enums';
+
 // Initial state
 export const initialState = {
   app: {
@@ -22,7 +24,10 @@ export const initialState = {
     lastUpdateSchedule: new Date().getDate(),
 
     isLoading: false,
-    error: '',
+    error: {
+      type: AppModalTypes,
+      text: '',
+    },
   },
 
   user: new User(),
@@ -35,6 +40,8 @@ export type IAppInitialState = typeof initialState.app;
 export type IUserInitialState = typeof initialState.user;
 export type IScheduleInitialState = typeof initialState.schedule;
 export type INotesInitialState = typeof initialState.notes;
+
+export type IAppError = typeof initialState.app.error;
 
 const transformMapsState = createTransform(
   (state: Map<number, any[]>) => {

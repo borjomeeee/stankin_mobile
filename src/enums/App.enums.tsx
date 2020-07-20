@@ -1,6 +1,12 @@
 export enum NetworkError {
-  NONE = -1,
-  NOT_CONNECTION = 0,
-  WRONG_LOGIN = 1,
-  DOWNLOAD_ERROR = 2,
+  NONE,
+  NOT_CONNECTION,
+  WRONG_LOGIN,
+  DOWNLOAD_ERROR,
+}
+
+export enum AppModalTypes {
+  ERROR,
+  WARNING,
+  PUSH_UP,
 }
