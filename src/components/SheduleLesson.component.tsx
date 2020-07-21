@@ -95,7 +95,6 @@ const LessonCardTimeItemSub = styled(LessonCardTimeItem)`
 const LessonCardUserGroupContainer = styled.View`
   border: 1px solid ${COLORS.DARK_GRAY};
 
-  margin-top: 5px;
   align-items: center;
 `;
 

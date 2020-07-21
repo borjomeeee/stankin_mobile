@@ -17,7 +17,7 @@ import AuthScreen from '../screens/Auth.screen';
 
 import * as COLORS from '../utils/colors';
 
-import SheduleNavigation from './Shedule.navigation';
+import SсheduleNavigation from './Schedule.navigation';
 import NotesNavigation from './Notes.navigation';
 import SettingsNavigation from './Settings.navigation';
 
@@ -91,7 +91,7 @@ const MainNavigation = ({
       <MainTabs.Screen
         name="Shedule"
         options={SheduleNavigationTabOptions}
-        component={SheduleNavigation}
+        component={SсheduleNavigation}
       />
       <MainTabs.Screen
         name="Settings"
