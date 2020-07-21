@@ -21,6 +21,7 @@ import * as COLORS from '../utils/colors';
 import {dateToStringExpanded} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
 
+// TODO: Переделать модалку из предметов в FlatList
 const AddNoteScreen = ({
   schedule,
   createNote,

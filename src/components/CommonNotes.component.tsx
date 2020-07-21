@@ -50,6 +50,9 @@ const CommomNotesComponent = ({
   ConnectedProps<typeof connector> &
   React.ComponentProps<typeof View>) => {
   const [visibleCheckedNotes, setVisibleCheckedNotes] = useState<boolean>(true);
+  const [visibleNotesContainer, setVisibleNotesContainer] = useState<boolean>(
+    true,
+  );
 
   const notesOpacityState = useState(new Animated.Value(0))[0];
   const successDropState = useState(new Animated.Value(1))[0];
@@ -91,21 +94,31 @@ const CommomNotesComponent = ({
 
   // Handlers
   const onToggleVisibleCheckedNotes = () => {
-    let callback;
+    let callback: () => void;
     if (visibleCheckedNotes) {
       callback = () => setVisibleCheckedNotes(!visibleCheckedNotes);
     } else {
       setVisibleCheckedNotes(!visibleCheckedNotes);
     }
 
+    setVisibleNotesContainer(false);
+
     Animated.timing(successDropState, {
       toValue: +!visibleCheckedNotes,
       duration: 200,
       useNativeDriver: true,
-    }).start(callback);
+    }).start(() => {
+      if (callback) {
+        callback();
+      }
+
+      setVisibleNotesContainer(true);
+    });
   };
 
   const onChangeNotesItem = (act: () => void) => {
+    setVisibleNotesContainer(false);
+
     Animated.timing(notesOpacityState, {
       toValue: 1,
       duration: 200,
@@ -114,6 +127,7 @@ const CommomNotesComponent = ({
       act();
 
       notesOpacityState.setValue(0);
+      setVisibleNotesContainer(true);
     });
   };
 
@@ -147,14 +161,8 @@ const CommomNotesComponent = ({
           renderSectionHeader={({section: {title}}) => (
             <NotesDatedTitle>{title}</NotesDatedTitle>
           )}
-          renderHiddenItem={(rowKey) => (
-            <Animated.View
-              style={{
-                opacity: notesOpacityState.interpolate({
-                  inputRange: [0, 0.1, 1],
-                  outputRange: [1, 0, 0],
-                }),
-              }}>
+          renderHiddenItem={(rowKey) =>
+            visibleNotesContainer ? (
               <HiddenTrashContainer
                 onPress={onChangeNotesItem.bind(
                   null,
@@ -162,8 +170,10 @@ const CommomNotesComponent = ({
                 )}>
                 <Icon name="delete" color={COLORS.WHITE} size={25} />
               </HiddenTrashContainer>
-            </Animated.View>
-          )}
+            ) : (
+              <></>
+            )
+          }
           rightOpenValue={-45}
           disableRightSwipe
         />
@@ -227,31 +237,19 @@ const CommomNotesComponent = ({
                 </NotesElement>
               )}
               ItemSeparatorComponent={() => <ItemSeparator />}
-              renderHiddenItem={(rowKey) => (
-                <Animated.View
-                  style={{
-                    opacity: notesOpacityState.interpolate({
-                      inputRange: [0, 0.001, 1],
-                      outputRange: [1, 0, 0],
-                    }),
-                  }}>
-                  <Animated.View
-                    style={{
-                      opacity: successDropState.interpolate({
-                        inputRange: [0, 0.999, 1],
-                        outputRange: [0, 0, 1],
-                      }),
-                    }}>
-                    <HiddenTrashContainer
-                      onPress={onChangeNotesItem.bind(
-                        null,
-                        onRemoveNote.bind(null, rowKey.item.id),
-                      )}>
-                      <Icon name="delete" color={COLORS.WHITE} size={25} />
-                    </HiddenTrashContainer>
-                  </Animated.View>
-                </Animated.View>
-              )}
+              renderHiddenItem={(rowKey) =>
+                visibleNotesContainer ? (
+                  <HiddenTrashContainer
+                    onPress={onChangeNotesItem.bind(
+                      null,
+                      onRemoveNote.bind(null, rowKey.item.id),
+                    )}>
+                    <Icon name="delete" color={COLORS.WHITE} size={25} />
+                  </HiddenTrashContainer>
+                ) : (
+                  <></>
+                )
+              }
               rightOpenValue={-45}
               disableRightSwipe
             />
