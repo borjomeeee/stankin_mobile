@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-
 import {connect, ConnectedProps} from 'react-redux';
 
 import styled from 'styled-components/native';
@@ -38,6 +37,7 @@ const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
 
   const {keyboardIsOpen} = useKeyboard();
 
+  // If data is incorrect - image error
   useEffect(() => {
     if (app.error.type === AppErrorTypes.WARNING) {
       setLoginError(app.error.text);
@@ -123,6 +123,7 @@ const FooterText = styled.Text`
 // State
 const mapStateToProps = (state: IInitialState) => ({
   app: state.app,
+  user: state.user,
 });
 
 const mapDispatchToProps = {

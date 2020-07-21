@@ -17,7 +17,8 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 
 import Persisted from './src/redux/store';
-import AppNavigation from './src/navigation/App.navigation';
+
+import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
     <Provider store={Persisted.store}>
       <PersistGate loading={<LoadingScreen />} persistor={Persisted.persistor}>
         <NavigationContainer>
-          <AppNavigation />
+          <MainNavigation />
         </NavigationContainer>
       </PersistGate>
     </Provider>
