@@ -1,3 +1,6 @@
+const config = require('../config.json');
+const developer = config['developer_mail'];
+
 import React, {useLayoutEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity, Linking} from 'react-native';
@@ -48,7 +51,7 @@ const IUserGroupDropdownProps: PickerStyle = {
   },
 };
 
-const DEVELOPER_URL = 'mailto:spiridonov.new@gmail.com';
+const DEVELOPER_URL = `mailto:${developer}`;
 
 const SettingsScreen = ({
   app,
