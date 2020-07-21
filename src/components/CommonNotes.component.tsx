@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, TouchableWithoutFeedback, Animated} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
-import {IInitialState} from '../redux/store';
+import {IInitialState, INotesInitialState} from '../redux/store';
 
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -32,11 +32,6 @@ interface INoteSectionListItem {
   item: INote;
 }
 
-const sortByDate = (
-  [dateNum1, _1]: [number, INote[]],
-  [dateNum2, _2]: [number, INote[]],
-) => (dateNum1 < dateNum2 ? -1 : 1);
-
 const CommomNotesComponent = ({
   notes,
   lesson,
@@ -59,38 +54,7 @@ const CommomNotesComponent = ({
 
   const NoteComponent = noteComponent;
 
-  const currNotes = Array.from(notes)
-    .sort(sortByDate)
-    .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
-      dateNum,
-      nts.filter((note: INote) => !lesson || note.subject === lesson.title),
-    ])
-    .filter(([_, nts]: [number, INote[]]) => nts.length > 0);
-
-  const checkedNotes = currNotes
-    .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
-      dateNum,
-      nts.filter((note: INote) => note.isChecked),
-    ])
-    .reduce(
-      (acc: INote[], [_, nts]: [number, INote[]]) => [...acc, ...nts],
-      new Array<INote>(0),
-    );
-
-  const notCheckedNotes = currNotes
-    .filter(
-      ([_, nts]: [number, INote[]]) =>
-        !nts.every((note: INote) => note.isChecked),
-    )
-    .map(([dateNum, nts]: [number, INote[]], index: number) => ({
-      title: dateToDateString(new Date(dateNum)),
-      data: nts
-        .filter((note: INote) => !note.isChecked)
-        .map((note: INote) => ({
-          key: `${index}.${note.id}`,
-          item: note,
-        })),
-    }));
+  const {checkedNotes, notCheckedNotes} = getMainDataFromNotes(notes, lesson);
 
   // Handlers
   const onToggleVisibleCheckedNotes = () => {
@@ -145,17 +109,21 @@ const CommomNotesComponent = ({
           sections={notCheckedNotes}
           ListEmptyComponent={() => <CommonNotesEmptyComponent />}
           keyExtractor={(item: INoteSectionListItem) => item.key}
-          renderItem={({item}: {item: INoteSectionListItem}) => (
-            <NotesElement
-              key={item.item.id}
-              activeOpacity={1}
-              onPress={onChangeNotesItem.bind(
-                null,
-                onToggleNote.bind(null, item.item.id),
-              )}>
-              <NoteComponent {...item.item} />
-            </NotesElement>
-          )}
+          renderItem={({item}: {item: INoteSectionListItem}) =>
+            visibleNotesContainer ? (
+              <NotesElement
+                key={item.item.id}
+                activeOpacity={1}
+                onPress={onChangeNotesItem.bind(
+                  null,
+                  onToggleNote.bind(null, item.item.id),
+                )}>
+                <NoteComponent {...item.item} />
+              </NotesElement>
+            ) : (
+              <></>
+            )
+          }
           ItemSeparatorComponent={() => <ItemSeparator />}
           SectionSeparatorComponent={() => <SectionSeparator />}
           renderSectionHeader={({section: {title}}) => (
@@ -327,3 +295,49 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export default connector(CommomNotesComponent);
+
+// Methods
+const getMainDataFromNotes = (notes: INotesInitialState, lesson?: ILesson) => {
+  const sortByDate = (
+    [dateNum1, _1]: [number, INote[]],
+    [dateNum2, _2]: [number, INote[]],
+  ) => (dateNum1 < dateNum2 ? -1 : 1);
+
+  const currNotes = Array.from(notes)
+    .sort(sortByDate)
+    .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
+      dateNum,
+      nts.filter((note: INote) => !lesson || note.subject === lesson.title),
+    ])
+    .filter(([_, nts]: [number, INote[]]) => nts.length > 0);
+
+  const checkedNotes = currNotes
+    .map(([dateNum, nts]: [number, INote[]]): [number, INote[]] => [
+      dateNum,
+      nts.filter((note: INote) => note.isChecked),
+    ])
+    .reduce(
+      (acc: INote[], [_, nts]: [number, INote[]]) => [...acc, ...nts],
+      new Array<INote>(0),
+    );
+
+  const notCheckedNotes = currNotes
+    .filter(
+      ([_, nts]: [number, INote[]]) =>
+        !nts.every((note: INote) => note.isChecked),
+    )
+    .map(([dateNum, nts]: [number, INote[]], index: number) => ({
+      title: dateToDateString(new Date(dateNum)),
+      data: nts
+        .filter((note: INote) => !note.isChecked)
+        .map((note: INote) => ({
+          key: `${index}.${note.id}`,
+          item: note,
+        })),
+    }));
+
+  return {
+    checkedNotes,
+    notCheckedNotes,
+  };
+};

@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
+import {FlatList} from 'react-native';
 
 import styled from 'styled-components/native';
 
@@ -21,25 +22,26 @@ const CommonSubjectsModalComponent = ({
   onSelectSubject,
   onHide,
 }: ICommonSubjectsModalComponent) => {
+  const renderSubjectComponent = ({item}: {item: string}) => {
+    return (
+      <ModalElementContainer
+        key={item}
+        onPress={onSelectSubject.bind(null, item)}>
+        <ModalElementText>{item}</ModalElementText>
+      </ModalElementContainer>
+    );
+  };
+
   return (
     <Modal isVisible={isVisible} onBackdropPress={onHide}>
       <ModalContainer>
         <ModalContent>
-          {subjects.map((subject: string, index: number) =>
-            index === 0 ? (
-              <ModalElementContainerFirst
-                key={subject}
-                onPress={onSelectSubject.bind(null, subject)}>
-                <ModalElementText>{subject}</ModalElementText>
-              </ModalElementContainerFirst>
-            ) : (
-              <ModalElementContainer
-                key={subject}
-                onPress={onSelectSubject.bind(null, subject)}>
-                <ModalElementText>{subject}</ModalElementText>
-              </ModalElementContainer>
-            ),
-          )}
+          <FlatList
+            data={subjects}
+            keyExtractor={(item) => item}
+            renderItem={renderSubjectComponent}
+            ItemSeparatorComponent={SubjectSeparator}
+          />
         </ModalContent>
       </ModalContainer>
     </Modal>
@@ -48,12 +50,13 @@ const CommonSubjectsModalComponent = ({
 
 // Components
 const ModalContainer = styled.View`
-  align-self: center;
+  width: 100%;
+  height: 100%;
 
-  flex: 1;
+  align-items: center;
+  justify-content: center;
 
-  justify-content: flex-start;
-  align-items: flex-start;
+  max-height: 70%;
 `;
 
 const ModalContent = styled.ScrollView`
@@ -65,13 +68,13 @@ const ModalContent = styled.ScrollView`
 
 const ModalElementContainer = styled.TouchableOpacity`
   padding: 15px 0px;
-
-  border-top-width: 1px;
-  border-top-color: ${COLORS.MEDIUM_GRAY};
 `;
 
-const ModalElementContainerFirst = styled(ModalElementContainer)`
-  border-top-width: 0px;
+const SubjectSeparator = styled.View`
+  width: 100%;
+  height: 1px;
+
+  background-color: ${COLORS.MEDIUM_GRAY};
 `;
 
 const ModalElementText = styled.Text`

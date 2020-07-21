@@ -3,7 +3,7 @@ import {FlatList} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import SheduleLessonComponent from './SheduleLesson.component';
+import ScheduleLessonComponent from './ScheduleLesson.component';
 import ScheduleDayEmptyComponent from './ScheduleDayEmpty.component';
 
 import {ILesson} from '../models/Lesson.model';
@@ -25,7 +25,7 @@ const ScheduleDayComponent = ({lessons, date}: IScheduleDayComponent) => {
 
   const renderScheduleDayLesson = ({item}: {item: ILesson}) => {
     return (
-      <SheduleLessonComponent
+      <ScheduleLessonComponent
         {...item}
         onClick={onClickLesson.bind(null, item)}
       />

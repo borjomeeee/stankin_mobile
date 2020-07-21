@@ -10,11 +10,11 @@ import {getLesonTimeFromNum} from '../utils/methods';
 
 import CommonTagComponent from './CommonTag.component';
 
-type ISheduleLessonComponent = {
+type IScheduleLessonComponent = {
   onClick: () => void;
 };
 
-const SheduleLessonComponent = ({
+const ScheduleLessonComponent = ({
   onClick,
 
   type,
@@ -25,21 +25,12 @@ const SheduleLessonComponent = ({
   num,
 
   ...props
-}: ISheduleLessonComponent &
+}: IScheduleLessonComponent &
   ILesson &
   React.ComponentProps<typeof TouchableOpacity>) => {
   const [startTime, endTime] = getLesonTimeFromNum(num);
 
-  const tags = [];
-  if (type) {
-    tags.push(type);
-  }
-  if (room) {
-    tags.push(room);
-  }
-  if (teacher) {
-    tags.push(teacher);
-  }
+  const tags = [type, room, teacher];
 
   return (
     <LessonCardContainer {...props} activeOpacity={0.65} onPress={onClick}>
@@ -58,9 +49,9 @@ const SheduleLessonComponent = ({
         <LessonCardTitle>{title}</LessonCardTitle>
 
         <LessonCardTags>
-          {type.length > 0 && <LessonCardTag text={type} />}
-          {room.length > 0 && <LessonCardTag text={room} />}
-          {teacher.length > 0 && <LessonCardTag text={teacher} />}
+          {tags.map((tag: string) => {
+            tag.length > 0 && <LessonCardTag text={tag} />;
+          })}
         </LessonCardTags>
       </LessonCardContent>
     </LessonCardContainer>
@@ -123,4 +114,4 @@ const LessonCardTag = styled(CommonTagComponent)`
   margin-right: 5px;
 `;
 
-export default SheduleLessonComponent;
+export default ScheduleLessonComponent;
