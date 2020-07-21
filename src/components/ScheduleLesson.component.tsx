@@ -50,7 +50,7 @@ const ScheduleLessonComponent = ({
 
         <LessonCardTags>
           {tags.map((tag: string) => {
-            tag.length > 0 && <LessonCardTag text={tag} />;
+            return tag.length > 0 && <LessonCardTag key={tag} text={tag} />;
           })}
         </LessonCardTags>
       </LessonCardContent>
