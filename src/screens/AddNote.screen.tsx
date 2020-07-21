@@ -45,7 +45,7 @@ const AddNoteScreen = ({
 
   const params = route.params as {title: string} | undefined;
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date(2020, 3, 10));
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const [noteText, setNoteText] = useState<string>('');
   const [noteTextError, setNoteTextError] = useState<string>('');

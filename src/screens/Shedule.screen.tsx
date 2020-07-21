@@ -36,7 +36,7 @@ const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
 
   // Datepicker
   const [showDatepicker, setShowDatepicker] = useState(false);
-  const [startDate, setStartDate] = useState<Date>(new Date(2020, 3, 10));
+  const [startDate, setStartDate] = useState<Date>(new Date());
 
   const listLessonsRef = useRef<ScrollView | null>(null);
 
@@ -67,7 +67,15 @@ const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
 
   // Dates for display
   const currDateRange = useMemo(
-    () => getRangeDates(startDate).map((date: Date) => date.getTime()),
+    () =>
+      getRangeDates(startDate).map((date: Date) => {
+        const currDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+        );
+        return currDate.getTime();
+      }),
     [startDate],
   );
 
@@ -138,7 +146,7 @@ const ScheduleScreenContent = styled.ScrollView`
 `;
 
 const DayTitle = styled.Text<IDayTitleProps>`
-  font-size: 16px;
+  font-size: 18px;
 
   padding-top: ${(props) => (props.isFirst ? '0px' : '15px')};
   padding-bottom: 15px;

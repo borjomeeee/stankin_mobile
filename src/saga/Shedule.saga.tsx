@@ -21,6 +21,7 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
         body: JSON.stringify({}),
       },
     );
+
     if (res.status === 200) {
       const data = yield res.json();
       yield put(
