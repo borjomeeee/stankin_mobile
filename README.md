@@ -12,5 +12,6 @@
 
 ### Screenshots
 
-<!-- Страница авторизации
-[](/screenshots/auth_page.png) -->
+<img src="screenshots/auth_page.jpg" width="300px" /> | <img src="screenshots/schedule_page.jpg" width="300px" />
+<img src="screenshots/lesson_page.jpg" width="300px" /> | <img src="screenshots/settings_page.jpg" width="300px" />
+<img src="screenshots/notes_page.jpg" width="300px" /> | <img src="screenshots/addnote_page.jpg" width="300px" />
