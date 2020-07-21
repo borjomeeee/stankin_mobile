@@ -17,16 +17,27 @@ import CommonButtonComponent from '../components/CommonButton.component';
 import * as COLORS from '../utils/colors';
 import {AuthScreenContainer} from '../utils/theme';
 
+import useAuthForm from '../hooks/useAuthForm.hook';
+
 import {AppErrorTypes} from '../enums/App.enums';
 
 const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
 
-  const [loginText, setLoginText] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const {
+    loginText,
+    changeLoginText,
 
-  const [passwordText, setPasswordText] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+    loginError,
+    setLoginError,
+
+    passwordText,
+    changePasswordText,
+
+    passwordError,
+
+    checkValid,
+  } = useAuthForm();
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setKeyboardIsOpen(true));
@@ -44,42 +55,10 @@ const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
     }
   }, [app.error]);
 
-  const checkValidLogin = (): boolean => {
-    if (loginText.length === 0) {
-      setLoginError('Поле не должно быть пустым');
-      return false;
-    }
-
-    return true;
-  };
-
-  const checkValidPassword = (): boolean => {
-    if (passwordText.length === 0) {
-      setPasswordError('Поле не должно быть пустым');
-      return false;
-    }
-
-    return true;
-  };
-
   const onConfirmPassword = () => {
-    if (checkValidLogin() && checkValidPassword()) {
+    if (checkValid()) {
       loginUser(loginText, passwordText);
     }
-  };
-
-  const onChangeLoginText = (value: string) => {
-    if (loginError) {
-      setLoginError('');
-    }
-    setLoginText(value);
-  };
-
-  const onChangePasswordText = (value: string) => {
-    if (passwordError) {
-      setPasswordError('');
-    }
-    setPasswordText(value);
   };
 
   return (
@@ -92,13 +71,13 @@ const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
 
           <AuthFormInput
             value={loginText}
-            onChangeText={onChangeLoginText}
+            onChangeText={changeLoginText}
             error={loginError}
             placeholder="Login"
           />
           <AuthFormInput
             value={passwordText}
-            onChangeText={onChangePasswordText}
+            onChangeText={changePasswordText}
             secureTextEntry={true}
             onSubmitEditing={onConfirmPassword}
             error={passwordError}
