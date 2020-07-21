@@ -80,8 +80,12 @@ const AddNoteScreen = ({
       return;
     }
 
-    console.log(selectedDate);
-    createNote(subjectNote, selectedDate.getTime(), noteText);
+    const newNoteDate = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth() - 1,
+      selectedDate.getDate(),
+    );
+    createNote(subjectNote, newNoteDate.getTime(), noteText);
 
     navigation.goBack();
   };
