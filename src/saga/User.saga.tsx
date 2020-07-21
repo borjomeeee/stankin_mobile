@@ -1,5 +1,8 @@
 import {takeLeading, put} from 'redux-saga/effects';
 
+const config = require('../config.json');
+const server_ip = config['server_ip'];
+
 import {
   ILoginSaga,
   loginUserSuccessAction,
@@ -16,7 +19,7 @@ import {AppErrorTypes} from '../enums/App.enums';
 
 export function* loginSaga({payload}: ILoginSaga) {
   try {
-    const res = yield fetch('http://130.193.50.137:5000/api/login', {
+    const res = yield fetch(`http://${server_ip}:5000/api/login`, {
       method: 'POST',
       body: JSON.stringify({login: payload.login, password: payload.password}),
     });

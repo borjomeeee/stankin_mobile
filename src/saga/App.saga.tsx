@@ -1,5 +1,8 @@
 import {takeEvery, put} from 'redux-saga/effects';
 
+const config = require('../config.json');
+const server_ip = config['server_ip'];
+
 import {CHECK_UPDATES} from '../utils/constants';
 
 import {
@@ -12,7 +15,7 @@ import {AppErrorTypes} from '../enums/App.enums';
 
 export function* checkUpdateSaga({payload}: ICheckUpdatesSagaProps) {
   try {
-    const res = yield fetch('http://130.193.50.137:5000/api/hello-user', {
+    const res = yield fetch(`http://${server_ip}:5000/api/hello-user`, {
       method: 'POST',
       body: JSON.stringify({groupId: payload.groupId}),
     });

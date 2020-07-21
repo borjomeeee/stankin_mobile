@@ -1,5 +1,8 @@
 import {takeEvery, put} from 'redux-saga/effects';
 
+const config = require('../config.json');
+const server_ip = config['server_ip'];
+
 import {DOWNLOAD_SHEDULE} from '../utils/constants';
 
 import {
@@ -17,7 +20,7 @@ import {AppErrorTypes} from '../enums/App.enums';
 export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
   try {
     const res = yield fetch(
-      `http://130.193.50.137:5000/api/load-schedule/${payload.groupId}`,
+      `http://${server_ip}:5000/api/load-schedule/${payload.groupId}`,
       {
         method: 'POST',
         body: JSON.stringify({

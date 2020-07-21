@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useMemo, useRef} from 'react';
+import React, {useLayoutEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity, Linking} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
@@ -62,14 +62,11 @@ const SettingsScreen = ({
   // Select dropdown
   let selectRef = useRef(null);
 
-  const userGroups = useMemo(
-    () => [
-      {label: 'Без группы', value: LessonGroup.NONE},
-      {label: 'Группа А', value: LessonGroup.GROUP_A},
-      {label: 'Группа Б', value: LessonGroup.GROUP_B},
-    ],
-    [],
-  );
+  const userGroups = [
+    {label: 'Без группы', value: LessonGroup.NONE},
+    {label: 'Группа А', value: LessonGroup.GROUP_A},
+    {label: 'Группа Б', value: LessonGroup.GROUP_B},
+  ];
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -81,7 +78,7 @@ const SettingsScreen = ({
     });
   }, [logoutUser, navigation]);
 
-  const onSelectUserGroup = (value: string) => {
+  const onSelectUserGroup = (value: string | null) => {
     if (value !== null) {
       setUserGroup(value as LessonGroup);
     }
