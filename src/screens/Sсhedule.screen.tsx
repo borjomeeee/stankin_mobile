@@ -36,7 +36,7 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
 
   const listLessonsRef = useRef<ScrollView | null>(null);
 
-  const onChange = (_: any, selectedDate: Date | undefined) => {
+  const onChangeStartDate = (_: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
 
     setShowDatepicker(Platform.OS === 'ios');
@@ -105,7 +105,7 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
             mode="date"
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={onChangeStartDate}
           />
         )}
       </ScheduleScreenContent>
