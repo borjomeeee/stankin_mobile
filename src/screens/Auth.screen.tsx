@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Keyboard} from 'react-native';
+import React, {useEffect} from 'react';
+
 import {connect, ConnectedProps} from 'react-redux';
 
 import styled from 'styled-components/native';
@@ -7,8 +7,6 @@ import styled from 'styled-components/native';
 import {IInitialState} from '../redux/store';
 
 import {loginUserAction} from '../actions/User.actions';
-import {downloadSheduleAction} from '../actions/Shedule.actions';
-import {clearErrorAction} from '../actions/App.actions';
 
 import CommonLogoComponent from '../components/CommonLogo.component';
 import CommonInputComponent from '../components/CommonInput.component';
@@ -18,12 +16,11 @@ import * as COLORS from '../utils/colors';
 import {AuthScreenContainer} from '../utils/theme';
 
 import useAuthForm from '../hooks/useAuthForm.hook';
+import useKeyboard from '../hooks/useKeyboard.hook';
 
 import {AppErrorTypes} from '../enums/App.enums';
 
 const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
-  const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
-
   const {
     loginText,
     changeLoginText,
@@ -39,21 +36,13 @@ const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
     checkValid,
   } = useAuthForm();
 
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setKeyboardIsOpen(true));
-    Keyboard.addListener('keyboardDidHide', () => setKeyboardIsOpen(false));
-
-    return () => {
-      Keyboard.removeAllListeners('keyboardDidShow');
-      Keyboard.removeAllListeners('keyboardDidHide');
-    };
-  }, []);
+  const {keyboardIsOpen} = useKeyboard();
 
   useEffect(() => {
     if (app.error.type === AppErrorTypes.WARNING) {
       setLoginError(app.error.text);
     }
-  }, [app.error]);
+  }, [app.error, setLoginError]);
 
   const onConfirmPassword = () => {
     if (checkValid()) {
@@ -133,16 +122,12 @@ const FooterText = styled.Text`
 
 // State
 const mapStateToProps = (state: IInitialState) => ({
-  user: state.user,
   app: state.app,
 });
 
 const mapDispatchToProps = {
   loginUser: (login: string, password: string) =>
     loginUserAction(login, password),
-  downloadShedule: (login: string, password: string, group: string) =>
-    downloadSheduleAction(login, password, group),
-  clearError: () => clearErrorAction(),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
