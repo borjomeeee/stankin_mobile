@@ -1,52 +1,36 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Dimensions,
-  NativeSyntheticEvent,
-  TextInputSubmitEditingEventData,
-  GestureResponderEvent,
-} from 'react-native';
+
+import styled from 'styled-components/native';
 
 import * as COLORS from '../utils/colors';
 
 type ICommonButtonComponent = {
   text: string;
-  onClick: (
-    event:
-      | NativeSyntheticEvent<TextInputSubmitEditingEventData>
-      | GestureResponderEvent,
-  ) => void;
+  onClick: () => void;
 };
 
 const CommonButtonComponent = ({text, onClick}: ICommonButtonComponent) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.65}
-      style={styles.container}
-      onPress={onClick}>
-      <Text style={styles.text}>{text}</Text>
-    </TouchableOpacity>
+    <ButtonContainer activeOpacity={0.65} onPress={onClick}>
+      <ButtonText>{text}</ButtonText>
+    </ButtonContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    maxWidth: Dimensions.get('window').width - 100,
-    backgroundColor: '#000000',
+const ButtonContainer = styled.TouchableOpacity`
+  max-width: 90%;
+  background-color: ${COLORS.BLACK};
 
-    borderRadius: 3,
+  border-radius: 3px;
 
-    paddingVertical: 7,
-    paddingHorizontal: 50,
-  },
-  text: {
-    fontFamily: 'Inter-Bold',
-    fontSize: 16,
+  padding: 7px 50px;
+`;
 
-    color: COLORS.WHITE,
-  },
-});
+const ButtonText = styled.Text`
+  font-family: 'Inter-Bold';
+  font-size: 16px;
+
+  color: ${COLORS.WHITE};
+`;
 
 export default CommonButtonComponent;

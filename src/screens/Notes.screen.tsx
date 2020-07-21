@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import styled from 'styled-components/native';
 
-import {INotesInitialState, IInitialState} from '../redux/store';
+import {IInitialState} from '../redux/store';
 
 import CommonNotesComponent from '../components/CommonNotes.component';
 import CommonNoteComponent from '../components/CommonNote.component';
@@ -12,10 +12,7 @@ import CommonButtonComponent from '../components/CommonButton.component';
 
 import {ScreenContainer} from '../utils/theme';
 
-import {
-  toggleIsCheckNoteAction,
-  saveNotesToLocalAction,
-} from '../actions/Notes.actions';
+import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
 
 const NotesScreen = ({}: ConnectedProps<typeof connector>) => {
   const navigation = useNavigation();
@@ -56,7 +53,6 @@ const mapStateToProps = (state: IInitialState) => ({
 
 const mapDispatchToProps = {
   toggleDoneNote: (id: string) => toggleIsCheckNoteAction(id),
-  saveNotes: (notes: INotesInitialState) => saveNotesToLocalAction(notes),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
