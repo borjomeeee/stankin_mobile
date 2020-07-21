@@ -13,6 +13,7 @@ import {
   logoutUserAction,
   setUserGroupOnClassesAction,
 } from '../actions/User.actions';
+import {downloadSheduleAction} from '../actions/Shedule.actions';
 
 import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
 import CommonTagComponent from '../components/CommonTag.component';
@@ -54,6 +55,7 @@ const SettingsScreen = ({
   user,
   logoutUser,
   setUserGroup,
+  updateSchedule,
 }: ConnectedProps<typeof connector>) => {
   const navigation = useNavigation();
 
@@ -169,7 +171,12 @@ const SettingsScreen = ({
       <SettingsSubmitButton>
         <CommonButtonComponent
           text="Обновить расписание"
-          onClick={() => console.log('a')}
+          onClick={updateSchedule.bind(
+            null,
+            user.login,
+            user.password,
+            user.group.id,
+          )}
         />
       </SettingsSubmitButton>
     </ScreenContainer>
@@ -255,6 +262,8 @@ const mapStateToProps = (state: IInitialState) => ({
 const mapDispatchToProps = {
   logoutUser: () => logoutUserAction(),
   setUserGroup: (group: LessonGroup) => setUserGroupOnClassesAction(group),
+  updateSchedule: (login: string, password: string, groupId: string) =>
+    downloadSheduleAction(login, password, groupId),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -25,8 +25,12 @@ export default (
       return {...state, isLoading: true};
 
     case LOGIN_USER_FAILED:
-    case LOGIN_USER_SUCCESS:
+      return {...state, isLoading: false, error: action.payload.error};
+
     case DOWNLOAD_SHEDULE_FAILED:
+      return {...state, isLoading: false, error: action.payload.err};
+
+    case LOGIN_USER_SUCCESS:
     case DOWNLOAD_SHEDULE_SUCCESS:
       return {...state, isLoading: false};
 
@@ -38,7 +42,7 @@ export default (
       };
 
     case CHECK_UPDATES_FAILED:
-      return {...state, error: {type: action.payload.error, text: 'Error!'}};
+      return {...state, error: action.payload.error};
 
     case CLEAR_ERROR:
       return {...state, error: {type: AppErrorTypes.NONE, text: ''}};

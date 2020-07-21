@@ -12,6 +12,8 @@ import {LOGIN_USER} from '../utils/constants';
 import User from '../models/User.model';
 import Group from '../models/Group.model';
 
+import {AppErrorTypes} from '../enums/App.enums';
+
 export function* loginSaga({payload}: ILoginSaga) {
   try {
     const res = yield fetch('http://130.193.50.137:5000/api/login', {
@@ -42,12 +44,27 @@ export function* loginSaga({payload}: ILoginSaga) {
         downloadSheduleAction(payload.login, payload.password, data.group_id),
       );
     } else if (res.status === 401) {
-      yield put(loginUserFailedAction('Auth error'));
+      yield put(
+        loginUserFailedAction({
+          type: AppErrorTypes.WARNING,
+          text: 'Введены неверные логин или пароль',
+        }),
+      );
     } else {
-      yield put(loginUserFailedAction('Server error'));
+      yield put(
+        loginUserFailedAction({
+          type: AppErrorTypes.ERROR,
+          text: 'Произошла ошибка авторизации. Попробуйте еще раз.',
+        }),
+      );
     }
   } catch {
-    yield put(loginUserFailedAction('Ошибка авторизации'));
+    yield put(
+      loginUserFailedAction({
+        type: AppErrorTypes.ERROR,
+        text: 'Произошла ошибка авторизации. Попробуйте еще раз.',
+      }),
+    );
   }
 }
 

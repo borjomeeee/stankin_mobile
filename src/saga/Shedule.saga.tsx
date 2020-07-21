@@ -12,13 +12,18 @@ import Lesson, {ILesson} from '../models/Lesson.model';
 
 import {dateStringToDate} from '../utils/methods';
 
+import {AppErrorTypes} from '../enums/App.enums';
+
 export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
   try {
     const res = yield fetch(
       `http://130.193.50.137:5000/api/load-schedule/${payload.groupId}`,
       {
         method: 'POST',
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          login: payload.login,
+          password: payload.password,
+        }),
       },
     );
 
@@ -55,10 +60,20 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
         ),
       );
     } else {
-      yield put(downloadSheduleFailedAction('Ошибка загрузки расписания'));
+      yield put(
+        downloadSheduleFailedAction({
+          type: AppErrorTypes.ERROR,
+          text: 'Ошибка загрузки расписания!',
+        }),
+      );
     }
   } catch {
-    yield put(downloadSheduleFailedAction('Ошибка загрузки расписания'));
+    yield put(
+      downloadSheduleFailedAction({
+        type: AppErrorTypes.ERROR,
+        text: 'Ошибка загрузки расписания!',
+      }),
+    );
   }
 }
 

@@ -9,7 +9,7 @@ import {
   SET_USER_GROUP_ON_CLASSES_FAILED,
 } from '../utils/constants';
 
-import {IUserInitialState} from '../redux/store';
+import {IUserInitialState, IAppError} from '../redux/store';
 import {LessonGroup} from '../enums/Lesson.enums';
 
 // Action types
@@ -38,7 +38,7 @@ export const loginUserSuccessAction = (user: IUserInitialState) =>
     payload: {user},
   } as const);
 
-export const loginUserFailedAction = (error: string) =>
+export const loginUserFailedAction = (error: IAppError) =>
   ({
     type: LOGIN_USER_FAILED,
     payload: {error},

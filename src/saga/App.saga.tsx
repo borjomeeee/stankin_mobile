@@ -26,12 +26,29 @@ export function* checkUpdateSaga({payload}: ICheckUpdatesSagaProps) {
           data['app_version'],
         ),
       );
+    } else if (res.status === 410) {
+      yield put(
+        checkUpdatesFailedAction({
+          type: AppErrorTypes.ERROR,
+          text: 'Текущей группы пользователя не сущуствует!',
+        }),
+      );
     } else {
-      yield put(checkUpdatesFailedAction(AppErrorTypes.ERROR));
+      yield put(
+        checkUpdatesFailedAction({
+          type: AppErrorTypes.ERROR,
+          text: 'Ошибка проверки обновлений!',
+        }),
+      );
     }
   } catch (e) {
-    console.log(e);
-    yield put(checkUpdatesFailedAction(AppErrorTypes.ERROR));
+    console.error(e);
+    yield put(
+      checkUpdatesFailedAction({
+        type: AppErrorTypes.ERROR,
+        text: 'Ошибка проверки обновлений!',
+      }),
+    );
   }
 }
 

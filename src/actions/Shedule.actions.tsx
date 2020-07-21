@@ -5,7 +5,7 @@ import {
   DOWNLOAD_SHEDULE_FAILED,
 } from '../utils/constants';
 
-import {IScheduleInitialState} from '../redux/store';
+import {IScheduleInitialState, IAppError} from '../redux/store';
 
 import {ILesson} from '../models/Lesson.model';
 
@@ -35,7 +35,7 @@ export const downloadSheduleSuccessAction = (sh: Map<number, ILesson[]>) =>
     payload: {sh},
   } as const);
 
-export const downloadSheduleFailedAction = (err: string) =>
+export const downloadSheduleFailedAction = (err: IAppError) =>
   ({
     type: DOWNLOAD_SHEDULE_FAILED,
     payload: {err},

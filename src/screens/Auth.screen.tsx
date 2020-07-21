@@ -4,18 +4,22 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import styled from 'styled-components/native';
 
+import {IInitialState} from '../redux/store';
+
 import {loginUserAction} from '../actions/User.actions';
 import {downloadSheduleAction} from '../actions/Shedule.actions';
+import {clearErrorAction} from '../actions/App.actions';
 
 import CommonLogoComponent from '../components/CommonLogo.component';
 import CommonInputComponent from '../components/CommonInput.component';
 import CommonButtonComponent from '../components/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
-
 import {AuthScreenContainer} from '../utils/theme';
 
-const AuthScreen = ({loginUser}: ConnectedProps<typeof connector>) => {
+import {AppErrorTypes} from '../enums/App.enums';
+
+const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
 
   const [loginText, setLoginText] = useState('');
@@ -33,6 +37,12 @@ const AuthScreen = ({loginUser}: ConnectedProps<typeof connector>) => {
       Keyboard.removeAllListeners('keyboardDidHide');
     };
   }, []);
+
+  useEffect(() => {
+    if (app.error.type === AppErrorTypes.WARNING) {
+      setLoginError(app.error.text);
+    }
+  }, [app.error]);
 
   const checkValidLogin = (): boolean => {
     if (loginText.length === 0) {
@@ -143,9 +153,9 @@ const FooterText = styled.Text`
 `;
 
 // State
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IInitialState) => ({
   user: state.user,
-  state,
+  app: state.app,
 });
 
 const mapDispatchToProps = {
@@ -153,6 +163,7 @@ const mapDispatchToProps = {
     loginUserAction(login, password),
   downloadShedule: (login: string, password: string, group: string) =>
     downloadSheduleAction(login, password, group),
+  clearError: () => clearErrorAction(),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

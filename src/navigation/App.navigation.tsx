@@ -89,6 +89,7 @@ const MainNavigationOptions: StackNavigationOptions = {
   headerShown: false,
 };
 
+// CHANGE NAVIGATOIN (THIS ERORRED VERSION)
 const AppNavigation = ({
   app,
   user,

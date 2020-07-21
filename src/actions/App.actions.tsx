@@ -6,7 +6,7 @@ import {
   CLEAR_ERROR,
 } from '../utils/constants';
 
-import {AppErrorTypes} from '../enums/App.enums';
+import {IAppError} from '../redux/store';
 
 export interface ICheckUpdatesSagaProps extends IAction {
   payload: {groupId: string};
@@ -27,7 +27,7 @@ export const checkUpdatesSuccessAction = (
     payload: {lastUpdate, appVersion},
   } as const);
 
-export const checkUpdatesFailedAction = (error: AppErrorTypes) =>
+export const checkUpdatesFailedAction = (error: IAppError) =>
   ({
     type: CHECK_UPDATES_FAILED,
     payload: {error},
