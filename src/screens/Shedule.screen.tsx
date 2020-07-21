@@ -98,14 +98,11 @@ const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
 
           const currDate = new Date(date);
 
-          // TODO: DayTitle под один компонент
           return (
             <React.Fragment key={date}>
-              {
-                <DayTitle isFirst={index === 0}>
-                  {dateToDateString(currDate)}
-                </DayTitle>
-              }
+              <DayTitle isFirst={index === 0}>
+                {dateToDateString(currDate)}
+              </DayTitle>
 
               {/* Why not working bind in navigate??? */}
               {Array.isArray(lessons) && lessons.length > 0 ? (
@@ -143,6 +140,7 @@ const SheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
 // Components
 const ScheduleScreenContent = styled.ScrollView`
   margin-top: 10px;
+  margin-bottom: 30px;
 `;
 
 const DayTitle = styled.Text<IDayTitleProps>`
