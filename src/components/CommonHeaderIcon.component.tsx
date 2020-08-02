@@ -3,23 +3,18 @@ import {TouchableOpacity} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import * as COLORS from '../utils/colors';
-
-const CommonHeaderIconComponent = ({
-  children,
-  ...props
-}: {children: React.ReactChild} & React.ComponentProps<
+const CommonHeaderIconComponent: React.FC<React.ComponentProps<
   typeof TouchableOpacity
->) => {
-  return <IconContainer {...props}>{children}</IconContainer>;
+>> = ({...props}) => {
+  return <IconContainer {...props} />;
 };
 
 // Components
 const IconContainer = styled.TouchableOpacity`
-  border: 1px solid ${COLORS.LIGHT_GRAY};
-  border-radius: 2px;
+  border-radius: 5px;
 
-  padding: 5px;
+  padding: 7px;
+  background-color: ${'#E4E4E4'};
 `;
 
 export default CommonHeaderIconComponent;

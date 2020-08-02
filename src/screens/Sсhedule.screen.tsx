@@ -18,7 +18,6 @@ import {LessonGroup} from '../enums/Lesson.enums';
 import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
 import ScheduleDayComponent from '../components/ScheduleDay.component';
 
-import * as COLORS from '../utils/colors';
 import {getRangeDates} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
 
@@ -52,14 +51,13 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
     };
 
     navigation.setOptions({
-      headerTitle: user.group.title.toUpperCase(),
       headerRight: () => (
         <CommonHeaderIconComponent onPress={toggleShowDatepicker}>
-          <Icon name="today" color={COLORS.BLACK} size={25} />
+          <Icon name="event" color={'#444444'} size={25} />
         </CommonHeaderIconComponent>
       ),
     });
-  }, [navigation, showDatepicker, user.group.title]);
+  }, [navigation, showDatepicker]);
 
   // Dates for display
   const currDateRange = getRangeDates(startDate).map((date: Date) => {
