@@ -8,7 +8,7 @@ import {ILesson} from '../models/Lesson.model';
 import * as COLORS from '../utils/colors';
 import {getLesonTimeFromNum} from '../utils/methods';
 
-import CommonTagComponent from './CommonTag.component';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type IScheduleLessonComponent = {
   onClick: () => void;
@@ -30,8 +30,6 @@ const ScheduleLessonComponent = ({
   React.ComponentProps<typeof TouchableOpacity>) => {
   const [startTime, endTime] = getLesonTimeFromNum(num);
 
-  const tags = [type, room, teacher];
-
   return (
     <LessonCardContainer {...props} activeOpacity={0.65} onPress={onClick}>
       <LessonCardTimeContainer>
@@ -48,11 +46,29 @@ const ScheduleLessonComponent = ({
       <LessonCardContent>
         <LessonCardTitle>{title}</LessonCardTitle>
 
-        <LessonCardTags>
-          {tags.map((tag: string) => {
-            return tag.length > 0 && <LessonCardTag key={tag} text={tag} />;
-          })}
-        </LessonCardTags>
+        <LessonCardBottomContainer>
+          <LessonCardOptions>
+            {room.length > 0 && (
+              <LessonCardOption>
+                <Icon name="room" size={20} color={'#444444'} />
+
+                <LessonCardOptionText>{room}</LessonCardOptionText>
+              </LessonCardOption>
+            )}
+
+            {teacher.length > 0 && (
+              <LessonCardOption>
+                <Icon name="school" size={20} color={'#444444'} />
+
+                <LessonCardOptionText>{teacher}</LessonCardOptionText>
+              </LessonCardOption>
+            )}
+          </LessonCardOptions>
+
+          <LessonCardTypeContainer>
+            {type.length > 0 && <LessonCardTypeText>{type}</LessonCardTypeText>}
+          </LessonCardTypeContainer>
+        </LessonCardBottomContainer>
       </LessonCardContent>
     </LessonCardContainer>
   );
@@ -63,9 +79,10 @@ const LessonCardContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-content: stretch;
 
-  border: 1px solid ${COLORS.LIGHT_GRAY};
+  border: 1px solid ${'#E4E4E4'};
+  background-color: ${'#FCFCFC'};
 
-  padding: 8px 15px 10px 10px;
+  padding: 10px 15px 10px 10px;
 `;
 
 const LessonCardTimeContainer = styled.View`
@@ -85,6 +102,7 @@ const LessonCardTimeItemSub = styled(LessonCardTimeItem)`
 
 const LessonCardUserGroupContainer = styled.View`
   border: 1px solid ${COLORS.DARK_GRAY};
+  margin-top: 5px;
 
   align-items: center;
 `;
@@ -102,16 +120,40 @@ const LessonCardTitle = styled.Text`
   font-size: 16px;
 `;
 
-const LessonCardTags = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
+const LessonCardOptions = styled.View``;
 
-  margin-top: 9px;
+const LessonCardOption = styled.View`
+  display: flex;
+  flex-direction: row;
+
+  margin-top: 2px;
+
+  align-items: center;
 `;
 
-const LessonCardTag = styled(CommonTagComponent)`
-  margin-top: 5px;
-  margin-right: 5px;
+const LessonCardOptionText = styled.Text`
+  margin-left: 14px;
+`;
+
+const LessonCardBottomContainer = styled.View`
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: row;
+
+  align-items: flex-end;
+  justify-content: space-between;
+`;
+
+const LessonCardTypeContainer = styled.View`
+  padding: 4px 8px;
+
+  border-radius: 3px;
+  background-color: ${'#444444'};
+`;
+
+const LessonCardTypeText = styled.Text`
+  color: ${'#ffffff'};
 `;
 
 export default ScheduleLessonComponent;
