@@ -20,6 +20,7 @@ import ScheduleDayComponent from '../components/ScheduleDay.component';
 
 import {getRangeDates} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
+import ScheduleCalendarComponent from '../components/ScheduleCalendar/ScheduleCalendar.component';
 
 interface IScheduleDay {
   key: Date;
@@ -88,6 +89,8 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
       <ScheduleScreenContent
         showsVerticalScrollIndicator={false}
         ref={listLessonsRef}>
+        <ScheduleCalendarComponent currDate={startDate} />
+
         <FlatList
           data={scheduleDays}
           keyExtractor={(item: IScheduleDay) => item.key.getTime().toString()}
