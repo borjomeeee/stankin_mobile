@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 
 interface IScheduleCalendarComponent {
   currDate: Date;
+  setCurrDate: (newDate: Date) => void;
 }
 
 interface IScheduleCalendarDay {
@@ -13,15 +14,17 @@ interface IScheduleCalendarDay {
 
 const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
   currDate,
+  setCurrDate,
 }) => {
-  const startDayOfWeek = currDate.getDay();
+  const startDayOfWeek = currDate.getDay() === 0 ? 7 : currDate.getDay();
   const calendarStartDate = new Date(currDate);
-  calendarStartDate.setDate(currDate.getDate() - startDayOfWeek + 1);
+
+  calendarStartDate.setDate(calendarStartDate.getDate() - startDayOfWeek + 1);
 
   const dates = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(
     (value: string, index: number) => {
       const newDate = new Date(calendarStartDate);
-      newDate.setDate(newDate.getDate() + index);
+      newDate.setDate(calendarStartDate.getDate() + index);
 
       return {
         label: value,
@@ -30,6 +33,10 @@ const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
     },
   );
 
+  const onChangeCurrDate = (newDate: Date) => {
+    setCurrDate(newDate);
+  };
+
   return (
     <ScheduleCalendarContainer>
       {dates.map((item: IScheduleCalendarDay) => (
@@ -37,10 +44,14 @@ const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
           <ScheduleCalendarOptionLabel>
             {item.label}
           </ScheduleCalendarOptionLabel>
-          <ScheduleCalendarOptionDate
-            isSelect={item.date.getTime() === currDate.getTime()}>
-            {item.date.getDate()}
-          </ScheduleCalendarOptionDate>
+          <ScheduleCalendarOptionDateContainer
+            isSelect={item.date.getTime() === currDate.getTime()}
+            onPress={() => onChangeCurrDate(item.date)}>
+            <ScheduleCalendarOptionDate
+              isSelect={item.date.getTime() === currDate.getTime()}>
+              {item.date.getDate()}
+            </ScheduleCalendarOptionDate>
+          </ScheduleCalendarOptionDateContainer>
         </ScheduleCalendarOption>
       ))}
     </ScheduleCalendarContainer>
@@ -71,16 +82,27 @@ const ScheduleCalendarOptionLabel = styled.Text`
   color: ${'#C4C4C4'};
 `;
 
-const ScheduleCalendarOptionDate = styled.Text<{isSelect: boolean}>`
-  font-size: 14px;
-  font-family: 'Inter-Regular';
-
+const ScheduleCalendarOptionDateContainer = styled.TouchableOpacity<{
+  isSelect: boolean;
+}>`
   margin-top: 2px;
-  padding: 3px 8px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   border-radius: 5px;
 
   background-color: ${(props) => (props.isSelect ? '#444444' : '#ffffff')};
+`;
+
+const ScheduleCalendarOptionDate = styled.Text<{isSelect: boolean}>`
+  font-size: 14px;
+  font-family: 'Inter-Regular';
+
   color: ${(props) => (props.isSelect ? '#ffffff' : '#000000')};
 `;
 

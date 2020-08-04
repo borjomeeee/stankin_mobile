@@ -89,7 +89,10 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
       <ScheduleScreenContent
         showsVerticalScrollIndicator={false}
         ref={listLessonsRef}>
-        <ScheduleCalendarComponent currDate={startDate} />
+        <ScheduleCalendarComponent
+          currDate={startDate}
+          setCurrDate={setStartDate}
+        />
 
         <FlatList
           data={scheduleDays}
