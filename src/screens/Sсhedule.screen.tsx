@@ -32,15 +32,17 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
 
   // Datepicker
   const [showDatepicker, setShowDatepicker] = useState(false);
-  const [startDate, setStartDate] = useState<Date>(new Date());
+
+  const [startDate] = useState<Date>(new Date());
+  const [currPageDate, setCurrPageDate] = useState<Date>(new Date());
 
   const listLessonsRef = useRef<ScrollView | null>(null);
 
-  const onChangeStartDate = (_: any, selectedDate: Date | undefined) => {
-    const currentDate = selectedDate || startDate;
+  const onChangeCurrPageDate = (_: any, selectedDate: Date | undefined) => {
+    const currentDate = selectedDate || currPageDate;
 
     setShowDatepicker(Platform.OS === 'ios');
-    setStartDate(currentDate);
+    setCurrPageDate(currentDate);
 
     listLessonsRef.current!.scrollTo({x: 0, y: 0, animated: true});
   };
@@ -61,7 +63,7 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
   }, [navigation, showDatepicker]);
 
   // Dates for display
-  const currDateRange = getRangeDates(startDate).map((date: Date) => {
+  const currDateRange = getRangeDates(currPageDate).map((date: Date) => {
     const currDate = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -90,8 +92,9 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
         showsVerticalScrollIndicator={false}
         ref={listLessonsRef}>
         <ScheduleCalendarComponent
-          currDate={startDate}
-          setCurrDate={setStartDate}
+          todayDate={startDate}
+          currDate={currPageDate}
+          setCurrDate={setCurrPageDate}
         />
 
         <FlatList
@@ -105,11 +108,11 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
           <DateTimePicker
             testID="dateTimePicker"
             timeZoneOffsetInMinutes={0}
-            value={startDate}
+            value={currPageDate}
             mode="date"
             is24Hour={true}
             display="default"
-            onChange={onChangeStartDate}
+            onChange={onChangeCurrPageDate}
           />
         )}
       </ScheduleScreenContent>

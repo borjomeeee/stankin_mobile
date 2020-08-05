@@ -2,7 +2,15 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import {
+  compareDates,
+  dateToDateWithoutDayOfWeekString,
+} from '../../utils/methods';
+
 interface IScheduleCalendarComponent {
+  todayDate: Date;
   currDate: Date;
   setCurrDate: (newDate: Date) => void;
 }
@@ -12,7 +20,14 @@ interface IScheduleCalendarDay {
   date: Date;
 }
 
+interface INamedDate {
+  timestamp: number;
+  label: string;
+  backButton: boolean;
+}
+
 const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
+  todayDate,
   currDate,
   setCurrDate,
 }) => {
@@ -37,28 +52,96 @@ const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
     setCurrDate(newDate);
   };
 
+  const onClickBackButton = () => {
+    onChangeCurrDate(todayDate);
+  };
+
+  const tommorrowTimestamp = todayDate.getTime() + 86400;
+  const yesterdayTimestamp = todayDate.getTime() - 86400;
+
+  const namedDates = new Map<number, INamedDate>([
+    [
+      1,
+      {
+        timestamp: yesterdayTimestamp,
+        label: 'Вчера',
+        backButton: true,
+      },
+    ],
+    [
+      -1,
+      {
+        timestamp: tommorrowTimestamp,
+        label: 'Завтра',
+        backButton: true,
+      },
+    ],
+  ]);
+
+  const datesDiff = compareDates(todayDate, currDate);
+
   return (
     <ScheduleCalendarContainer>
-      {dates.map((item: IScheduleCalendarDay) => (
-        <ScheduleCalendarOption key={item.date.getTime()}>
-          <ScheduleCalendarOptionLabel>
-            {item.label}
-          </ScheduleCalendarOptionLabel>
-          <ScheduleCalendarOptionDateContainer
-            isSelect={item.date.getTime() === currDate.getTime()}
-            onPress={() => onChangeCurrDate(item.date)}>
-            <ScheduleCalendarOptionDate
-              isSelect={item.date.getTime() === currDate.getTime()}>
-              {item.date.getDate()}
-            </ScheduleCalendarOptionDate>
-          </ScheduleCalendarOptionDateContainer>
-        </ScheduleCalendarOption>
-      ))}
+      <ScheduleCalendarTopLine>
+        <ScheduleRightDateContainer>
+          {datesDiff === 0 ? (
+            <ScheduleRightDateText>Сегодня</ScheduleRightDateText>
+          ) : namedDates.has(datesDiff) ? (
+            <React.Fragment>
+              <ScheduleRightDateIcon onPress={onClickBackButton}>
+                <Icon name="arrow-back" size={18} color={'#444444'} />
+              </ScheduleRightDateIcon>
+              <ScheduleRightDateText>
+                {namedDates.get(datesDiff)?.label || ''}
+              </ScheduleRightDateText>
+            </React.Fragment>
+          ) : (
+            <ScheduleRightDateIcon onPress={onClickBackButton}>
+              <Icon name="arrow-back" size={18} color={'#444444'} />
+            </ScheduleRightDateIcon>
+          )}
+        </ScheduleRightDateContainer>
+
+        <ScheduleLeftDateContainer>
+          <ScheduleLeftDateText>
+            {dateToDateWithoutDayOfWeekString(currDate)}
+          </ScheduleLeftDateText>
+        </ScheduleLeftDateContainer>
+      </ScheduleCalendarTopLine>
+
+      <ScheduleCalendarDatesList>
+        {dates.map((item: IScheduleCalendarDay) => (
+          <ScheduleCalendarOption key={item.date.getTime()}>
+            <ScheduleCalendarOptionLabel>
+              {item.label}
+            </ScheduleCalendarOptionLabel>
+            <ScheduleCalendarOptionDateContainer
+              isSelected={item.date.getTime() === currDate.getTime()}
+              onPress={() => onChangeCurrDate(item.date)}>
+              <ScheduleCalendarOptionDate
+                isSelected={item.date.getTime() === currDate.getTime()}>
+                {item.date.getDate()}
+              </ScheduleCalendarOptionDate>
+            </ScheduleCalendarOptionDateContainer>
+          </ScheduleCalendarOption>
+        ))}
+      </ScheduleCalendarDatesList>
     </ScheduleCalendarContainer>
   );
 };
 
-const ScheduleCalendarContainer = styled.View`
+const ScheduleCalendarContainer = styled.View``;
+
+const ScheduleCalendarTopLine = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 5px;
+`;
+
+const ScheduleCalendarDatesList = styled.View`
   display: flex;
   flex-direction: row;
 
@@ -83,7 +166,7 @@ const ScheduleCalendarOptionLabel = styled.Text`
 `;
 
 const ScheduleCalendarOptionDateContainer = styled.TouchableOpacity<{
-  isSelect: boolean;
+  isSelected: boolean;
 }>`
   margin-top: 2px;
 
@@ -96,14 +179,34 @@ const ScheduleCalendarOptionDateContainer = styled.TouchableOpacity<{
 
   border-radius: 5px;
 
-  background-color: ${(props) => (props.isSelect ? '#444444' : '#ffffff')};
+  background-color: ${(props) => (props.isSelected ? '#444444' : '#ffffff')};
 `;
 
-const ScheduleCalendarOptionDate = styled.Text<{isSelect: boolean}>`
+const ScheduleCalendarOptionDate = styled.Text<{isSelected: boolean}>`
   font-size: 14px;
   font-family: 'Inter-Regular';
 
-  color: ${(props) => (props.isSelect ? '#ffffff' : '#000000')};
+  color: ${(props) => (props.isSelected ? '#ffffff' : '#000000')};
+`;
+
+const ScheduleRightDateContainer = styled.View`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`;
+const ScheduleRightDateIcon = styled.TouchableOpacity`
+  margin-right: 10px;
+`;
+const ScheduleRightDateText = styled.Text`
+  font-size: 16px;
+  color: ${'#444444'};
+`;
+
+const ScheduleLeftDateContainer = styled.View``;
+
+const ScheduleLeftDateText = styled.Text`
+  font-size: 16px;
+  color: ${'#444444'};
 `;
 
 export default ScheduleCalendarComponent;
