@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 import ScheduleLessonComponent from './ScheduleLesson.component';
 import ScheduleDayEmptyComponent from './ScheduleDayEmpty.component';
 
-import {ILesson} from '../models/Lesson.model';
+import {ILesson} from '../../models/Lesson.model';
 
 interface IScheduleDayComponent {
   lessons: ILesson[];

@@ -3,10 +3,10 @@ import {TouchableOpacity} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import {ILesson} from '../models/Lesson.model';
+import {ILesson} from '../../models/Lesson.model';
 
-import * as COLORS from '../utils/colors';
-import {getLesonTimeFromNum} from '../utils/methods';
+import * as COLORS from '../../utils/colors';
+import {getLesonTimeFromNum} from '../../utils/methods';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 

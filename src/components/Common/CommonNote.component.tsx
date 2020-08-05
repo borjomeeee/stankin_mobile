@@ -4,9 +4,9 @@ import styled from 'styled-components/native';
 
 import CommonToggleNoteComponent from './CommonToggleNote.component';
 
-import {INote} from '../models/Note.model';
+import {INote} from '../../models/Note.model';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 interface ICheckedElement {
   isDone: boolean;

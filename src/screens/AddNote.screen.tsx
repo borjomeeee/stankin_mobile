@@ -9,9 +9,9 @@ import {IInitialState} from '../redux/store';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import CommonButtonComponent from '../components/CommonButton.component';
-import CommonSubjectsModalComponent from '../components/CommonSubjectsModal.component';
-import CommonInputComponent from '../components/CommonInput.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonSubjectsModalComponent from '../components/Common/CommonSubjectsModal.component';
+import CommonInputComponent from '../components/Common/CommonInput.component';
 
 import {createNoteAction} from '../actions/Notes.actions';
 

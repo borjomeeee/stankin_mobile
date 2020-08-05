@@ -10,7 +10,7 @@ import {IInitialState} from '../redux/store';
 
 import {clearErrorAction} from '../actions/App.actions';
 
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
 import {convertAppErrorToString} from '../utils/methods';

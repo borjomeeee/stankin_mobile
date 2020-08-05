@@ -2,11 +2,11 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-import CommonToggleNoteComponent from './CommonToggleNote.component';
+import CommonToggleNoteComponent from '../Common/CommonToggleNote.component';
 
-import {INote} from '../models/Note.model';
+import {INote} from '../../models/Note.model';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 interface INoteTextProps {
   isDone: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 

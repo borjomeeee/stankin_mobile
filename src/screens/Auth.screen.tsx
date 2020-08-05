@@ -7,9 +7,9 @@ import {IInitialState} from '../redux/store';
 
 import {loginUserAction} from '../actions/User.actions';
 
-import CommonLogoComponent from '../components/CommonLogo.component';
-import CommonInputComponent from '../components/CommonInput.component';
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonLogoComponent from '../components/Common/CommonLogo.component';
+import CommonInputComponent from '../components/Common/CommonInput.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
 import {AuthScreenContainer} from '../utils/theme';

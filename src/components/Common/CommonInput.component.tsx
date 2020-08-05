@@ -3,7 +3,7 @@ import {TextInput, View, Animated} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 interface ICommonInputComponent {
   label?: string;

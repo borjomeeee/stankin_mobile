@@ -4,7 +4,7 @@ import {FlatList} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 interface ICommonSubjectsModalComponent {
   subjects: string[];

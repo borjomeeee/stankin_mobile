@@ -1,6 +1,8 @@
 import React from 'react';
+
 import {View, Text, StyleSheet} from 'react-native';
-import * as COLORS from '../utils/colors';
+
+import * as COLORS from '../../utils/colors';
 
 type IScheduleDayEmptyComponent = {
   text: string;

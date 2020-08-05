@@ -6,9 +6,9 @@ import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
 
-import CommonNotesComponent from '../components/CommonNotes.component';
+import CommonNotesComponent from '../components/Common/CommonNotes.component';
 import CommonNoteComponent from '../components/CommonNote.component';
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import {ScreenContainer} from '../utils/theme';
 

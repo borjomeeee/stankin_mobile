@@ -15,16 +15,11 @@ import {ILesson} from '../models/Lesson.model';
 
 import {LessonGroup} from '../enums/Lesson.enums';
 
-import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
-import ScheduleDayComponent from '../components/ScheduleDay.component';
+import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
+import ScheduleDayComponent from '../components/Schedule/ScheduleDay.component';
+import ScheduleCalendarComponent from '../components/Schedule/ScheduleCalendar.component';
 
 import {ScreenContainer} from '../utils/theme';
-import ScheduleCalendarComponent from '../components/ScheduleCalendar/ScheduleCalendar.component';
-
-interface IScheduleDay {
-  key: string;
-  data: ILesson;
-}
 
 const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
   const navigation = useNavigation();
@@ -75,7 +70,6 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
       lesson.groupOnLesson === LessonGroup.NONE ||
       lesson.groupOnLesson === user.lessonGroup,
   );
-  // .map((val: ILesson) => ({key: val.id, data: val} as IScheduleDay));
 
   return (
     <ScreenContainer>
@@ -90,13 +84,9 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
 
         <ScheduleContentEmpty />
 
-        {/* <FlatList
-          data={scheduleDays}
-          keyExtractor={(item: IScheduleDay) => item.key}
-          renderItem={renderScheduleDay}
-          ItemSeparatorComponent={DaySeparator}
-        /> */}
         <ScheduleDayComponent lessons={lessons} />
+
+        <ScheduleContentEmpty />
 
         {showDatepicker && (
           <DateTimePicker
@@ -117,7 +107,7 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
 // Components
 const ScheduleScreenContent = styled.ScrollView`
   margin-top: 10px;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
 `;
 
 const ScheduleContentEmpty = styled.View`

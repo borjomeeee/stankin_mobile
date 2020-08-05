@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, TouchableWithoutFeedback, Animated} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
-import {IInitialState, INotesInitialState} from '../redux/store';
+import {IInitialState, INotesInitialState} from '../../redux/store';
 
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -11,15 +11,15 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import {
   toggleIsCheckNoteAction,
   removeNoteAction,
-} from '../actions/Notes.actions';
+} from '../../actions/Notes.actions';
 
 import CommonNotesEmptyComponent from './CommonNotesEmpty.component';
 
-import {INote} from '../models/Note.model';
-import {ILesson} from '../models/Lesson.model';
+import {INote} from '../../models/Note.model';
+import {ILesson} from '../../models/Lesson.model';
 
-import {dateToDateString} from '../utils/methods';
-import * as COLORS from '../utils/colors';
+import {dateToDateString} from '../../utils/methods';
+import * as COLORS from '../../utils/colors';
 
 interface ICommomNotesComponent {
   lesson?: ILesson;

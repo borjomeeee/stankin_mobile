@@ -11,10 +11,10 @@ import {ILesson} from '../models/Lesson.model';
 import * as COLORS from '../utils/colors';
 import {ScreenContainer} from '../utils/theme';
 
-import CommonButtonComponent from '../components/CommonButton.component';
-import CommonTagComponent from '../components/CommonTag.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonTagComponent from '../components/Common/CommonTag.component';
 import LessonNoteComponent from '../components/LessonNote.component';
-import CommonNotesComponent from '../components/CommonNotes.component';
+import CommonNotesComponent from '../components/Common/CommonNotes.component';
 
 type ILessonScreen = {
   route: {params: {lesson: ILesson}};

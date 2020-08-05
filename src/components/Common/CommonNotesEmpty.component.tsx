@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 const CommonNotesEmptyComponent = () => {
   return (

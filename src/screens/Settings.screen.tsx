@@ -18,9 +18,9 @@ import {
 } from '../actions/User.actions';
 import {downloadSheduleAction} from '../actions/Shedule.actions';
 
-import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
-import CommonTagComponent from '../components/CommonTag.component';
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
+import CommonTagComponent from '../components/Common/CommonTag.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
 import {ScreenContainer} from '../utils/theme';
