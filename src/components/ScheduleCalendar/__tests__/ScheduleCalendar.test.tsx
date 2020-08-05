@@ -59,4 +59,60 @@ describe('Schedule calendar tests', () => {
         .text(),
     ).toBe('Сб');
   });
+
+  describe('Schedule topline test', () => {
+    it('Schedule topline today test', () => {
+      const dateDay = 1;
+      const date = new Date(2020, 1, dateDay);
+
+      const todayDate = new Date(date);
+      todayDate.setDate(date.getDate());
+
+      const wrapper = shallow(
+        <ScheduleCalendarComponent
+          todayDate={todayDate}
+          currDate={date}
+          setCurrDate={jest.fn()}
+        />,
+      );
+
+      expect(wrapper.find('Styled(Text)').first().text()).toBe('Сегодня');
+    });
+
+    it('Schedule topline tommorow test', () => {
+      const dateDay = 1;
+      const date = new Date(2020, 1, dateDay);
+
+      const todayDate = new Date(date);
+      todayDate.setDate(date.getDate() + 1);
+
+      const wrapper = shallow(
+        <ScheduleCalendarComponent
+          todayDate={todayDate}
+          currDate={date}
+          setCurrDate={jest.fn()}
+        />,
+      );
+
+      expect(wrapper.find('Styled(Text)').first().text()).toBe('Вчера');
+    });
+
+    it('Schedule topline yesterday test', () => {
+      const dateDay = 1;
+      const date = new Date(2020, 1, dateDay);
+
+      const todayDate = new Date(date);
+      todayDate.setDate(date.getDate() - 1);
+
+      const wrapper = shallow(
+        <ScheduleCalendarComponent
+          todayDate={todayDate}
+          currDate={date}
+          setCurrDate={jest.fn()}
+        />,
+      );
+
+      expect(wrapper.find('Styled(Text)').first().text()).toBe('Завтра');
+    });
+  });
 });

@@ -141,11 +141,8 @@ export const convertAppErrorToString = (error: AppErrorTypes) => {
 };
 
 export const compareDates = (date1: Date, date2: Date): number => {
-  if (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth()
-  ) {
-    return date1.getDate() - date2.getDate();
-  }
-  return -100;
+  var t2 = date2.getTime();
+  var t1 = date1.getTime();
+
+  return parseInt((t1 - t2) / (24 * 3600 * 1000));
 };
