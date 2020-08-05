@@ -6,8 +6,6 @@ import {
 } from '@react-navigation/stack';
 
 import ScheduleScreen from '../screens/Sсhedule.screen';
-import LessonScreen from '../screens/Lesson.screen';
-import AddNoteScreen from '../screens/AddNote.screen';
 
 import * as COLORS from '../utils/colors';
 
@@ -40,10 +38,6 @@ const SсheduleNavigationBarOptions: StackNavigationOptions = {
 const SheduleScreenOptions: StackNavigationOptions = {
   headerTitle: 'Расписание',
 };
-const LessonScreenOptions: StackNavigationOptions = {
-  headerTitle: 'О паре',
-};
-const AddnoteScreenOptions = {headerTitle: 'Добавить дедлайн'};
 
 const SсheduleNavigation = () => {
   return (
@@ -54,16 +48,6 @@ const SсheduleNavigation = () => {
         options={SheduleScreenOptions}
         name="Schedule"
         component={ScheduleScreen}
-      />
-      <Stack.Screen
-        options={LessonScreenOptions}
-        name="Lesson"
-        component={LessonScreen}
-      />
-      <Stack.Screen
-        options={AddnoteScreenOptions}
-        name="AddNote"
-        component={AddNoteScreen}
       />
     </Stack.Navigator>
   );
