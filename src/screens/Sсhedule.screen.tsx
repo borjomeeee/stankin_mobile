@@ -18,6 +18,7 @@ import {LessonGroup} from '../enums/Lesson.enums';
 import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
 import ScheduleDayComponent from '../components/Schedule/ScheduleDay.component';
 import ScheduleCalendarComponent from '../components/Schedule/ScheduleCalendar.component';
+import ScheduleNotesComponent from '../components/Schedule/ScheduleNotes.component';
 
 import {ScreenContainer} from '../utils/theme';
 
@@ -56,6 +57,7 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
     });
   }, [navigation, showDatepicker]);
 
+  // Get lessons for currDate and selected user group
   const lessons = (
     schedule.get(
       new Date(
@@ -82,11 +84,11 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
           setCurrDate={setCurrPageDate}
         />
 
-        <ScheduleContentEmpty />
+        <ScheduleDayContainer>
+          <ScheduleDayComponent lessons={lessons} />
+        </ScheduleDayContainer>
 
-        <ScheduleDayComponent lessons={lessons} />
-
-        <ScheduleContentEmpty />
+        <ScheduleNotesComponent />
 
         {showDatepicker && (
           <DateTimePicker
@@ -110,8 +112,8 @@ const ScheduleScreenContent = styled.ScrollView`
   padding-bottom: 30px;
 `;
 
-const ScheduleContentEmpty = styled.View`
-  height: 30px;
+const ScheduleDayContainer = styled.View`
+  margin: 30px 0px;
 `;
 
 // State

@@ -156,8 +156,8 @@ const ScheduleCalendarOption = styled.View`
 `;
 
 const ScheduleCalendarOptionLabel = styled.Text`
-  font-size: 14px;
   font-family: 'Inter-Regular';
+  font-size: 14px;
 
   color: ${'#C4C4C4'};
 `;
@@ -180,8 +180,8 @@ const ScheduleCalendarOptionDateContainer = styled.TouchableOpacity<{
 `;
 
 const ScheduleCalendarOptionDate = styled.Text<{isSelected: boolean}>`
-  font-size: 14px;
   font-family: 'Inter-Regular';
+  font-size: 16px;
 
   color: ${(props) => (props.isSelected ? '#ffffff' : '#000000')};
 `;
@@ -195,14 +195,18 @@ const ScheduleRightDateIcon = styled.TouchableOpacity`
   margin-right: 10px;
 `;
 const ScheduleRightDateText = styled.Text`
+  font-family: 'Inter-Regular';
   font-size: 16px;
+
   color: ${'#444444'};
 `;
 
 const ScheduleLeftDateContainer = styled.View``;
 
 const ScheduleLeftDateText = styled.Text`
+  font-family: 'Inter-Regular';
   font-size: 16px;
+
   color: ${'#444444'};
 `;
 

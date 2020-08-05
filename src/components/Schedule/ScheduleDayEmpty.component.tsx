@@ -1,33 +1,25 @@
 import React from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
+import styled from 'styled-components/native';
 
-import * as COLORS from '../../utils/colors';
-
-type IScheduleDayEmptyComponent = {
-  text: string;
-};
-
-const ScheduleDayEmptyComponent = ({text}: IScheduleDayEmptyComponent) => {
+const ScheduleDayEmptyComponent: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{text}</Text>
-    </View>
+    <ScheduleEmptyDayContainer>
+      <ScheduleEmptyDayText>На текущую дату пар нет</ScheduleEmptyDayText>
+    </ScheduleEmptyDayContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 1,
-    height: 50,
-  },
-  text: {
-    textTransform: 'uppercase',
-    fontFamily: 'Inter-Bold',
-    color: COLORS.BLACK,
-  },
-});
+const ScheduleEmptyDayContainer = styled.View`
+  margin: 100px 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ScheduleEmptyDayText = styled.Text`
+  font-family: 'Inter-Regular';
+  color: ${'#444444'};
+`;
 
 export default ScheduleDayEmptyComponent;

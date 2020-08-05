@@ -12,7 +12,7 @@ interface INoteTextProps {
   isDone: boolean;
 }
 
-const LessonNoteComponent = ({text, isChecked}: INote) => {
+const LessonNoteComponent: React.FC<INote> = ({text, isChecked}) => {
   return (
     <NoteContainer>
       <CommonToggleNoteComponent isDone={isChecked} size={20} />

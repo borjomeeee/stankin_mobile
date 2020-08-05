@@ -1,5 +1,4 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
 
 import styled from 'styled-components/native';
 
@@ -10,28 +9,18 @@ import {getLesonTimeFromNum} from '../../utils/methods';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-type IScheduleLessonComponent = {
-  onClick: () => void;
-};
-
-const ScheduleLessonComponent = ({
-  onClick,
-
+const ScheduleLessonComponent: React.FC<ILesson> = ({
   type,
   title,
   groupOnLesson,
   room,
   teacher,
   num,
-
-  ...props
-}: IScheduleLessonComponent &
-  ILesson &
-  React.ComponentProps<typeof TouchableOpacity>) => {
+}) => {
   const [startTime, endTime] = getLesonTimeFromNum(num);
 
   return (
-    <LessonCardContainer {...props} activeOpacity={0.65} onPress={onClick}>
+    <LessonCardContainer>
       <LessonCardTimeContainer>
         <LessonCardTimeItem>{startTime}</LessonCardTimeItem>
         <LessonCardTimeItemSub>{endTime}</LessonCardTimeItemSub>
@@ -75,7 +64,7 @@ const ScheduleLessonComponent = ({
 };
 
 // Components
-const LessonCardContainer = styled.TouchableOpacity`
+const LessonCardContainer = styled.View`
   flex-direction: row;
   align-content: stretch;
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import {FlatList} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 
 import styled from 'styled-components/native';
 
@@ -14,19 +13,8 @@ interface IScheduleDayComponent {
 }
 
 const ScheduleDayComponent = ({lessons}: IScheduleDayComponent) => {
-  const navigation = useNavigation();
-
-  const onClickLesson = (lesson: ILesson) => {
-    navigation.navigate('Lesson', {lesson});
-  };
-
   const renderScheduleDayLesson = ({item}: {item: ILesson}) => {
-    return (
-      <ScheduleLessonComponent
-        {...item}
-        onClick={onClickLesson.bind(null, item)}
-      />
-    );
+    return <ScheduleLessonComponent {...item} />;
   };
 
   return (
@@ -39,7 +27,7 @@ const ScheduleDayComponent = ({lessons}: IScheduleDayComponent) => {
           ItemSeparatorComponent={LessonSeparator}
         />
       ) : (
-        <ScheduleDayEmptyComponent text="Пар нет" />
+        <ScheduleDayEmptyComponent />
       )}
     </>
   );
