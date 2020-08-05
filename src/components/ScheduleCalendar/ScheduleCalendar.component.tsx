@@ -4,10 +4,7 @@ import styled from 'styled-components/native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {
-  compareDates,
-  dateToDateWithoutDayOfWeekString,
-} from '../../utils/methods';
+import {compareDates, dateToDateString} from '../../utils/methods';
 
 interface IScheduleCalendarComponent {
   todayDate: Date;
@@ -104,7 +101,7 @@ const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
 
         <ScheduleLeftDateContainer>
           <ScheduleLeftDateText>
-            {dateToDateWithoutDayOfWeekString(currDate)}
+            {dateToDateString(currDate)}
           </ScheduleLeftDateText>
         </ScheduleLeftDateContainer>
       </ScheduleCalendarTopLine>

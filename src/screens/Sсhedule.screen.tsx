@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect, useRef} from 'react';
-import {ScrollView, Platform, FlatList} from 'react-native';
+import {ScrollView, Platform} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
@@ -18,13 +18,12 @@ import {LessonGroup} from '../enums/Lesson.enums';
 import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
 import ScheduleDayComponent from '../components/ScheduleDay.component';
 
-import {getRangeDates} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
 import ScheduleCalendarComponent from '../components/ScheduleCalendar/ScheduleCalendar.component';
 
 interface IScheduleDay {
-  key: Date;
-  data: ILesson[];
+  key: string;
+  data: ILesson;
 }
 
 const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
@@ -62,29 +61,21 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
     });
   }, [navigation, showDatepicker]);
 
-  // Dates for display
-  const currDateRange = getRangeDates(currPageDate).map((date: Date) => {
-    const currDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    return currDate.getTime();
-  });
-
-  const scheduleDays = currDateRange.map((date: number) => ({
-    key: new Date(date),
-    data: (schedule.get(date) || []).filter(
-      (lesson: ILesson) =>
-        user.lessonGroup === LessonGroup.NONE ||
-        lesson.groupOnLesson === LessonGroup.NONE ||
-        lesson.groupOnLesson === user.lessonGroup,
-    ),
-  }));
-
-  const renderScheduleDay = ({item}: {item: IScheduleDay}) => {
-    return <ScheduleDayComponent lessons={item.data} date={item.key} />;
-  };
+  const lessons = (
+    schedule.get(
+      new Date(
+        currPageDate.getFullYear(),
+        currPageDate.getMonth(),
+        currPageDate.getDate(),
+      ).getTime(),
+    ) || []
+  ).filter(
+    (lesson: ILesson) =>
+      user.lessonGroup === LessonGroup.NONE ||
+      lesson.groupOnLesson === LessonGroup.NONE ||
+      lesson.groupOnLesson === user.lessonGroup,
+  );
+  // .map((val: ILesson) => ({key: val.id, data: val} as IScheduleDay));
 
   return (
     <ScreenContainer>
@@ -97,12 +88,15 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
           setCurrDate={setCurrPageDate}
         />
 
-        <FlatList
+        <ScheduleContentEmpty />
+
+        {/* <FlatList
           data={scheduleDays}
-          keyExtractor={(item: IScheduleDay) => item.key.getTime().toString()}
+          keyExtractor={(item: IScheduleDay) => item.key}
           renderItem={renderScheduleDay}
           ItemSeparatorComponent={DaySeparator}
-        />
+        /> */}
+        <ScheduleDayComponent lessons={lessons} />
 
         {showDatepicker && (
           <DateTimePicker
@@ -126,8 +120,8 @@ const ScheduleScreenContent = styled.ScrollView`
   margin-bottom: 30px;
 `;
 
-const DaySeparator = styled.View`
-  height: 15px;
+const ScheduleContentEmpty = styled.View`
+  height: 30px;
 `;
 
 // State

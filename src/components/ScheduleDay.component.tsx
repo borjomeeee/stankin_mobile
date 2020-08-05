@@ -1,5 +1,6 @@
 import React from 'react';
 import {FlatList} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import styled from 'styled-components/native';
 
@@ -8,15 +9,11 @@ import ScheduleDayEmptyComponent from './ScheduleDayEmpty.component';
 
 import {ILesson} from '../models/Lesson.model';
 
-import {dateToDateString} from '../utils/methods';
-import {useNavigation} from '@react-navigation/native';
-
 interface IScheduleDayComponent {
   lessons: ILesson[];
-  date: Date;
 }
 
-const ScheduleDayComponent = ({lessons, date}: IScheduleDayComponent) => {
+const ScheduleDayComponent = ({lessons}: IScheduleDayComponent) => {
   const navigation = useNavigation();
 
   const onClickLesson = (lesson: ILesson) => {
@@ -34,9 +31,7 @@ const ScheduleDayComponent = ({lessons, date}: IScheduleDayComponent) => {
 
   return (
     <>
-      <DayTitle>{dateToDateString(date)}</DayTitle>
-
-      {Array.isArray(lessons) && lessons.length > 0 ? (
+      {lessons.length > 0 ? (
         <FlatList
           data={lessons}
           keyExtractor={(item: ILesson) => item.id}
@@ -49,14 +44,6 @@ const ScheduleDayComponent = ({lessons, date}: IScheduleDayComponent) => {
     </>
   );
 };
-
-const DayTitle = styled.Text`
-  font-size: 18px;
-
-  margin-bottom: 15px;
-
-  text-decoration: underline;
-`;
 
 const LessonSeparator = styled.View`
   height: 5px;
