@@ -72,8 +72,7 @@ const InputTitle = styled.Text<IInputProps>`
   padding-left: 5px;
   align-self: flex-start;
 
-  color: ${(props: IInputProps) =>
-    props.isErrorer ? COLORS.RED : COLORS.MEDIUM_GRAY};
+  color: ${(props: IInputProps) => (props.isErrorer ? COLORS.RED : '#BDBDBD')};
   font-size: 14;
 `;
 
@@ -81,11 +80,10 @@ const InputBlock = styled.TextInput<IInputProps>`
   padding: 10px 15px;
   align-self: stretch;
 
-  border: 1px solid
-    ${(props) => (props.isErrorer ? COLORS.RED : COLORS.DARK_GRAY)};
+  border: 1px solid ${(props) => (props.isErrorer ? COLORS.RED : '#E8E8E8')};
   border-radius: 8px;
 
-  background-color: ${COLORS.LIGHT_GRAY};
+  background-color: ${'#F6F6F6'};
 `;
 
 const InputError = styled.Text`
