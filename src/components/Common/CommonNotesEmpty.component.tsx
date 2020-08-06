@@ -1,20 +1,17 @@
 import React from 'react';
 
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import * as COLORS from '../../utils/colors';
+interface ICommonNotesEmptyComponent {
+  text: string;
+}
 
-const CommonNotesEmptyComponent = () => {
+const CommonNotesEmptyComponent: React.FC<ICommonNotesEmptyComponent> = ({
+  text,
+}) => {
   return (
     <NotesEmptyContainer>
-      <NotesEmptyContainerText>
-        Добавьте свой первый дедлайн
-      </NotesEmptyContainerText>
-
-      <NotesEmptyContainerIcon>
-        <Icon name="arrow-downward" color={COLORS.MEDIUM_GRAY} size={30} />
-      </NotesEmptyContainerIcon>
+      <NotesEmptyContainerText>{text}</NotesEmptyContainerText>
     </NotesEmptyContainer>
   );
 };
@@ -23,23 +20,19 @@ const NotesEmptyContainer = styled.View`
   margin-bottom: 15px;
   padding: 15px 60px;
 
-  border: 1px solid ${COLORS.LIGHT_GRAY};
+  border: 1px solid ${'#F0F0F0'};
 
   justify-content: center;
   align-items: center;
 `;
 
 const NotesEmptyContainerText = styled.Text`
-  font-family: 'Inter-Bold';
+  font-family: 'Inter-Regular';
   font-size: 16px;
 
   text-align: center;
 
-  color: ${COLORS.MEDIUM_GRAY};
-`;
-
-const NotesEmptyContainerIcon = styled.View`
-  margin-top: 10px;
+  color: ${'#C4C4C4'};
 `;
 
 export default CommonNotesEmptyComponent;

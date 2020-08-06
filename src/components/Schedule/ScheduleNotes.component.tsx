@@ -2,18 +2,29 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
+import CommonNotesComponent from '../Common/CommonNotes.component';
+import CommonNoteComponent from '../Common/CommonNote.component';
+
 const ScheduleNotesComponent = () => {
   return (
-    <ScheduleNotesContainer>
-      <ScheduleNoteSTitle>Дедлайны</ScheduleNoteSTitle>
-    </ScheduleNotesContainer>
+    <ScheduleNotesComponentContainer>
+      <ScheduleNotesTitle>Дедлайны</ScheduleNotesTitle>
+
+      <ScheduleNotesContainer>
+        <CommonNotesComponent noteComponent={CommonNoteComponent} />
+      </ScheduleNotesContainer>
+    </ScheduleNotesComponentContainer>
   );
 };
 
-const ScheduleNotesContainer = styled.View``;
-const ScheduleNoteSTitle = styled.Text`
+const ScheduleNotesComponentContainer = styled.View``;
+const ScheduleNotesTitle = styled.Text`
   font-family: 'Inter-Bold';
   font-size: 18px;
+`;
+
+const ScheduleNotesContainer = styled.View`
+  margin-top: 30px;
 `;
 
 export default ScheduleNotesComponent;

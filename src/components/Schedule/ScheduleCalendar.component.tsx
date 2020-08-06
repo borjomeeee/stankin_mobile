@@ -191,9 +191,11 @@ const ScheduleRightDateContainer = styled.View`
   align-items: center;
   flex-direction: row;
 `;
+
 const ScheduleRightDateIcon = styled.TouchableOpacity`
   margin-right: 10px;
 `;
+
 const ScheduleRightDateText = styled.Text`
   font-family: 'Inter-Regular';
   font-size: 16px;

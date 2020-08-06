@@ -107,7 +107,11 @@ const CommomNotesComponent = ({
         <SwipeListView
           useSectionList={true}
           sections={notCheckedNotes}
-          ListEmptyComponent={() => <CommonNotesEmptyComponent />}
+          ListEmptyComponent={() => (
+            <CommonNotesEmptyComponent
+              text={'На текущую дату у вас нет ни одного дедлайна'}
+            />
+          )}
           keyExtractor={(item: INoteSectionListItem) => item.key}
           renderItem={({item}: {item: INoteSectionListItem}) =>
             visibleNotesContainer ? (
