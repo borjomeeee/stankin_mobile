@@ -6,25 +6,48 @@ import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
 
-import CommonNotesComponent from '../components/Common/CommonNotes.component';
-import CommonNoteComponent from '../components/Common/CommonNote.component';
 import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonNotesListComponent from '../components/Common/Notes/CommonNotesList.component';
+
+import NotesNotCheckedListComponent from '../components/Notes/NotesNotCheckedList.component';
 
 import {ScreenContainer} from '../utils/theme';
 
 import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
 
-const NotesScreen = ({}: ConnectedProps<typeof connector>) => {
+import {INotCheckedNote, INote} from '../models/Note.model';
+
+const NotesScreen = ({notes}: ConnectedProps<typeof connector>) => {
   const navigation = useNavigation();
 
   const goAddNoteScreen = () => {
     navigation.navigate('AddNote');
   };
 
+  const notCheckedNotes = Array.from(
+    notes.entries(),
+  ).map(([dateTimestamp, dayNotes]: [number, INote[]]): [
+    number,
+    INotCheckedNote[],
+  ] => [
+    dateTimestamp,
+    dayNotes.filter((note: INote) => !note.isChecked) as INotCheckedNote[],
+  ]);
+
+  const checkedNotes = Array.from(notes.entries()).reduce(
+    (acc: INote[], [, dayNotes]: [number, INote[]]) => [
+      ...acc,
+      ...dayNotes.filter((note: INote) => note.isChecked),
+    ],
+    [],
+  );
+
   return (
     <ScreenContainer>
       <NotesContent showsVerticalScrollIndicator={false}>
-        <CommonNotesComponent noteComponent={CommonNoteComponent} />
+        <NotesNotCheckedListComponent notes={notCheckedNotes} />
+
+        <CommonNotesListComponent notes={checkedNotes} />
       </NotesContent>
 
       <NotesScreenSubmit>

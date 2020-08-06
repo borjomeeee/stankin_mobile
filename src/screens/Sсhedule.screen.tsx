@@ -29,7 +29,11 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
   const [showDatepicker, setShowDatepicker] = useState(false);
 
   const [startDate] = useState<Date>(new Date());
-  const [currPageDate, setCurrPageDate] = useState<Date>(new Date());
+  const [currPageDate, setCurrPageDate] = useState<Date>(() => {
+    const date = new Date();
+
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  });
 
   const listLessonsRef = useRef<ScrollView | null>(null);
 
@@ -58,15 +62,7 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
   }, [navigation, showDatepicker]);
 
   // Get lessons for currDate and selected user group
-  const lessons = (
-    schedule.get(
-      new Date(
-        currPageDate.getFullYear(),
-        currPageDate.getMonth(),
-        currPageDate.getDate(),
-      ).getTime(),
-    ) || []
-  ).filter(
+  const lessons = (schedule.get(currPageDate.getTime()) || []).filter(
     (lesson: ILesson) =>
       user.lessonGroup === LessonGroup.NONE ||
       lesson.groupOnLesson === LessonGroup.NONE ||
@@ -86,9 +82,9 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
 
         <ScheduleDayContainer>
           <ScheduleDayComponent lessons={lessons} />
-        </ScheduleDayContainer>
 
-        <ScheduleNotesComponent />
+          <ScheduleNotesComponent currDate={currPageDate} />
+        </ScheduleDayContainer>
 
         {showDatepicker && (
           <DateTimePicker

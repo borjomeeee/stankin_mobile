@@ -1,17 +1,26 @@
 import React from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 
 import styled from 'styled-components/native';
 
-import CommonNotesComponent from '../Common/CommonNotes.component';
-import CommonNoteComponent from '../Common/CommonNote.component';
+import CommonNotesListComponent from '../Common/Notes/CommonNotesList.component';
 
-const ScheduleNotesComponent = () => {
+import {IInitialState} from '../../redux/store';
+
+interface IScheduleNotesComponent extends ConnectedProps<typeof connector> {
+  currDate: Date;
+}
+
+const ScheduleNotesComponent: React.FC<IScheduleNotesComponent> = ({
+  currDate,
+  notes,
+}) => {
   return (
     <ScheduleNotesComponentContainer>
       <ScheduleNotesTitle>Дедлайны</ScheduleNotesTitle>
 
       <ScheduleNotesContainer>
-        <CommonNotesComponent noteComponent={CommonNoteComponent} />
+        <CommonNotesListComponent notes={notes.get(currDate.getTime()) || []} />
       </ScheduleNotesContainer>
     </ScheduleNotesComponentContainer>
   );
@@ -24,7 +33,15 @@ const ScheduleNotesTitle = styled.Text`
 `;
 
 const ScheduleNotesContainer = styled.View`
-  margin-top: 30px;
+  margin-top: 10px;
 `;
 
-export default ScheduleNotesComponent;
+const mapStateTopProps = (state: IInitialState) => ({
+  notes: state.notes,
+});
+
+const mapDispatchToProps = {};
+
+const connector = connect(mapStateTopProps, mapDispatchToProps);
+
+export default connector(ScheduleNotesComponent);

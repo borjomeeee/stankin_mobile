@@ -2,20 +2,32 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-import CommonToggleNoteComponent from './CommonToggleNote.component';
+import CommonNoteToggleButton from './CommonNoteToggleButton.component';
 
-import {INote} from '../../models/Note.model';
+import {INote} from '../../../models/Note.model';
 
-import * as COLORS from '../../utils/colors';
+import * as COLORS from '../../../utils/colors';
 
 interface ICheckedElement {
   isDone: boolean;
 }
 
-const CommonNoteComponent = ({subject, text, isChecked}: INote) => {
+interface ICommonNoteComponent extends INote {
+  onClick: (noteId: string) => void;
+}
+
+const CommonNoteComponent: React.FC<ICommonNoteComponent> = ({
+  id,
+
+  subject,
+  text,
+  isChecked,
+
+  onClick,
+}) => {
   return (
-    <NoteContainer>
-      <CommonToggleNoteComponent isDone={isChecked} size={20} />
+    <NoteContainer onPress={onClick.bind(null, id)} activeOpacity={1}>
+      <CommonNoteToggleButton isDone={isChecked} size={20} />
 
       <NoteDataContainer>
         <NoteDataSubject numberOfLines={1} isDone={isChecked}>
@@ -27,10 +39,13 @@ const CommonNoteComponent = ({subject, text, isChecked}: INote) => {
   );
 };
 
-const NoteContainer = styled.View`
+const NoteContainer = styled.TouchableOpacity`
   flex-direction: row;
 
   align-items: center;
+  background-color: ${'#ffffff'};
+
+  padding: 8px 0px;
 `;
 
 const NoteDataContainer = styled.View`

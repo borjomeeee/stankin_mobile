@@ -82,7 +82,7 @@ const AddNoteScreen = ({
 
     const newNoteDate = new Date(
       selectedDate.getFullYear(),
-      selectedDate.getMonth() - 1,
+      selectedDate.getMonth(),
       selectedDate.getDate(),
     );
     createNote(subjectNote, newNoteDate.getTime(), noteText);

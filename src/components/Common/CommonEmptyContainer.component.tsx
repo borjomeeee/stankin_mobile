@@ -2,11 +2,11 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-interface ICommonNotesEmptyComponent {
+interface ICommonEmptyContainerComponent {
   text: string;
 }
 
-const CommonNotesEmptyComponent: React.FC<ICommonNotesEmptyComponent> = ({
+const CommonEmptyContainerComponent: React.FC<ICommonEmptyContainerComponent> = ({
   text,
 }) => {
   return (
@@ -35,4 +35,4 @@ const NotesEmptyContainerText = styled.Text`
   color: ${'#C4C4C4'};
 `;
 
-export default CommonNotesEmptyComponent;
+export default CommonEmptyContainerComponent;

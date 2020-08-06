@@ -69,7 +69,6 @@ const LessonCardContainer = styled.View`
   align-content: stretch;
 
   border: 1px solid ${'#E4E4E4'};
-  background-color: ${'#FCFCFC'};
 
   padding: 10px 15px 10px 10px;
 `;
@@ -106,6 +105,7 @@ const LessonCardContent = styled.View`
 `;
 
 const LessonCardTitle = styled.Text`
+  font-family: 'Inter-Regular';
   font-size: 16px;
 `;
 
@@ -121,6 +121,7 @@ const LessonCardOption = styled.View`
 `;
 
 const LessonCardOptionText = styled.Text`
+  font-family: 'Inter-Regular';
   margin-left: 14px;
 `;
 
@@ -142,6 +143,7 @@ const LessonCardTypeContainer = styled.View`
 `;
 
 const LessonCardTypeText = styled.Text`
+  font-family: 'Inter-Regular';
   color: ${'#ffffff'};
 `;
 

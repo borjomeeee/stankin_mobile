@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const developer = config['developer_mail'];
+const developer = config.developer_mail;
 
 import React, {useLayoutEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
