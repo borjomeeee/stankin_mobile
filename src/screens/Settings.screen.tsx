@@ -75,7 +75,12 @@ const SettingsScreen = ({
     navigation.setOptions({
       headerRight: () => (
         <CommonHeaderIconComponent>
-          <Icon name="log-out" size={25} onPress={logoutUser} />
+          <Icon
+            name="log-out"
+            size={25}
+            color={'#444444'}
+            onPress={logoutUser}
+          />
         </CommonHeaderIconComponent>
       ),
     });
