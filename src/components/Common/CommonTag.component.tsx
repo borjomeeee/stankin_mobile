@@ -5,14 +5,14 @@ import styled from 'styled-components/native';
 
 import * as COLORS from '../../utils/colors';
 
-type ICommonTagComponent = {
+interface ICommonTagComponent extends React.ComponentProps<typeof View> {
   text: string;
-};
+}
 
-const CommonTagComponent = ({
+const CommonTagComponent: React.FC<ICommonTagComponent> = ({
   text,
   ...props
-}: ICommonTagComponent & React.ComponentProps<typeof View>) => {
+}) => {
   return (
     <TagBlock {...props}>
       <TagText>{text}</TagText>

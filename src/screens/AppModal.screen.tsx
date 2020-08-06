@@ -17,10 +17,10 @@ import {convertAppErrorToString} from '../utils/methods';
 
 import {AppErrorTypes} from '../enums/App.enums';
 
-const AppModalScreen = ({
+const AppModalScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
   clearAppError,
-}: ConnectedProps<typeof connector>) => {
+}) => {
   return (
     <View>
       <Modal

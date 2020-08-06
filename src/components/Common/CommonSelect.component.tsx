@@ -14,17 +14,17 @@ interface ISelectOptionContainerProps {
   isFirst: boolean;
 }
 
-const CommonSelectComponent = ({
+const CommonSelectComponent: React.FC<ICommonSelectComponent> = ({
   options,
   onSelectValue,
-}: ICommonSelectComponent) => {
+}) => {
   return (
     <SelectContainer>
       {options.map(
         ({label, value}: {label: string; value: string}, index: number) => (
           <SelectOptionContainer
-            isFirst={index === 0}
             key={index}
+            isFirst={index === 0}
             onPress={onSelectValue.bind(null, value)}>
             <SelectOptionText>{label}</SelectOptionText>
           </SelectOptionContainer>

@@ -12,7 +12,7 @@ interface IScheduleDayComponent {
   lessons: ILesson[];
 }
 
-const ScheduleDayComponent = ({lessons}: IScheduleDayComponent) => {
+const ScheduleDayComponent: React.FC<IScheduleDayComponent> = ({lessons}) => {
   const renderScheduleDayLesson = ({item}: {item: ILesson}) => {
     return <ScheduleLessonComponent {...item} />;
   };

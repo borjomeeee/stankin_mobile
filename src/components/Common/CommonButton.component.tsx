@@ -9,7 +9,10 @@ type ICommonButtonComponent = {
   onClick: () => void;
 };
 
-const CommonButtonComponent = ({text, onClick}: ICommonButtonComponent) => {
+const CommonButtonComponent: React.FC<ICommonButtonComponent> = ({
+  text,
+  onClick,
+}) => {
   return (
     <ButtonContainer activeOpacity={0.65} onPress={onClick}>
       <ButtonText>{text}</ButtonText>

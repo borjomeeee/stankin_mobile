@@ -19,7 +19,10 @@ import useKeyboard from '../hooks/useKeyboard.hook';
 
 import {AppErrorTypes} from '../enums/App.enums';
 
-const AuthScreen = ({app, loginUser}: ConnectedProps<typeof connector>) => {
+const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
+  app,
+  loginUser,
+}) => {
   const {
     loginText,
     changeLoginText,

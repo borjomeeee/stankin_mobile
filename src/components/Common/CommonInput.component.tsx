@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 import * as COLORS from '../../utils/colors';
 
-interface ICommonInputComponent {
+interface ICommonInputComponent extends React.ComponentProps<typeof TextInput> {
   label?: string;
   error?: string;
 
@@ -17,13 +17,13 @@ interface IInputProps {
   isErrorer: boolean;
 }
 
-const CommonInputComponent = ({
+const CommonInputComponent: React.FC<ICommonInputComponent> = ({
   label,
   value,
   onChangeText,
   error,
   ...props
-}: ICommonInputComponent & React.ComponentProps<typeof TextInput>) => {
+}) => {
   const errorDropValue = useState(new Animated.Value(-10))[0];
   const errorOpacityValue = useState(new Animated.Value(0))[0];
 

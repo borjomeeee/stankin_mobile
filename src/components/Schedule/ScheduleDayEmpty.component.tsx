@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-const ScheduleDayEmptyComponent: React.FC = () => {
+const ScheduleDayEmptyComponent = () => {
   return (
     <ScheduleEmptyDayContainer>
       <ScheduleEmptyDayText>На текущую дату пар нет</ScheduleEmptyDayText>

@@ -17,7 +17,7 @@ import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
 
 import {INotCheckedNote, INote} from '../models/Note.model';
 
-const NotesScreen = ({notes}: ConnectedProps<typeof connector>) => {
+const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
   const navigation = useNavigation();
 
   const goAddNoteScreen = () => {

@@ -53,13 +53,13 @@ const IUserGroupDropdownProps: PickerStyle = {
 
 const DEVELOPER_URL = `mailto:${developer}`;
 
-const SettingsScreen = ({
+const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
   user,
   logoutUser,
   setUserGroup,
   updateSchedule,
-}: ConnectedProps<typeof connector>) => {
+}) => {
   const navigation = useNavigation();
 
   // Select dropdown

@@ -15,13 +15,13 @@ interface ICommonSubjectsModalComponent {
   onHide: () => void;
 }
 
-const CommonSubjectsModalComponent = ({
+const CommonSubjectsModalComponent: React.FC<ICommonSubjectsModalComponent> = ({
   isVisible,
   subjects,
 
   onSelectSubject,
   onHide,
-}: ICommonSubjectsModalComponent) => {
+}) => {
   const renderSubjectComponent = ({item}: {item: string}) => {
     return (
       <ModalElementContainer

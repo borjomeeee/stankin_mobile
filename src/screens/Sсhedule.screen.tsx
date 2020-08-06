@@ -22,7 +22,10 @@ import ScheduleNotesComponent from '../components/Schedule/ScheduleNotes.compone
 
 import {ScreenContainer} from '../utils/theme';
 
-const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
+const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
+  schedule,
+  user,
+}) => {
   const navigation = useNavigation();
 
   // Datepicker
