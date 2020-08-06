@@ -19,7 +19,10 @@ export default (
 
       const createNote_notes = state.get(createNote_newNote.date);
       if (Array.isArray(createNote_notes)) {
-        createNote_notes.push(createNote_newNote);
+        state.set(createNote_newNote.date, [
+          ...createNote_notes,
+          createNote_newNote,
+        ]);
       } else {
         state.set(createNote_newNote.date, [createNote_newNote]);
       }
@@ -36,10 +39,13 @@ export default (
 
       return new Map<number, INote[]>(removeNote_newState);
     case TOGGLE_DONE_NOTE:
-      Array.from(state).some(([_, notes]: [number, INote[]]) => {
+      Array.from(state).some(([dateTimestamp, notes]: [number, INote[]]) => {
         return notes.some((note: INote) => {
           if (note.id === action.payload.id) {
             note.isChecked = !note.isChecked;
+
+            state.set(dateTimestamp, [...(state.get(dateTimestamp) || [])]);
+
             return true;
           }
           return false;

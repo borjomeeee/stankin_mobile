@@ -13,7 +13,7 @@ import {
   removeNoteAction,
 } from '../../actions/Notes.actions';
 
-import CommonNotesEmptyComponent from './CommonNotesEmpty.component';
+import CommonNotesEmptyComponent from './CommonEmptyContainer.component';
 
 import {INote} from '../../models/Note.model';
 import {ILesson} from '../../models/Lesson.model';

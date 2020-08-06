@@ -15,12 +15,14 @@ const ScheduleNotesComponent: React.FC<IScheduleNotesComponent> = ({
   currDate,
   notes,
 }) => {
+  const notesForCurrDate = notes.get(currDate.getTime()) || [];
+
   return (
     <ScheduleNotesComponentContainer>
       <ScheduleNotesTitle>Дедлайны</ScheduleNotesTitle>
 
       <ScheduleNotesContainer>
-        <CommonNotesListComponent notes={notes.get(currDate.getTime()) || []} />
+        <CommonNotesListComponent notes={notesForCurrDate} />
       </ScheduleNotesContainer>
     </ScheduleNotesComponentContainer>
   );
