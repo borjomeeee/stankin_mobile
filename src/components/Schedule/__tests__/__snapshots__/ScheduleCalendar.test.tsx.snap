@@ -37,6 +37,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
           Array [
             Object {
               "color": "#444444",
+              "fontFamily": "Inter-Regular",
               "fontSize": 16,
             },
           ]
@@ -57,12 +58,13 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
           Array [
             Object {
               "color": "#444444",
+              "fontFamily": "Inter-Regular",
               "fontSize": 16,
             },
           ]
         }
       >
-        1 Февраля
+        Суббота, 1 Февраля
       </Text>
     </View>
   </View>
@@ -134,7 +136,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#000000",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }
@@ -197,7 +199,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#000000",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }
@@ -260,7 +262,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#000000",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }
@@ -323,7 +325,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#000000",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }
@@ -386,7 +388,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#000000",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }
@@ -449,7 +451,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#ffffff",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }
@@ -512,7 +514,7 @@ exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
               Object {
                 "color": "#000000",
                 "fontFamily": "Inter-Regular",
-                "fontSize": 14,
+                "fontSize": 16,
               },
             ]
           }

@@ -64,7 +64,7 @@ const AppPersistConfig = {
   whitelist: ['version', 'lastUpdateSchedule'],
 };
 
-const reducers = combineReducers({
+export const reducers = combineReducers({
   app: persistReducer(AppPersistConfig, AppReducer),
   user: UserReducer,
   schedule: SheduleReducer,

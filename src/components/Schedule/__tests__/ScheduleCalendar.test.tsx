@@ -114,5 +114,24 @@ describe('Schedule calendar tests', () => {
 
       expect(wrapper.find('Styled(Text)').first().text()).toBe('Завтра');
     });
+
+    it('Schedule topline happy new year test', () => {
+      const dateDay = 2;
+      const date = new Date(2020, 0, dateDay);
+
+      const todayDate = new Date(date);
+      todayDate.setDate(date.getDate());
+
+      const wrapper = shallow(
+        <ScheduleCalendarComponent
+          todayDate={todayDate}
+          currDate={date}
+          setCurrDate={jest.fn()}
+        />,
+      );
+
+      expect(wrapper.find('Styled(Component)').at(1).text()).toBe('31');
+      expect(wrapper.find('Styled(Component)').at(2).text()).toBe('1');
+    });
   });
 });

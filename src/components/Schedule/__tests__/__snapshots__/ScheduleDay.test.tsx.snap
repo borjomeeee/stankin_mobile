@@ -1,0 +1,850 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Schedule day tests Schedule day render correctly 1`] = `
+<RCTScrollView
+  ItemSeparatorComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "displayName": "Styled(View)",
+      "inlineStyle": InlineStyle {
+        "rules": Array [
+          "
+  height: 5px;
+",
+        ],
+      },
+      "render": [Function],
+      "shouldForwardProp": undefined,
+      "styledComponentId": "StyledNativeComponent",
+      "target": [Function],
+      "withComponent": [Function],
+    }
+  }
+  data={
+    Array [
+      Object {
+        "date": "01/01",
+        "groupId": "1",
+        "groupOnLesson": "А",
+        "id": "1",
+        "num": 1,
+        "room": "0001",
+        "teacher": "Иванов И.И",
+        "title": "Технологии программирования",
+        "type": "Лаба",
+      },
+      Object {
+        "date": "01/01",
+        "groupId": "1",
+        "groupOnLesson": "Б",
+        "id": "2",
+        "num": 2,
+        "room": "0002",
+        "teacher": "Родионов И.И",
+        "title": "Информационные технологии и системы",
+        "type": "Лекция",
+      },
+      Object {
+        "date": "01/01",
+        "groupId": "1",
+        "groupOnLesson": "",
+        "id": "3",
+        "num": 3,
+        "room": "0003",
+        "teacher": "Англичанов И.И",
+        "title": "Английский язык",
+        "type": "без типа",
+      },
+    ]
+  }
+  disableVirtualization={false}
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
+  keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
+  onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
+  onLayout={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  removeClippedSubviews={false}
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  viewabilityConfigCallbackPairs={Array []}
+  windowSize={21}
+>
+  <View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignContent": "stretch",
+              "borderColor": "#E4E4E4",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "paddingBottom": 10,
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "paddingTop": 10,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "paddingRight": 15,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#000000",
+                  "fontFamily": "Inter-Bold",
+                  "fontSize": 14,
+                },
+              ]
+            }
+          >
+            8:30
+          </Text>
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#9E9E9E",
+                  "fontFamily": "Inter-Bold",
+                  "fontSize": 14,
+                },
+              ]
+            }
+          >
+            10:10
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#9E9E9E",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "marginTop": 5,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Inter-Bold",
+                    "fontSize": 12,
+                  },
+                ]
+              }
+            >
+              А
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Inter-Regular",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            Технологии программирования
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginTop": 10,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginTop": 2,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#444444",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "Material Icons",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Inter-Regular",
+                        "marginLeft": 14,
+                      },
+                    ]
+                  }
+                >
+                  0001
+                </Text>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginTop": 2,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#444444",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "Material Icons",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Inter-Regular",
+                        "marginLeft": 14,
+                      },
+                    ]
+                  }
+                >
+                  Иванов И.И
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "#444444",
+                    "borderRadius": 3,
+                    "paddingBottom": 4,
+                    "paddingLeft": 8,
+                    "paddingRight": 8,
+                    "paddingTop": 4,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#ffffff",
+                      "fontFamily": "Inter-Regular",
+                    },
+                  ]
+                }
+              >
+                Лаба
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        highlighted={false}
+        leadingItem={
+          Object {
+            "date": "01/01",
+            "groupId": "1",
+            "groupOnLesson": "А",
+            "id": "1",
+            "num": 1,
+            "room": "0001",
+            "teacher": "Иванов И.И",
+            "title": "Технологии программирования",
+            "type": "Лаба",
+          }
+        }
+        style={
+          Array [
+            Object {
+              "height": 5,
+            },
+          ]
+        }
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignContent": "stretch",
+              "borderColor": "#E4E4E4",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "paddingBottom": 10,
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "paddingTop": 10,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "paddingRight": 15,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#000000",
+                  "fontFamily": "Inter-Bold",
+                  "fontSize": 14,
+                },
+              ]
+            }
+          >
+            10:20
+          </Text>
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#9E9E9E",
+                  "fontFamily": "Inter-Bold",
+                  "fontSize": 14,
+                },
+              ]
+            }
+          >
+            12:00
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#9E9E9E",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "marginTop": 5,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "Inter-Bold",
+                    "fontSize": 12,
+                  },
+                ]
+              }
+            >
+              Б
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Inter-Regular",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            Информационные технологии и системы
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginTop": 10,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginTop": 2,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#444444",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "Material Icons",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Inter-Regular",
+                        "marginLeft": 14,
+                      },
+                    ]
+                  }
+                >
+                  0002
+                </Text>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginTop": 2,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#444444",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "Material Icons",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Inter-Regular",
+                        "marginLeft": 14,
+                      },
+                    ]
+                  }
+                >
+                  Родионов И.И
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "#444444",
+                    "borderRadius": 3,
+                    "paddingBottom": 4,
+                    "paddingLeft": 8,
+                    "paddingRight": 8,
+                    "paddingTop": 4,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#ffffff",
+                      "fontFamily": "Inter-Regular",
+                    },
+                  ]
+                }
+              >
+                Лекция
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        highlighted={false}
+        leadingItem={
+          Object {
+            "date": "01/01",
+            "groupId": "1",
+            "groupOnLesson": "Б",
+            "id": "2",
+            "num": 2,
+            "room": "0002",
+            "teacher": "Родионов И.И",
+            "title": "Информационные технологии и системы",
+            "type": "Лекция",
+          }
+        }
+        style={
+          Array [
+            Object {
+              "height": 5,
+            },
+          ]
+        }
+      />
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignContent": "stretch",
+              "borderColor": "#E4E4E4",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "paddingBottom": 10,
+              "paddingLeft": 10,
+              "paddingRight": 15,
+              "paddingTop": 10,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "paddingRight": 15,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#000000",
+                  "fontFamily": "Inter-Bold",
+                  "fontSize": 14,
+                },
+              ]
+            }
+          >
+            12:20
+          </Text>
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#9E9E9E",
+                  "fontFamily": "Inter-Bold",
+                  "fontSize": 14,
+                },
+              ]
+            }
+          >
+            14:00
+          </Text>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Inter-Regular",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            Английский язык
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "flex-end",
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginTop": 10,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {},
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginTop": 2,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#444444",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "Material Icons",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Inter-Regular",
+                        "marginLeft": 14,
+                      },
+                    ]
+                  }
+                >
+                  0003
+                </Text>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginTop": 2,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#444444",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "Material Icons",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "Inter-Regular",
+                        "marginLeft": 14,
+                      },
+                    ]
+                  }
+                >
+                  Англичанов И.И
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "#444444",
+                    "borderRadius": 3,
+                    "paddingBottom": 4,
+                    "paddingLeft": 8,
+                    "paddingRight": 8,
+                    "paddingTop": 4,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "color": "#ffffff",
+                      "fontFamily": "Inter-Regular",
+                    },
+                  ]
+                }
+              >
+                без типа
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
