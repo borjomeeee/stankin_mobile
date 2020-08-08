@@ -17,6 +17,7 @@ import {
   toggleIsCheckNoteAction,
   removeNoteAction,
 } from '../../../actions/Notes.actions';
+import CommonSwipeableItemComponent from '../CommonSwipeableItem.component';
 
 interface ICommonNotesListComponent extends ConnectedProps<typeof connector> {
   notes: INote[];
@@ -38,11 +39,9 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
 
   const renderNoteItem = (note: INote) => {
     return (
-      <CommonNoteComponent
-        key={note.id}
-        onClick={onClickNotesListItem}
-        {...note}
-      />
+      <CommonSwipeableItemComponent key={note.id}>
+        <CommonNoteComponent onClick={onClickNotesListItem} {...note} />
+      </CommonSwipeableItemComponent>
     );
   };
 

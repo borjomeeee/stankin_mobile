@@ -26,7 +26,7 @@ const CommonNoteComponent: React.FC<ICommonNoteComponent> = ({
   onClick,
 }) => {
   return (
-    <NoteContainer onPress={onClick.bind(null, id)} activeOpacity={1}>
+    <NoteContainer onPress={onClick.bind(null, id)}>
       <CommonNoteToggleButton isDone={isChecked} size={20} />
 
       <NoteDataContainer>
