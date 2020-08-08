@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
+// Need for correct view animations with opacity
 const CommonSwipeableItemComponent: React.FC = ({children}) => {
   return (
     <SwipeableItemContainer>

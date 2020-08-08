@@ -1,4 +1,5 @@
 import React from 'react';
+import {Dimensions} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -18,10 +19,15 @@ import {
   removeNoteAction,
 } from '../../../actions/Notes.actions';
 import CommonSwipeableItemComponent from '../CommonSwipeableItem.component';
+import {Animated} from 'react-native';
 
 interface ICommonNotesListComponent extends ConnectedProps<typeof connector> {
   notes: INote[];
 }
+
+type IRowAnimationValues = {
+  [index: string]: Animated.Value;
+};
 
 const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
   notes,
@@ -29,19 +35,83 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
   onToggleNote,
   onRemoveNote,
 }) => {
+  const rowOpacityAnimationValues: IRowAnimationValues = notes.reduce(
+    (acc: IRowAnimationValues, item: INote) => {
+      acc[item.id] = new Animated.Value(1);
+      return acc;
+    },
+    {},
+  );
+  const rowTranslateXAnimationValues: IRowAnimationValues = notes.reduce(
+    (acc: IRowAnimationValues, item: INote) => {
+      acc[item.id] = new Animated.Value(0);
+      return acc;
+    },
+    {},
+  );
+
+  const rowHeightAnimationValues: IRowAnimationValues = notes.reduce(
+    (acc: IRowAnimationValues, item: INote) => {
+      acc[item.id] = new Animated.Value(0);
+      return acc;
+    },
+    {},
+  );
+
   const onClickNotesListItem = (noteId: string) => {
     onToggleNote(noteId);
   };
 
   const onRemoveNotesListItem = (noteId: string) => {
-    onRemoveNote(noteId);
+    Animated.parallel([
+      Animated.timing(rowOpacityAnimationValues[noteId], {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rowTranslateXAnimationValues[noteId], {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rowHeightAnimationValues[noteId], {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: false,
+      }),
+    ]).start(onRemoveNote.bind(null, noteId));
   };
 
   const renderNoteItem = (note: INote) => {
     return (
-      <CommonSwipeableItemComponent key={note.id}>
-        <CommonNoteComponent onClick={onClickNotesListItem} {...note} />
-      </CommonSwipeableItemComponent>
+      <Animated.View
+        style={{
+          height: rowHeightAnimationValues[note.id].interpolate({
+            inputRange: [0, 1],
+            outputRange: [55, 0],
+          }),
+        }}>
+        <Animated.View
+          style={{
+            transform: [
+              {
+                translateX: rowTranslateXAnimationValues[note.id].interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -Dimensions.get('window').width],
+                }),
+              },
+            ],
+          }}>
+          <CommonSwipeableItemComponent key={note.id}>
+            <Animated.View
+              style={{
+                opacity: rowOpacityAnimationValues[note.id],
+              }}>
+              <CommonNoteComponent onClick={onClickNotesListItem} {...note} />
+            </Animated.View>
+          </CommonSwipeableItemComponent>
+        </Animated.View>
+      </Animated.View>
     );
   };
 
@@ -68,6 +138,7 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
       )}
       rightOpenValue={-45}
       disableRightSwipe
+      useNativeDriver={false}
     />
   );
 };
