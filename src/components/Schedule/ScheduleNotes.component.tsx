@@ -32,6 +32,9 @@ const ScheduleNotesComponentContainer = styled.View``;
 const ScheduleNotesTitle = styled.Text`
   font-family: 'Inter-Bold';
   font-size: 18px;
+
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
 
 const ScheduleNotesContainer = styled.View`

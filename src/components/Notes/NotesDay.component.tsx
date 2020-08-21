@@ -26,7 +26,9 @@ const NotesDayComponent: React.FC<INotesDayComponent> = ({currDate, notes}) => {
   );
 };
 
-const NotesDayContainer = styled.View``;
+const NotesDayContainer = styled.View`
+  background-color: ${'#ffffff'};
+`;
 const NotesDayTitle = styled.Text`
   font-size: 16px;
   text-decoration: underline;

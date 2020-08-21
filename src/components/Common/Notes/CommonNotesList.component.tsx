@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Animated} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -11,6 +11,7 @@ import {INote} from '../../../models/Note.model';
 
 import CommonNoteComponent from './CommonNote.component';
 import CommonEmptyContainerComponent from '../CommonEmptyContainer.component';
+import CommonSwipeableItemComponent from '../CommonSwipeableItem.component';
 
 import * as COLORS from '../../../utils/colors';
 
@@ -18,8 +19,6 @@ import {
   toggleIsCheckNoteAction,
   removeNoteAction,
 } from '../../../actions/Notes.actions';
-import CommonSwipeableItemComponent from '../CommonSwipeableItem.component';
-import {Animated} from 'react-native';
 
 interface ICommonNotesListComponent extends ConnectedProps<typeof connector> {
   notes: INote[];
@@ -35,22 +34,7 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
   onToggleNote,
   onRemoveNote,
 }) => {
-  const rowOpacityAnimationValues: IRowAnimationValues = notes.reduce(
-    (acc: IRowAnimationValues, item: INote) => {
-      acc[item.id] = new Animated.Value(1);
-      return acc;
-    },
-    {},
-  );
-  const rowTranslateXAnimationValues: IRowAnimationValues = notes.reduce(
-    (acc: IRowAnimationValues, item: INote) => {
-      acc[item.id] = new Animated.Value(0);
-      return acc;
-    },
-    {},
-  );
-
-  const rowHeightAnimationValues: IRowAnimationValues = notes.reduce(
+  const rowAnimationValues: IRowAnimationValues = notes.reduce(
     (acc: IRowAnimationValues, item: INote) => {
       acc[item.id] = new Animated.Value(0);
       return acc;
@@ -64,19 +48,9 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
 
   const onRemoveNotesListItem = (noteId: string) => {
     Animated.parallel([
-      Animated.timing(rowOpacityAnimationValues[noteId], {
-        toValue: 0,
+      Animated.timing(rowAnimationValues[noteId], {
+        toValue: 1,
         duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(rowTranslateXAnimationValues[noteId], {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }),
-      Animated.timing(rowHeightAnimationValues[noteId], {
-        toValue: 1,
-        duration: 400,
         useNativeDriver: false,
       }),
     ]).start(onRemoveNote.bind(null, noteId));
@@ -86,31 +60,30 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
     return (
       <Animated.View
         style={{
-          height: rowHeightAnimationValues[note.id].interpolate({
+          transform: [
+            {
+              translateX: rowAnimationValues[note.id].interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, -Dimensions.get('window').width],
+              }),
+            },
+          ],
+          height: rowAnimationValues[note.id].interpolate({
             inputRange: [0, 1],
             outputRange: [55, 0],
           }),
         }}>
-        <Animated.View
-          style={{
-            transform: [
-              {
-                translateX: rowTranslateXAnimationValues[note.id].interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, -Dimensions.get('window').width],
-                }),
-              },
-            ],
-          }}>
-          <CommonSwipeableItemComponent key={note.id}>
-            <Animated.View
-              style={{
-                opacity: rowOpacityAnimationValues[note.id],
-              }}>
-              <CommonNoteComponent onClick={onClickNotesListItem} {...note} />
-            </Animated.View>
-          </CommonSwipeableItemComponent>
-        </Animated.View>
+        <CommonSwipeableItemComponent key={note.id}>
+          <Animated.View
+            style={{
+              opacity: rowAnimationValues[note.id].interpolate({
+                inputRange: [0, 0.5, 1],
+                outputRange: [1, 0, 0],
+              }),
+            }}>
+            <CommonNoteComponent onClick={onClickNotesListItem} {...note} />
+          </Animated.View>
+        </CommonSwipeableItemComponent>
       </Animated.View>
     );
   };

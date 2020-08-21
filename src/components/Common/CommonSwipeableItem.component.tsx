@@ -15,6 +15,9 @@ const CommonSwipeableItemComponent: React.FC = ({children}) => {
 
 const SwipeableItemContainer = styled.View`
   position: relative;
+  background-color: ${'#ffffff'};
+
+  overflow: hidden;
 `;
 
 const SwipeableItemCap = styled.View`
