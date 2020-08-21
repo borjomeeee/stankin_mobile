@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, SafeAreaView} from 'react-native';
 
 import styled from 'styled-components/native';
 
@@ -20,12 +20,14 @@ const ScheduleDayComponent: React.FC<IScheduleDayComponent> = ({lessons}) => {
   return (
     <>
       {lessons.length > 0 ? (
-        <FlatList
-          data={lessons}
-          keyExtractor={(item: ILesson) => item.id}
-          renderItem={renderScheduleDayLesson}
-          ItemSeparatorComponent={LessonSeparator}
-        />
+        <SafeAreaView>
+          <FlatList
+            data={lessons}
+            keyExtractor={(item: ILesson) => item.id}
+            renderItem={renderScheduleDayLesson}
+            ItemSeparatorComponent={LessonSeparator}
+          />
+        </SafeAreaView>
       ) : (
         <ScheduleDayEmptyComponent />
       )}

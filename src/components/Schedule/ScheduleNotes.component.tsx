@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 import CommonNotesListComponent from '../Common/Notes/CommonNotesList.component';
 
 import {IInitialState} from '../../redux/store';
+import CommonEmptyContainerComponent from '../Common/CommonEmptyContainer.component';
 
 interface IScheduleNotesComponent extends ConnectedProps<typeof connector> {
   currDate: Date;
@@ -22,7 +23,12 @@ const ScheduleNotesComponent: React.FC<IScheduleNotesComponent> = ({
       <ScheduleNotesTitle>Дедлайны</ScheduleNotesTitle>
 
       <ScheduleNotesContainer>
-        <CommonNotesListComponent notes={notesForCurrDate} />
+        <CommonNotesListComponent
+          notes={notesForCurrDate}
+          emptyContainer={
+            <CommonEmptyContainerComponent text="На текущую дату у вас нет ни одного дедлайна" />
+          }
+        />
       </ScheduleNotesContainer>
     </ScheduleNotesComponentContainer>
   );

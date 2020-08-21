@@ -1,5 +1,5 @@
-import React, {useState, useLayoutEffect} from 'react';
-import {Platform} from 'react-native';
+import React, {useState, useLayoutEffect, useRef} from 'react';
+import {ScrollView, Platform} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
@@ -38,11 +38,15 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   });
 
+  const listLessonsRef = useRef<ScrollView | null>(null);
+
   const onChangeCurrPageDate = (_: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || currPageDate;
 
     setShowDatepicker(Platform.OS === 'ios');
     setCurrPageDate(currentDate);
+
+    listLessonsRef.current!.scrollTo({x: 0, y: 0, animated: true});
   };
 
   // Set header icon and title
@@ -70,7 +74,9 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
   return (
     <ScreenContainer>
-      <ScheduleScreenContent>
+      <ScheduleScreenContent
+        showsVerticalScrollIndicator={false}
+        ref={listLessonsRef}>
         <ScheduleCalendarComponent
           todayDate={startDate}
           currDate={currPageDate}
@@ -100,7 +106,7 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
 };
 
 // Components
-const ScheduleScreenContent = styled.SafeAreaView`
+const ScheduleScreenContent = styled.ScrollView`
   margin-top: 10px;
   padding-bottom: 30px;
 `;

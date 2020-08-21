@@ -10,7 +10,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {INote} from '../../../models/Note.model';
 
 import CommonNoteComponent from './CommonNote.component';
-import CommonEmptyContainerComponent from '../CommonEmptyContainer.component';
 import CommonSwipeableItemComponent from '../CommonSwipeableItem.component';
 
 import * as COLORS from '../../../utils/colors';
@@ -22,6 +21,8 @@ import {
 
 interface ICommonNotesListComponent extends ConnectedProps<typeof connector> {
   notes: INote[];
+
+  emptyContainer?: Element;
 }
 
 type IRowAnimationValues = {
@@ -30,6 +31,7 @@ type IRowAnimationValues = {
 
 const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
   notes,
+  emptyContainer,
 
   onToggleNote,
   onRemoveNote,
@@ -89,11 +91,7 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
   };
 
   if (notes.length === 0) {
-    return (
-      <CommonEmptyContainerComponent
-        text={'На текущую дату нет ни одного дедлайна '}
-      />
-    );
+    return <>{emptyContainer}</>;
   }
 
   return (
