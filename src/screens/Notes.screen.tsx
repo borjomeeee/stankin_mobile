@@ -47,7 +47,7 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
     <ScreenContainer>
       <NotesContent showsVerticalScrollIndicator={false}>
         {notes.size === 0 ? (
-          <CommonEmptyContainerComponent text="Пока вы не создали ни одного дедлайна" />
+          <CommonEmptyContainerComponent text="Пока вы не добавили ни одного дедлайна" />
         ) : (
           <>
             <NotesNotCheckedListComponent notes={notCheckedNotes} />

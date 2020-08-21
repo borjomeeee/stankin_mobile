@@ -111,7 +111,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
   return (
     <ScreenContainer>
-      <AddNoteContent>
+      <AddNoteContent showsVerticalScrollIndicator={false}>
         {!keyboardIsOpen && (
           <React.Fragment>
             <OptionContainer>
@@ -176,7 +176,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
 };
 
 // Components
-const AddNoteContent = styled.View``;
+const AddNoteContent = styled.ScrollView``;
 
 const OptionContainer = styled.View`
   margin-top: 10px;

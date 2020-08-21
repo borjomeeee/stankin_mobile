@@ -25,7 +25,8 @@ const AppModalScreen: React.FC<ConnectedProps<typeof connector>> = ({
     <View>
       <Modal
         isVisible={app.error.type !== AppErrorTypes.NONE}
-        onBackdropPress={clearAppError.bind(null)}>
+        onBackdropPress={clearAppError.bind(null)}
+        supportedOrientations={['portrait', 'landscape']}>
         <ModalContainer>
           <ModalContent>
             <ModalTitle>{convertAppErrorToString(app.error.type)}</ModalTitle>
