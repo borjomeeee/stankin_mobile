@@ -8,6 +8,7 @@ import {IInitialState} from '../redux/store';
 
 import CommonButtonComponent from '../components/Common/CommonButton.component';
 import CommonNotesListComponent from '../components/Common/Notes/CommonNotesList.component';
+import CommonEmptyContainerComponent from '../components/Common/CommonEmptyContainer.component';
 
 import NotesNotCheckedListComponent from '../components/Notes/NotesNotCheckedList.component';
 
@@ -45,9 +46,19 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
   return (
     <ScreenContainer>
       <NotesContent showsVerticalScrollIndicator={false}>
-        <NotesNotCheckedListComponent notes={notCheckedNotes} />
+        {notes.size === 0 ? (
+          <CommonEmptyContainerComponent text="Пока вы не создали ни одного дедлайна" />
+        ) : (
+          <>
+            <NotesNotCheckedListComponent notes={notCheckedNotes} />
 
-        <CommonNotesListComponent notes={checkedNotes} />
+            {checkedNotes.length > 0 && (
+              <CompletedTasksTitle>Выполненные</CompletedTasksTitle>
+            )}
+
+            <CommonNotesListComponent notes={checkedNotes} />
+          </>
+        )}
       </NotesContent>
 
       <NotesScreenSubmit>
@@ -67,6 +78,13 @@ const NotesContent = styled.ScrollView`
 const NotesScreenSubmit = styled.View`
   margin: 20px 0px;
   align-items: center;
+`;
+
+const CompletedTasksTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+
+  margin: 20px 0px;
 `;
 
 // State

@@ -21,6 +21,7 @@ import Persisted from './src/redux/store';
 import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
 
+// TODO: clear store after logout user
 const App = () => {
   return (
     <Provider store={Persisted.store}>
