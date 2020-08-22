@@ -6,25 +6,59 @@ import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
 
-import CommonNotesComponent from '../components/CommonNotes.component';
-import CommonNoteComponent from '../components/CommonNote.component';
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonNotesListComponent from '../components/Common/Notes/CommonNotesList.component';
+import CommonEmptyContainerComponent from '../components/Common/CommonEmptyContainer.component';
+
+import NotesNotCheckedListComponent from '../components/Notes/NotesNotCheckedList.component';
 
 import {ScreenContainer} from '../utils/theme';
 
 import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
 
-const NotesScreen = ({}: ConnectedProps<typeof connector>) => {
+import {INotCheckedNote, INote} from '../models/Note.model';
+
+const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
   const navigation = useNavigation();
 
   const goAddNoteScreen = () => {
     navigation.navigate('AddNote');
   };
 
+  const notCheckedNotes = Array.from(
+    notes.entries(),
+  ).map(([dateTimestamp, dayNotes]: [number, INote[]]): [
+    number,
+    INotCheckedNote[],
+  ] => [
+    dateTimestamp,
+    dayNotes.filter((note: INote) => !note.isChecked) as INotCheckedNote[],
+  ]);
+
+  const checkedNotes = Array.from(notes.entries()).reduce(
+    (acc: INote[], [, dayNotes]: [number, INote[]]) => [
+      ...acc,
+      ...dayNotes.filter((note: INote) => note.isChecked),
+    ],
+    [],
+  );
+
   return (
     <ScreenContainer>
       <NotesContent showsVerticalScrollIndicator={false}>
-        <CommonNotesComponent noteComponent={CommonNoteComponent} />
+        {notes.size === 0 ? (
+          <CommonEmptyContainerComponent text="Пока вы не добавили ни одного дедлайна" />
+        ) : (
+          <>
+            <NotesNotCheckedListComponent notes={notCheckedNotes} />
+
+            {checkedNotes.length > 0 && (
+              <CompletedTasksTitle>Выполненные</CompletedTasksTitle>
+            )}
+
+            <CommonNotesListComponent notes={checkedNotes} />
+          </>
+        )}
       </NotesContent>
 
       <NotesScreenSubmit>
@@ -44,6 +78,13 @@ const NotesContent = styled.ScrollView`
 const NotesScreenSubmit = styled.View`
   margin: 20px 0px;
   align-items: center;
+`;
+
+const CompletedTasksTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+
+  margin: 20px 0px;
 `;
 
 // State

@@ -9,9 +9,9 @@ import {IInitialState} from '../redux/store';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import CommonButtonComponent from '../components/CommonButton.component';
-import CommonSubjectsModalComponent from '../components/CommonSubjectsModal.component';
-import CommonInputComponent from '../components/CommonInput.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonSubjectsModalComponent from '../components/Common/CommonSubjectsModal.component';
+import CommonInputComponent from '../components/Common/CommonInput.component';
 
 import {createNoteAction} from '../actions/Notes.actions';
 
@@ -21,11 +21,10 @@ import * as COLORS from '../utils/colors';
 import {dateToStringExpanded} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
 
-// TODO: Переделать модалку из предметов в FlatList
-const AddNoteScreen = ({
+const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
   schedule,
   createNote,
-}: ConnectedProps<typeof connector>) => {
+}) => {
   const navigation = useNavigation();
   const route: RouteProp<
     Record<string, object | undefined>,
@@ -82,7 +81,7 @@ const AddNoteScreen = ({
 
     const newNoteDate = new Date(
       selectedDate.getFullYear(),
-      selectedDate.getMonth() - 1,
+      selectedDate.getMonth(),
       selectedDate.getDate(),
     );
     createNote(subjectNote, newNoteDate.getTime(), noteText);
@@ -112,7 +111,7 @@ const AddNoteScreen = ({
 
   return (
     <ScreenContainer>
-      <AddNoteContent>
+      <AddNoteContent showsVerticalScrollIndicator={false}>
         {!keyboardIsOpen && (
           <React.Fragment>
             <OptionContainer>
@@ -177,7 +176,7 @@ const AddNoteScreen = ({
 };
 
 // Components
-const AddNoteContent = styled.View``;
+const AddNoteContent = styled.ScrollView``;
 
 const OptionContainer = styled.View`
   margin-top: 10px;

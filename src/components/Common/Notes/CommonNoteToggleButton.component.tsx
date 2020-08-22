@@ -1,18 +1,15 @@
 import React from 'react';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../../utils/colors';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-type ICommonToggleNoteComponent = {
+type ICommonNoteToggleButton = {
   isDone: boolean;
   size: number;
 };
 
-const CommonToggleNoteComponent = ({
-  isDone,
-  size,
-}: ICommonToggleNoteComponent) => {
+const CommonNoteToggleButton = ({isDone, size}: ICommonNoteToggleButton) => {
   if (isDone) {
     return <Icon color={COLORS.GREEN} name="check-box" size={size} />;
   }
@@ -26,4 +23,4 @@ const CommonToggleNoteComponent = ({
   );
 };
 
-export default CommonToggleNoteComponent;
+export default CommonNoteToggleButton;

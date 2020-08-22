@@ -4,7 +4,7 @@ import {FlatList} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 interface ICommonSubjectsModalComponent {
   subjects: string[];
@@ -15,13 +15,13 @@ interface ICommonSubjectsModalComponent {
   onHide: () => void;
 }
 
-const CommonSubjectsModalComponent = ({
+const CommonSubjectsModalComponent: React.FC<ICommonSubjectsModalComponent> = ({
   isVisible,
   subjects,
 
   onSelectSubject,
   onHide,
-}: ICommonSubjectsModalComponent) => {
+}) => {
   const renderSubjectComponent = ({item}: {item: string}) => {
     return (
       <ModalElementContainer

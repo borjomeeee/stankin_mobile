@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const developer = config['developer_mail'];
+const developer = config.developer_mail;
 
 import React, {useLayoutEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -18,9 +18,9 @@ import {
 } from '../actions/User.actions';
 import {downloadSheduleAction} from '../actions/Shedule.actions';
 
-import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
-import CommonTagComponent from '../components/CommonTag.component';
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
+import CommonTagComponent from '../components/Common/CommonTag.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
 import {ScreenContainer} from '../utils/theme';
@@ -53,13 +53,13 @@ const IUserGroupDropdownProps: PickerStyle = {
 
 const DEVELOPER_URL = `mailto:${developer}`;
 
-const SettingsScreen = ({
+const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
   user,
   logoutUser,
   setUserGroup,
   updateSchedule,
-}: ConnectedProps<typeof connector>) => {
+}) => {
   const navigation = useNavigation();
 
   // Select dropdown
@@ -75,7 +75,12 @@ const SettingsScreen = ({
     navigation.setOptions({
       headerRight: () => (
         <CommonHeaderIconComponent>
-          <Icon name="log-out" size={25} onPress={logoutUser} />
+          <Icon
+            name="log-out"
+            size={25}
+            color={'#444444'}
+            onPress={logoutUser}
+          />
         </CommonHeaderIconComponent>
       ),
     });

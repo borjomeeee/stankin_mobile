@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect, useRef} from 'react';
-import {ScrollView, Platform, FlatList} from 'react-native';
+import {ScrollView, Platform} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
@@ -15,32 +15,36 @@ import {ILesson} from '../models/Lesson.model';
 
 import {LessonGroup} from '../enums/Lesson.enums';
 
-import CommonHeaderIconComponent from '../components/CommonHeaderIcon.component';
-import ScheduleDayComponent from '../components/ScheduleDay.component';
+import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
+import ScheduleDayComponent from '../components/Schedule/ScheduleDay.component';
+import ScheduleCalendarComponent from '../components/Schedule/ScheduleCalendar.component';
+import ScheduleNotesComponent from '../components/Schedule/ScheduleNotes.component';
 
-import * as COLORS from '../utils/colors';
-import {getRangeDates} from '../utils/methods';
 import {ScreenContainer} from '../utils/theme';
 
-interface IScheduleDay {
-  key: Date;
-  data: ILesson[];
-}
-
-const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => {
+const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
+  schedule,
+  user,
+}) => {
   const navigation = useNavigation();
 
   // Datepicker
   const [showDatepicker, setShowDatepicker] = useState(false);
-  const [startDate, setStartDate] = useState<Date>(new Date());
+
+  const [startDate] = useState<Date>(new Date());
+  const [currPageDate, setCurrPageDate] = useState<Date>(() => {
+    const date = new Date();
+
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  });
 
   const listLessonsRef = useRef<ScrollView | null>(null);
 
-  const onChangeStartDate = (_: any, selectedDate: Date | undefined) => {
-    const currentDate = selectedDate || startDate;
+  const onChangeCurrPageDate = (_: any, selectedDate: Date | undefined) => {
+    const currentDate = selectedDate || currPageDate;
 
     setShowDatepicker(Platform.OS === 'ios');
-    setStartDate(currentDate);
+    setCurrPageDate(currentDate);
 
     listLessonsRef.current!.scrollTo({x: 0, y: 0, animated: true});
   };
@@ -52,60 +56,48 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
     };
 
     navigation.setOptions({
-      headerTitle: user.group.title.toUpperCase(),
       headerRight: () => (
         <CommonHeaderIconComponent onPress={toggleShowDatepicker}>
-          <Icon name="today" color={COLORS.BLACK} size={25} />
+          <Icon name="event" color={'#444444'} size={25} />
         </CommonHeaderIconComponent>
       ),
     });
-  }, [navigation, showDatepicker, user.group.title]);
+  }, [navigation, showDatepicker]);
 
-  // Dates for display
-  const currDateRange = getRangeDates(startDate).map((date: Date) => {
-    const currDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    return currDate.getTime();
-  });
-
-  const scheduleDays = currDateRange.map((date: number) => ({
-    key: new Date(date),
-    data: (schedule.get(date) || []).filter(
-      (lesson: ILesson) =>
-        user.lessonGroup === LessonGroup.NONE ||
-        lesson.groupOnLesson === LessonGroup.NONE ||
-        lesson.groupOnLesson === user.lessonGroup,
-    ),
-  }));
-
-  const renderScheduleDay = ({item}: {item: IScheduleDay}) => {
-    return <ScheduleDayComponent lessons={item.data} date={item.key} />;
-  };
+  // Get lessons for currDate and selected user group
+  const lessons = (schedule.get(currPageDate.getTime()) || []).filter(
+    (lesson: ILesson) =>
+      user.lessonGroup === LessonGroup.NONE ||
+      lesson.groupOnLesson === LessonGroup.NONE ||
+      lesson.groupOnLesson === user.lessonGroup,
+  );
 
   return (
     <ScreenContainer>
       <ScheduleScreenContent
         showsVerticalScrollIndicator={false}
         ref={listLessonsRef}>
-        <FlatList
-          data={scheduleDays}
-          keyExtractor={(item: IScheduleDay) => item.key.getTime().toString()}
-          renderItem={renderScheduleDay}
-          ItemSeparatorComponent={DaySeparator}
+        <ScheduleCalendarComponent
+          todayDate={startDate}
+          currDate={currPageDate}
+          setCurrDate={setCurrPageDate}
         />
+
+        <ScheduleDayContainer>
+          <ScheduleDayComponent lessons={lessons} />
+
+          <ScheduleNotesComponent currDate={currPageDate} />
+        </ScheduleDayContainer>
 
         {showDatepicker && (
           <DateTimePicker
             testID="dateTimePicker"
             timeZoneOffsetInMinutes={0}
-            value={startDate}
+            value={currPageDate}
             mode="date"
             is24Hour={true}
             display="default"
-            onChange={onChangeStartDate}
+            onChange={onChangeCurrPageDate}
           />
         )}
       </ScheduleScreenContent>
@@ -116,11 +108,11 @@ const SсheduleScreen = ({schedule, user}: ConnectedProps<typeof connector>) => 
 // Components
 const ScheduleScreenContent = styled.ScrollView`
   margin-top: 10px;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
 `;
 
-const DaySeparator = styled.View`
-  height: 15px;
+const ScheduleDayContainer = styled.View`
+  margin: 30px 0px;
 `;
 
 // State

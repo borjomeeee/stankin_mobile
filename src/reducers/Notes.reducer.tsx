@@ -1,7 +1,12 @@
 import {INotesInitialState, initialState} from '../redux/store';
 
 import {NotesActionType} from '../utils/types';
-import {CREATE_NOTE, TOGGLE_DONE_NOTE, REMOVE_NOTE} from '../utils/constants';
+import {
+  CREATE_NOTE,
+  TOGGLE_DONE_NOTE,
+  REMOVE_NOTE,
+  LOGOUT_USER,
+} from '../utils/constants';
 
 import Note, {INote} from '../models/Note.model';
 
@@ -19,7 +24,10 @@ export default (
 
       const createNote_notes = state.get(createNote_newNote.date);
       if (Array.isArray(createNote_notes)) {
-        createNote_notes.push(createNote_newNote);
+        state.set(createNote_newNote.date, [
+          ...createNote_notes,
+          createNote_newNote,
+        ]);
       } else {
         state.set(createNote_newNote.date, [createNote_newNote]);
       }
@@ -27,19 +35,25 @@ export default (
       return new Map<number, INote[]>(state);
 
     case REMOVE_NOTE:
-      const removeNote_newState: [number, INote[]][] = Array.from(
-        state,
-      ).map(([dateNum, notes]: [number, INote[]]) => [
-        dateNum,
-        notes.filter((note: INote) => note.id !== action.payload.noteId),
-      ]);
+      const removeNote_newState = Array.from(state)
+        .map(
+          ([dateNum, notes]: [number, INote[]]) =>
+            [
+              dateNum,
+              notes.filter((note: INote) => note.id !== action.payload.noteId),
+            ] as [number, INote[]],
+        )
+        .filter(([_, notes]: [number, INote[]]) => notes.length > 0);
 
       return new Map<number, INote[]>(removeNote_newState);
     case TOGGLE_DONE_NOTE:
-      Array.from(state).some(([_, notes]: [number, INote[]]) => {
+      Array.from(state).some(([dateTimestamp, notes]: [number, INote[]]) => {
         return notes.some((note: INote) => {
           if (note.id === action.payload.id) {
             note.isChecked = !note.isChecked;
+
+            state.set(dateTimestamp, [...(state.get(dateTimestamp) || [])]);
+
             return true;
           }
           return false;
@@ -47,6 +61,10 @@ export default (
       });
 
       return new Map<number, INote[]>(state);
+
+    // Clear notes after logout
+    case LOGOUT_USER:
+      return new Map<number, INote[]>();
     default:
       return state;
   }

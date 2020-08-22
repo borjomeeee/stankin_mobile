@@ -2,14 +2,17 @@ import React from 'react';
 
 import styled from 'styled-components/native';
 
-import * as COLORS from '../utils/colors';
+import * as COLORS from '../../utils/colors';
 
 type ICommonButtonComponent = {
   text: string;
   onClick: () => void;
 };
 
-const CommonButtonComponent = ({text, onClick}: ICommonButtonComponent) => {
+const CommonButtonComponent: React.FC<ICommonButtonComponent> = ({
+  text,
+  onClick,
+}) => {
   return (
     <ButtonContainer activeOpacity={0.65} onPress={onClick}>
       <ButtonText>{text}</ButtonText>

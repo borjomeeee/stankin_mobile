@@ -3,7 +3,7 @@ import {ActivityIndicator} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import CommonLogoComponent from '../components/CommonLogo.component';
+import CommonLogoComponent from '../components/Common/CommonLogo.component';
 
 import {AuthScreenContainer} from '../utils/theme';
 import * as COLORS from '../utils/colors';

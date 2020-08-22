@@ -1,0 +1,528 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Schedule calendar tests Schedule calendar render correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {},
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 5,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "row",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#444444",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 16,
+            },
+          ]
+        }
+      >
+        Сегодня
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#444444",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 16,
+            },
+          ]
+        }
+      >
+        Суббота, 1 Февраля
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderTopColor": "#E4E4E4",
+          "borderTopWidth": 1,
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingTop": 10,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Пн
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={false}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          27
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Вт
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={false}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          28
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Ср
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={false}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          29
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Чт
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={false}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          30
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Пт
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={false}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          31
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Сб
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#444444",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={true}
+          style={
+            Array [
+              Object {
+                "color": "#ffffff",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          1
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#C4C4C4",
+              "fontFamily": "Inter-Regular",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        Вс
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "display": "flex",
+            "height": 24,
+            "justifyContent": "center",
+            "marginTop": 2,
+            "opacity": 1,
+            "width": 24,
+          }
+        }
+      >
+        <Text
+          isSelected={false}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "Inter-Regular",
+                "fontSize": 16,
+              },
+            ]
+          }
+        >
+          2
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

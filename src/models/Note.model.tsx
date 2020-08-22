@@ -10,6 +10,14 @@ export interface INote {
   isChecked: boolean;
 }
 
+export interface INotCheckedNote extends INote {
+  isChecked: false;
+}
+
+export interface ICheckedNote extends INote {
+  isChecked: true;
+}
+
 export default class Note implements INote {
   id: string;
   text: string;

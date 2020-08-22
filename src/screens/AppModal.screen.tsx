@@ -10,22 +10,23 @@ import {IInitialState} from '../redux/store';
 
 import {clearErrorAction} from '../actions/App.actions';
 
-import CommonButtonComponent from '../components/CommonButton.component';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
 import {convertAppErrorToString} from '../utils/methods';
 
 import {AppErrorTypes} from '../enums/App.enums';
 
-const AppModalScreen = ({
+const AppModalScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
   clearAppError,
-}: ConnectedProps<typeof connector>) => {
+}) => {
   return (
     <View>
       <Modal
         isVisible={app.error.type !== AppErrorTypes.NONE}
-        onBackdropPress={clearAppError.bind(null)}>
+        onBackdropPress={clearAppError.bind(null)}
+        supportedOrientations={['portrait', 'landscape']}>
         <ModalContainer>
           <ModalContent>
             <ModalTitle>{convertAppErrorToString(app.error.type)}</ModalTitle>

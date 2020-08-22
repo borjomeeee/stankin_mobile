@@ -33,6 +33,10 @@ export const dateToDateString = (date: Date): string => {
   }, ${+day} ${getMonthByNum(date.getMonth())}`;
 };
 
+export const dateToDateWithoutDayOfWeekString = (date: Date): string => {
+  return `${date.getDate()} ${getMonthByNum(date.getMonth())}`;
+};
+
 export const getLesonTimeFromNum = (num: number): [string, string] => {
   switch (num) {
     case 1:
@@ -134,4 +138,11 @@ export const convertAppErrorToString = (error: AppErrorTypes) => {
     default:
       return '';
   }
+};
+
+export const compareDates = (date1: Date, date2: Date): number => {
+  var t2 = date2.getTime();
+  var t1 = date1.getTime();
+
+  return Math.floor((t1 - t2) / (24 * 3600 * 1000));
 };

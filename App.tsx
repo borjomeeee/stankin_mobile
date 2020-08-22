@@ -21,6 +21,10 @@ import Persisted from './src/redux/store';
 import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
 
+// TODO: clear store after logout user
+// TODO: add 'react-native-calendar-strip' lib
+
+// TODO: Fix bug with show modal while orientation is changed
 const App = () => {
   return (
     <Provider store={Persisted.store}>
