@@ -1,7 +1,7 @@
 import {takeEvery, put} from 'redux-saga/effects';
 
-const config = require('../config.json');
-const server_ip = config['server_ip'];
+import Config from 'react-native-config';
+const {SERVER_ADDRESS, SERVER_PORT} = Config;
 
 import {CHECK_UPDATES} from '../utils/constants';
 
@@ -15,10 +15,13 @@ import {AppErrorTypes} from '../enums/App.enums';
 
 export function* checkUpdateSaga({payload}: ICheckUpdatesSagaProps) {
   try {
-    const res = yield fetch(`http://${server_ip}:5000/api/hello-user`, {
-      method: 'POST',
-      body: JSON.stringify({groupId: payload.groupId}),
-    });
+    const res = yield fetch(
+      `http://${SERVER_ADDRESS}:${SERVER_PORT}/api/hello-user`,
+      {
+        method: 'POST',
+        body: JSON.stringify({groupId: payload.groupId}),
+      },
+    );
 
     if (res.status === 200) {
       const data = yield res.json();

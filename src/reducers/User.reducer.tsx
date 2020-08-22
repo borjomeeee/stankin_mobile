@@ -1,7 +1,9 @@
 import {initialState, IUserInitialState} from '../redux/store';
+
 import User from '../models/User.model';
 
 import {UserActionType} from '../utils/types';
+
 import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILED,

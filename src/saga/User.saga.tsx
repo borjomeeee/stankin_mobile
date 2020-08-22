@@ -1,7 +1,7 @@
 import {takeLeading, put} from 'redux-saga/effects';
 
-const config = require('../config.json');
-const server_ip = config['server_ip'];
+import Config from 'react-native-config';
+const {SERVER_ADDRESS, SERVER_PORT} = Config;
 
 import {
   ILoginSaga,
@@ -19,10 +19,16 @@ import {AppErrorTypes} from '../enums/App.enums';
 
 export function* loginSaga({payload}: ILoginSaga) {
   try {
-    const res = yield fetch(`http://${server_ip}:5000/api/login`, {
-      method: 'POST',
-      body: JSON.stringify({login: payload.login, password: payload.password}),
-    });
+    const res = yield fetch(
+      `http://${SERVER_ADDRESS}:${SERVER_PORT}/api/login`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          login: payload.login,
+          password: payload.password,
+        }),
+      },
+    );
 
     if (res.status === 200) {
       const data = yield res.json();

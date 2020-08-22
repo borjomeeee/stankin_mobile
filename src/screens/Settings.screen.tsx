@@ -1,5 +1,5 @@
-const config = require('../config.json');
-const developer = config.developer_mail;
+import Config from 'react-native-config';
+const {DEVELOPER_EMAIL} = Config;
 
 import React, {useLayoutEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -51,7 +51,7 @@ const IUserGroupDropdownProps: PickerStyle = {
   },
 };
 
-const DEVELOPER_URL = `mailto:${developer}`;
+const DEVELOPER_URL = `mailto:${DEVELOPER_EMAIL}`;
 
 const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
