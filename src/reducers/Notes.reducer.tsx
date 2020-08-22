@@ -1,7 +1,12 @@
 import {INotesInitialState, initialState} from '../redux/store';
 
 import {NotesActionType} from '../utils/types';
-import {CREATE_NOTE, TOGGLE_DONE_NOTE, REMOVE_NOTE} from '../utils/constants';
+import {
+  CREATE_NOTE,
+  TOGGLE_DONE_NOTE,
+  REMOVE_NOTE,
+  LOGOUT_USER,
+} from '../utils/constants';
 
 import Note, {INote} from '../models/Note.model';
 
@@ -56,6 +61,10 @@ export default (
       });
 
       return new Map<number, INote[]>(state);
+
+    // Clear notes after logout
+    case LOGOUT_USER:
+      return new Map<number, INote[]>();
     default:
       return state;
   }
