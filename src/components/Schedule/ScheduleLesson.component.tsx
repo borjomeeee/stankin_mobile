@@ -73,6 +73,7 @@ const LessonCardContainer = styled.View`
   align-content: stretch;
 
   border: 1px solid ${'#E4E4E4'};
+  border-radius: 5px;
 
   padding: 10px 15px 10px 10px;
 `;

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {
@@ -45,18 +45,7 @@ const SettingsNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   ),
 };
 
-const MainNavigation = ({
-  app,
-  user,
-  checkUpdates,
-}: ConnectedProps<typeof connector>) => {
-  // Load updates
-  useEffect(() => {
-    if (user.group.id) {
-      checkUpdates(user.group.id);
-    }
-  }, [checkUpdates, user.group]);
-
+const MainNavigation = ({app, user}: ConnectedProps<typeof connector>) => {
   if (app.error.type !== AppErrorTypes.NONE) {
     return <AppModalScreen />;
   }
@@ -77,6 +66,7 @@ const MainNavigation = ({
       inactiveColor="#bcbcbc"
       keyboardHidesNavigationBar={true}
       sceneAnimationEnabled={true}
+      // eslint-disable-next-line react-native/no-inline-styles
       barStyle={{backgroundColor: '#fff'}}>
       <MainTabs.Screen
         name="Notes"
