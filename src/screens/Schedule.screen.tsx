@@ -1,4 +1,3 @@
-
 import React, {useState, useLayoutEffect, useRef, useMemo} from 'react';
 import {Platform} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';

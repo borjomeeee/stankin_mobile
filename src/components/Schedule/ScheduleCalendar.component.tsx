@@ -56,7 +56,7 @@ const ScheduleCalendarComponent: React.FC<
   const onChangeCurrDate = (newDate: Date) => {
     setCurrDate(newDate);
   };
-  
+
   const tommorrowTimestamp = todayDate.getTime() + 86400;
   const yesterdayTimestamp = todayDate.getTime() - 86400;
 
