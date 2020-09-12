@@ -3,7 +3,7 @@ import {StyleProp, ViewStyle, TextStyle} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import {withTheme} from 'react-native-paper';
+import {withTheme, Text} from 'react-native-paper';
 
 const CommonLogoComponent: React.FC<{theme: ReactNativePaper.Theme}> = ({
   theme,
@@ -34,7 +34,7 @@ const LogoContainer = styled.View`
   flex-direction: row;
 `;
 
-const LogoTitle = styled.Text`
+const LogoTitle = styled(Text)`
   font-size: 20px;
   text-transform: uppercase;
 `;
@@ -47,7 +47,7 @@ const LogoTypeContainer = styled.View`
   margin-left: 14;
 `;
 
-const LogoTypeText = styled.Text`
+const LogoTypeText = styled(Text)`
   font-size: 14px;
 `;
 

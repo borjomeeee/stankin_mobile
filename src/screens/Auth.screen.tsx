@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
-import {Button, withTheme} from 'react-native-paper';
+import {Button, withTheme, Text} from 'react-native-paper';
 
 import {StyleProp, TextStyle} from 'react-native';
 
@@ -118,7 +118,7 @@ const AuthScreenContent = styled.View`
 
 const AuthForm = styled.View``;
 
-const AuthFormLabel = styled.Text`
+const AuthFormLabel = styled(Text)`
   font-size: 16px;
 
   margin-bottom: 20px;
@@ -129,7 +129,7 @@ const AuthFormButton = styled.View`
   align-self: center;
 `;
 
-const FooterText = styled.Text`
+const FooterText = styled(Text)`
   flex-wrap: wrap;
 
   font-size: 12px;

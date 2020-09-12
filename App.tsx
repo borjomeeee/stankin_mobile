@@ -23,11 +23,13 @@ import Persisted from './src/redux/store';
 
 import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
+import {Theme} from 'react-native-paper/lib/typescript/src/types';
 
 // TODO: Fix bug with show modal while orientation is changed
 const App = () => {
   return (
-    <PaperProvider theme={theme}>
+    // @ts-ignore
+    <PaperProvider theme={theme as Theme}>
       <Provider store={Persisted.store}>
         <PersistGate
           loading={<LoadingScreen />}

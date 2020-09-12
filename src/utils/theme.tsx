@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 import {DefaultTheme, configureFonts} from 'react-native-paper';
-import {Theme, Fonts} from 'react-native-paper/lib/typescript/src/types';
+import {Fonts} from 'react-native-paper/lib/typescript/src/types';
 
 import * as COLORS from './colors';
 
