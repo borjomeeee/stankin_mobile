@@ -62,17 +62,21 @@ const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
           <AuthFormLabel>Введите данные от ЭОС-а</AuthFormLabel>
 
           <AuthFormInput
+            label="Логин"
             value={loginText}
             onChangeText={changeLoginText}
-            error={loginError}
+            error={!!loginError}
+            errorValue={loginError}
             placeholder="Login"
           />
           <AuthFormInput
+            label="Пароль"
             value={passwordText}
             onChangeText={changePasswordText}
             secureTextEntry={true}
             onSubmitEditing={onConfirmPassword}
-            error={passwordError}
+            error={!!passwordError}
+            errorValue={passwordError}
             placeholder="Password"
           />
 
@@ -100,19 +104,22 @@ const AuthScreenContent = styled.View`
 `;
 
 const AuthForm = styled.View`
-  margin-bottom: 10px;
+  /* margin-top: 40px;
+  margin-bottom: 10px; */
 `;
 
 const AuthFormLabel = styled.Text`
   font-size: 16px;
+
+  margin-bottom: 20px;
 `;
 
 const AuthFormInput = styled(CommonInputComponent)`
-  margin-top: 20px;
+  /* margin-top: 20px; */
 `;
 
 const AuthFormButton = styled.View`
-  margin-top: 35px;
+  margin-top: 20px;
   align-self: center;
 `;
 

@@ -11,6 +11,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
+import {Provider as PaperProvider} from 'react-native-paper';
+import {theme} from './src/utils/theme';
+
 import {NavigationContainer} from '@react-navigation/native';
 
 import {Provider} from 'react-redux';
@@ -21,19 +24,20 @@ import Persisted from './src/redux/store';
 import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
 
-// TODO: clear store after logout user
-// TODO: add 'react-native-calendar-strip' lib
-
 // TODO: Fix bug with show modal while orientation is changed
 const App = () => {
   return (
-    <Provider store={Persisted.store}>
-      <PersistGate loading={<LoadingScreen />} persistor={Persisted.persistor}>
-        <NavigationContainer>
-          <MainNavigation />
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <PaperProvider theme={theme}>
+      <Provider store={Persisted.store}>
+        <PersistGate
+          loading={<LoadingScreen />}
+          persistor={Persisted.persistor}>
+          <NavigationContainer>
+            <MainNavigation />
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+    </PaperProvider>
   );
 };
 

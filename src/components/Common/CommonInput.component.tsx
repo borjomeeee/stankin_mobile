@@ -1,96 +1,42 @@
 import React, {useState} from 'react';
-import {TextInput, View, Animated} from 'react-native';
+import {TextInput, HelperText} from 'react-native-paper';
+import {View, Animated} from 'react-native';
 
 import styled from 'styled-components/native';
 
 import * as COLORS from '../../utils/colors';
 
-interface ICommonInputComponent extends React.ComponentProps<typeof TextInput> {
-  label?: string;
-  error?: string;
+type ICommonInputComponentProps = React.ComponentProps<typeof TextInput> & {
+  errorValue: string;
+};
+interface ICommonInputComponentState {}
 
-  value: string;
-  onChangeText: (val: string) => void;
-}
-
-interface IInputProps {
-  isErrorer: boolean;
-}
-
-const CommonInputComponent: React.FC<ICommonInputComponent> = ({
-  label,
-  value,
-  onChangeText,
-  error,
-  ...props
-}) => {
-  const errorDropValue = useState(new Animated.Value(-10))[0];
-  const errorOpacityValue = useState(new Animated.Value(0))[0];
-
-  if (error) {
-    errorDropValue.setValue(-10);
-    errorOpacityValue.setValue(0);
-
-    Animated.timing(errorDropValue, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-
-    Animated.timing(errorOpacityValue, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
+class CommonInputComponent extends React.Component<
+  ICommonInputComponentProps,
+  ICommonInputComponentState
+> {
+  constructor(props: ICommonInputComponentProps) {
+    super(props);
   }
 
-  return (
-    <View>
-      {label && <InputTitle isErrorer={!!error}>{label}</InputTitle>}
+  render() {
+    return (
+      <View>
+        <TextInput
+          mode="outlined"
+          selectionColor="#444"
+          underlineColor="#444"
+          underlineColorAndroid="#444"
+          placeholderTextColor="#BDBDBD"
+          {...this.props}
+        />
 
-      <InputBlock
-        isErrorer={!!error}
-        value={value}
-        onChangeText={onChangeText}
-        placeholderTextColor="#BDBDBD"
-        {...props}
-      />
-
-      <Animated.View
-        style={{
-          opacity: errorOpacityValue,
-          transform: [{translateY: errorDropValue}],
-        }}>
-        {!!error && <InputError>{error}</InputError>}
-      </Animated.View>
-    </View>
-  );
-};
-
-// Components
-const InputTitle = styled.Text<IInputProps>`
-  padding-left: 5px;
-  align-self: flex-start;
-
-  color: ${(props: IInputProps) => (props.isErrorer ? COLORS.RED : '#BDBDBD')};
-  font-size: 14;
-`;
-
-const InputBlock = styled.TextInput<IInputProps>`
-  padding: 10px 15px;
-  align-self: stretch;
-
-  border: 1px solid ${(props) => (props.isErrorer ? COLORS.RED : '#E8E8E8')};
-  border-radius: 8px;
-
-  background-color: ${'#F6F6F6'};
-`;
-
-const InputError = styled.Text`
-  color: ${COLORS.RED};
-  font-size: 12px;
-
-  padding-left: 5px;
-`;
+        <HelperText type="error" visible={this.props.error}>
+          {this.props.errorValue}
+        </HelperText>
+      </View>
+    );
+  }
+}
 
 export default CommonInputComponent;

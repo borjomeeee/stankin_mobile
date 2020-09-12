@@ -26,6 +26,7 @@ const MainTabs = createMaterialBottomTabNavigator();
 
 const NotesNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   tabBarLabel: 'Дедлайны',
+  tabBarColor: '#444',
   tabBarIcon: ({color}: {color: any}) => (
     <Icon name="turned-in-not" color={color} size={25} />
   ),
@@ -33,6 +34,7 @@ const NotesNavigationTabOptions: MaterialBottomTabNavigationOptions = {
 
 const SheduleNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   tabBarLabel: 'Расписание',
+  tabBarColor: '#444',
   tabBarIcon: ({color}: {color: any}) => (
     <Icon name="chrome-reader-mode" color={color} size={25} />
   ),
@@ -40,6 +42,7 @@ const SheduleNavigationTabOptions: MaterialBottomTabNavigationOptions = {
 
 const SettingsNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   tabBarLabel: 'Настройки',
+  tabBarColor: '#444',
   tabBarIcon: ({color}: {color: any}) => (
     <Icon name="settings" color={color} size={25} />
   ),
