@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
+import {Button, withTheme} from 'react-native-paper';
+
 import {StyleProp, TextStyle} from 'react-native';
 
 import styled from 'styled-components/native';
@@ -12,14 +14,12 @@ import {loginUserAction} from '../actions/User.actions';
 import CommonLogoComponent from '../components/Common/CommonLogo.component';
 import CommonInputComponent from '../components/Common/CommonInput.component';
 
-import * as COLORS from '../utils/colors';
 import {AuthScreenContainer} from '../utils/theme';
 
 import useAuthForm from '../hooks/useAuthForm.hook';
 import useKeyboard from '../hooks/useKeyboard.hook';
 
 import {AppErrorTypes} from '../enums/App.enums';
-import {Button, withTheme} from 'react-native-paper';
 
 const AuthScreen: React.FC<
   ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
@@ -39,9 +39,13 @@ const AuthScreen: React.FC<
     checkValid,
   } = useAuthForm();
 
-  const ButtonStyles: StyleProp<TextStyle> = {
+  const buttonStyles: StyleProp<TextStyle> = {
     ...theme.fonts.medium,
     letterSpacing: 0.4,
+  };
+
+  const footerStyles: StyleProp<TextStyle> = {
+    color: theme.colors.darkGray,
   };
 
   const {keyboardIsOpen} = useKeyboard();
@@ -67,14 +71,14 @@ const AuthScreen: React.FC<
         <AuthForm>
           <AuthFormLabel>Введите данные от ЭОС-а</AuthFormLabel>
 
-          <AuthFormInput
+          <CommonInputComponent
             label="Логин"
             value={loginText}
             onChangeText={changeLoginText}
             error={!!loginError}
             errorValue={loginError}
           />
-          <AuthFormInput
+          <CommonInputComponent
             label="Пароль"
             value={passwordText}
             onChangeText={changePasswordText}
@@ -85,19 +89,17 @@ const AuthScreen: React.FC<
           />
 
           <AuthFormButton>
-            {/* <CommonButtonComponent text="Войти" onClick={onConfirmPassword} /> */}
-
             <Button
               mode="contained"
               onPress={onConfirmPassword}
-              labelStyle={ButtonStyles}>
+              labelStyle={buttonStyles}>
               Войти
             </Button>
           </AuthFormButton>
         </AuthForm>
 
         {!keyboardIsOpen && (
-          <FooterText>
+          <FooterText style={footerStyles}>
             * Для входа в приложение используйте логин и пароль от ЭОС
           </FooterText>
         )}
@@ -114,19 +116,12 @@ const AuthScreenContent = styled.View`
   justify-content: space-between;
 `;
 
-const AuthForm = styled.View`
-  /* margin-top: 40px;
-  margin-bottom: 10px; */
-`;
+const AuthForm = styled.View``;
 
 const AuthFormLabel = styled.Text`
   font-size: 16px;
 
   margin-bottom: 20px;
-`;
-
-const AuthFormInput = styled(CommonInputComponent)`
-  /* margin-top: 20px; */
 `;
 
 const AuthFormButton = styled.View`
@@ -136,8 +131,9 @@ const AuthFormButton = styled.View`
 
 const FooterText = styled.Text`
   flex-wrap: wrap;
-  color: ${COLORS.MEDIUM_GRAY};
+
   font-size: 12px;
+
   text-align: center;
 `;
 
@@ -148,8 +144,7 @@ const mapStateToProps = (state: IInitialState) => ({
 });
 
 const mapDispatchToProps = {
-  loginUser: (login: string, password: string) =>
-    loginUserAction(login, password),
+  loginUser: loginUserAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
