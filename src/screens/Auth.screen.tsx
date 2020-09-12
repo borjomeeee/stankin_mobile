@@ -67,7 +67,6 @@ const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
             onChangeText={changeLoginText}
             error={!!loginError}
             errorValue={loginError}
-            placeholder="Login"
           />
           <AuthFormInput
             label="Пароль"
@@ -77,7 +76,6 @@ const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
             onSubmitEditing={onConfirmPassword}
             error={!!passwordError}
             errorValue={passwordError}
-            placeholder="Password"
           />
 
           <AuthFormButton>

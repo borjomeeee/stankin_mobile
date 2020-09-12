@@ -1,10 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {TextInput, HelperText} from 'react-native-paper';
-import {View, Animated} from 'react-native';
 
-import styled from 'styled-components/native';
-
-import * as COLORS from '../../utils/colors';
+import {View} from 'react-native';
 
 type ICommonInputComponentProps = React.ComponentProps<typeof TextInput> & {
   errorValue: string;
@@ -22,14 +19,7 @@ class CommonInputComponent extends React.Component<
   render() {
     return (
       <View>
-        <TextInput
-          mode="outlined"
-          selectionColor="#444"
-          underlineColor="#444"
-          underlineColorAndroid="#444"
-          placeholderTextColor="#BDBDBD"
-          {...this.props}
-        />
+        <TextInput mode="outlined" {...this.props} />
 
         <HelperText type="error" visible={this.props.error}>
           {this.props.errorValue}
