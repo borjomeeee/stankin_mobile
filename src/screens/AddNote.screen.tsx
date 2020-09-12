@@ -158,7 +158,8 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
           <OptionInputElement
             value={noteText}
             onChangeText={onChangeNoteText}
-            error={noteTextError}
+            error={!!noteTextError}
+            errorValue={noteTextError}
             placeholder="Написать реферат ..."
           />
         </OptionInputContainer>

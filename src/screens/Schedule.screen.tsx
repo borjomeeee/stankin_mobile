@@ -1,4 +1,6 @@
 import React, {useState, useLayoutEffect, useRef, useMemo} from 'react';
+import {withTheme, IconButton} from 'react-native-paper';
+
 import {Platform} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
@@ -8,24 +10,21 @@ import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {ILesson} from '../models/Lesson.model';
 
 import {LessonGroup} from '../enums/Lesson.enums';
 
-import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
 import ScheduleDayComponent from '../components/Schedule/ScheduleDay.component';
 import ScheduleCalendarComponent from '../components/Schedule/ScheduleCalendar.component';
 import ScheduleNotesComponent from '../components/Schedule/ScheduleNotes.component';
 
 import {ScreenContainer} from '../utils/theme';
 
-const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
-  schedule,
-  user,
-}) => {
+const SсheduleScreen: React.FC<
+  ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
+> = ({schedule, user, theme}) => {
   const navigation = useNavigation();
 
   const calendarRef = useRef(null);
@@ -47,7 +46,6 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
     setShowDatepicker(Platform.OS === 'ios');
 
     setCurrPageDate(currentDate);
-    // setStartDate(currentDate);
   };
 
   // Set header icon and title
@@ -58,16 +56,18 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
     navigation.setOptions({
       headerRight: () => (
-        <CommonHeaderIconComponent onTouchEnd={toggleShowDatepicker}>
-          <Icon name="event" color={'#444444'} size={25} />
-        </CommonHeaderIconComponent>
+        <IconButton
+          icon="calendar"
+          onPress={toggleShowDatepicker}
+          color={theme.colors.primary}
+          size={30}
+        />
       ),
     });
-  }, [navigation, showDatepicker]);
+  }, [navigation, theme, showDatepicker]);
 
   const onClickBackButton = () => {
     setCurrPageDate(todayDate);
-    // setStartDate(todayDate);
   };
 
   // Get lessons for currDate and selected user group
@@ -139,4 +139,4 @@ const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(SсheduleScreen);
+export default connector(withTheme(SсheduleScreen));

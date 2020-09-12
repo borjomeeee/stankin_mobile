@@ -2,14 +2,16 @@ import Config from 'react-native-config';
 const {DEVELOPER_EMAIL, APP_VERSION} = Config;
 
 import React, {useLayoutEffect, useRef} from 'react';
-import {useNavigation} from '@react-navigation/native';
+
 import {TouchableOpacity, Linking} from 'react-native';
+import {IconButton, withTheme} from 'react-native-paper';
+
 import {connect, ConnectedProps} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 import {IInitialState} from '../redux/store';
 
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/Entypo';
 import RNPickerSelect, {PickerStyle} from 'react-native-picker-select';
 
 import {
@@ -19,7 +21,6 @@ import {
 
 import {updateScheduleAction} from '../actions/Shedule.actions';
 
-import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
 import CommonTagComponent from '../components/Common/CommonTag.component';
 import CommonButtonComponent from '../components/Common/CommonButton.component';
 
@@ -54,13 +55,9 @@ const IUserGroupDropdownProps: PickerStyle = {
 
 const DEVELOPER_URL = `mailto:${DEVELOPER_EMAIL}`;
 
-const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
-  app,
-  user,
-  logoutUser,
-  setUserGroup,
-  updateSchedule,
-}) => {
+const SettingsScreen: React.FC<
+  ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
+> = ({app, user, logoutUser, setUserGroup, updateSchedule, theme}) => {
   const navigation = useNavigation();
 
   // Select dropdown
@@ -75,12 +72,15 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <CommonHeaderIconComponent onTouch={logoutUser}>
-          <Icon name="log-out" size={25} color={'#444444'} />
-        </CommonHeaderIconComponent>
+        <IconButton
+          icon="logout"
+          onPress={logoutUser}
+          color={theme.colors.primary}
+          size={30}
+        />
       ),
     });
-  }, [logoutUser, navigation]);
+  }, [logoutUser, navigation, theme]);
 
   const onSelectUserGroup = (value: string | null) => {
     if (value !== null) {
@@ -269,4 +269,4 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(SettingsScreen);
+export default connector(withTheme(SettingsScreen));
