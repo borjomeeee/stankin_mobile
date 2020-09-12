@@ -9,6 +9,9 @@ declare global {
   namespace ReactNativePaper {
     interface ThemeColors {
       darkGray: string;
+
+      white: string;
+      black: string;
     }
 
     // interface Theme {
@@ -66,6 +69,10 @@ export const theme = {
   roundness: 5,
   colors: {
     ...DefaultTheme.colors,
+
+    white: '#ffffff',
+    black: '#000000',
+
     primary: '#444444',
     accent: '#E4E4E4',
 

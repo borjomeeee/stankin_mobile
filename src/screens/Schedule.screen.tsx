@@ -87,6 +87,7 @@ const SсheduleScreen: React.FC<
       <ScheduleScreenContent showsVerticalScrollIndicator={false}>
         <ScheduleCalendarComponent
           style={{}}
+          theme={theme}
           todayDate={todayDate}
           currDate={currPageDate}
           startDate={startDate}
@@ -119,7 +120,6 @@ const SсheduleScreen: React.FC<
 
 // Components
 const ScheduleScreenContent = styled.ScrollView`
-  margin-top: 10px;
   padding-bottom: 15px;
 `;
 
