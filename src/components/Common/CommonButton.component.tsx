@@ -1,4 +1,5 @@
 import React from 'react';
+import {RaisedButton} from 'react-native-material-kit';
 
 import styled from 'styled-components/native';
 
@@ -14,13 +15,13 @@ const CommonButtonComponent: React.FC<ICommonButtonComponent> = ({
   onClick,
 }) => {
   return (
-    <ButtonContainer activeOpacity={0.65} onPress={onClick}>
+    <ButtonContainer onTouchEnd={onClick}>
       <ButtonText>{text}</ButtonText>
     </ButtonContainer>
   );
 };
 
-const ButtonContainer = styled.TouchableOpacity`
+const ButtonContainer = styled(RaisedButton)`
   max-width: 90%;
   background-color: ${COLORS.BLACK};
 

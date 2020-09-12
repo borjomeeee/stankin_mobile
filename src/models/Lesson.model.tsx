@@ -5,10 +5,9 @@ export interface ILesson {
   title: string;
   type: LessonType;
   groupOnLesson: LessonGroup;
-  groupId: string;
   room: string;
   teacher: string;
-  date: string;
+  timestamp: number;
   num: number;
 }
 
@@ -17,10 +16,9 @@ export default class Lesson implements ILesson {
   title: string;
   type: LessonType;
   groupOnLesson: LessonGroup;
-  groupId: string;
   room: string;
   teacher: string;
-  date: string;
+  timestamp: number;
   num: number;
 
   static getLessonType = (type: string): LessonType => {
@@ -52,20 +50,18 @@ export default class Lesson implements ILesson {
     title: string,
     type: LessonType,
     groupOnLesson: LessonGroup,
-    groupId: string,
     room: string,
     teacher: string,
-    date: string,
+    timestamp: number,
     num: number,
   ) {
     this.id = id;
     this.title = title;
     this.type = type;
     this.groupOnLesson = groupOnLesson;
-    this.groupId = groupId;
     this.room = room;
     this.teacher = teacher;
-    this.date = date;
+    this.timestamp = timestamp;
     this.num = num;
   }
 }

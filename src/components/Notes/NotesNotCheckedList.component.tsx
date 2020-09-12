@@ -3,7 +3,7 @@ import {FlatList} from 'react-native';
 
 import styled from 'styled-components/native';
 
-import {INotCheckedNote} from '../..//models/Note.model';
+import {INotCheckedNote} from '../../models/Note.model';
 
 import NotesDayComponent from './NotesDay.component';
 

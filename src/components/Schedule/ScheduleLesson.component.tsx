@@ -54,9 +54,13 @@ const ScheduleLessonComponent: React.FC<ILesson> = ({
             )}
           </LessonCardOptions>
 
-          <LessonCardTypeContainer>
-            {type.length > 0 && <LessonCardTypeText>{type}</LessonCardTypeText>}
-          </LessonCardTypeContainer>
+          {type.length > 0 && (
+            <LessonCardTypeContainer>
+              <LessonCardTypeText>{type}</LessonCardTypeText>
+
+              <LessonCardTypeBgComponent />
+            </LessonCardTypeContainer>
+          )}
         </LessonCardBottomContainer>
       </LessonCardContent>
     </LessonCardContainer>
@@ -136,6 +140,8 @@ const LessonCardBottomContainer = styled.View`
 `;
 
 const LessonCardTypeContainer = styled.View`
+  position: relative;
+
   padding: 4px 8px;
 
   border-radius: 3px;
@@ -143,8 +149,22 @@ const LessonCardTypeContainer = styled.View`
 `;
 
 const LessonCardTypeText = styled.Text`
-  font-family: 'Inter-Regular';
+  font-family: 'Inter-Bold';
   color: ${'#ffffff'};
+`;
+
+const LessonCardTypeBgComponent = styled.View`
+  position: absolute;
+
+  top: 2px;
+  bottom: -2px;
+  right: -2px;
+  left: 2px;
+
+  z-index: -1;
+
+  border: 1px solid ${'#444444'};
+  border-radius: 3px;
 `;
 
 export default ScheduleLessonComponent;

@@ -1,7 +1,4 @@
-import {takeLeading, put} from 'redux-saga/effects';
-
-import Config from 'react-native-config';
-const {SERVER_ADDRESS, SERVER_PORT} = Config;
+import {takeLeading, put, call} from 'redux-saga/effects';
 
 import {
   ILoginSaga,
@@ -16,23 +13,16 @@ import User from '../models/User.model';
 import Group from '../models/Group.model';
 
 import {AppErrorTypes} from '../enums/App.enums';
+import {fetchAPI} from '../utils/methods';
 
 export function* loginSaga({payload}: ILoginSaga) {
   try {
-    const res = yield fetch(
-      `http://${SERVER_ADDRESS}:${SERVER_PORT}/api/login`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          login: payload.login,
-          password: payload.password,
-        }),
-      },
-    );
+    const {status, data} = yield call(fetchAPI, '/api/login', 'POST', {
+      login: payload.login,
+      password: payload.password,
+    });
 
-    if (res.status === 200) {
-      const data = yield res.json();
-
+    if (status === 200) {
       yield put(
         loginUserSuccessAction(
           new User(
@@ -52,7 +42,7 @@ export function* loginSaga({payload}: ILoginSaga) {
       yield put(
         downloadSheduleAction(payload.login, payload.password, data.group_id),
       );
-    } else if (res.status === 401) {
+    } else if (status === 401) {
       yield put(
         loginUserFailedAction({
           type: AppErrorTypes.WARNING,

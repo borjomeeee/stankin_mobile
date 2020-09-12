@@ -1,4 +1,26 @@
+import Config from 'react-native-config';
+const {SERVER_ADDRESS, SERVER_PORT} = Config;
+
 import {AppErrorTypes} from '../enums/App.enums';
+
+export const fetchAPI = async (
+  url: string,
+  method: string,
+  data: object = {},
+) => {
+  const response = await fetch(
+    `http://${SERVER_ADDRESS}:${SERVER_PORT}${url}`,
+    {
+      method: method,
+      body: JSON.stringify(data),
+    },
+  );
+
+  const status = response.status;
+  const resData = await response.json();
+
+  return {status, data: resData['data'], message: resData['message']};
+};
 
 export const mySubstrWithPoints = (str: string, len: number): string => {
   return str.length > len ? str.substring(0, len - 3) + '...' : str;

@@ -1,4 +1,5 @@
 import React from 'react';
+import {FlatButton} from 'react-native-material-kit';
 import Modal from 'react-native-modal';
 import {FlatList} from 'react-native';
 
@@ -26,7 +27,8 @@ const CommonSubjectsModalComponent: React.FC<ICommonSubjectsModalComponent> = ({
     return (
       <ModalElementContainer
         key={item}
-        onPress={onSelectSubject.bind(null, item)}>
+        onTouchEnd={onSelectSubject.bind(null, item)}
+        style={{alignItems: 'flex-start'}}>
         <ModalElementText>{item}</ModalElementText>
       </ModalElementContainer>
     );
@@ -62,11 +64,10 @@ const ModalContainer = styled.View`
 const ModalContent = styled.ScrollView`
   background-color: ${COLORS.WHITE};
 
-  padding: 0px 20px;
   border-radius: 2px;
 `;
 
-const ModalElementContainer = styled.TouchableOpacity`
+const ModalElementContainer = styled(FlatButton)`
   padding: 15px 0px;
 `;
 
@@ -79,6 +80,8 @@ const SubjectSeparator = styled.View`
 
 const ModalElementText = styled.Text`
   font-size: 16px;
+
+  padding: 0px 20px;
 `;
 
 export default CommonSubjectsModalComponent;

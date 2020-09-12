@@ -5,7 +5,7 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack';
 
-import ScheduleScreen from '../screens/Sсhedule.screen';
+import ScheduleScreen from '../screens/Schedule.screen';
 
 import * as COLORS from '../utils/colors';
 

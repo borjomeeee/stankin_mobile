@@ -20,8 +20,7 @@ import {AppErrorTypes} from '../enums/App.enums';
 // Initial state
 export const initialState = {
   app: {
-    version: '1.0.0',
-    lastUpdateSchedule: new Date().getDate(),
+    lastUpdateSchedule: new Date().getTime(),
 
     isLoading: false,
     error: {
@@ -61,7 +60,7 @@ const storePersistConfig = {
 const AppPersistConfig = {
   key: 'app',
   storage: AsyncStorage,
-  whitelist: ['version', 'lastUpdateSchedule'],
+  whitelist: ['lastUpdateSchedule'],
 };
 
 export const reducers = combineReducers({

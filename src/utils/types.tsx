@@ -12,6 +12,9 @@ import {
   downloadSheduleAction,
   downloadSheduleSuccessAction,
   downloadSheduleFailedAction,
+  updateScheduleAction,
+  updateScheduleSuccessAction,
+  updateScheduleFailedAction,
 } from '../actions/Shedule.actions';
 
 import {
@@ -34,6 +37,9 @@ export type AppActionType =
   | ReturnType<typeof downloadSheduleAction>
   | ReturnType<typeof downloadSheduleSuccessAction>
   | ReturnType<typeof downloadSheduleFailedAction>
+  | ReturnType<typeof updateScheduleAction>
+  | ReturnType<typeof updateScheduleSuccessAction>
+  | ReturnType<typeof updateScheduleFailedAction>
   | ReturnType<typeof checkUpdatesAction>
   | ReturnType<typeof checkUpdatesSuccessAction>
   | ReturnType<typeof checkUpdatesFailedAction>
@@ -56,6 +62,9 @@ export type SheduleActionType =
   | ReturnType<typeof downloadSheduleAction>
   | ReturnType<typeof downloadSheduleSuccessAction>
   | ReturnType<typeof downloadSheduleFailedAction>
+  | ReturnType<typeof updateScheduleAction>
+  | ReturnType<typeof updateScheduleSuccessAction>
+  | ReturnType<typeof updateScheduleFailedAction>
   | ReturnType<typeof logoutUserAction>;
 
 export type NotesActionType =

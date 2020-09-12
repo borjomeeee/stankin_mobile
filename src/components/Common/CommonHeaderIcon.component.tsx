@@ -1,20 +1,20 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {RaisedButton} from 'react-native-material-kit';
 
 import styled from 'styled-components/native';
 
 const CommonHeaderIconComponent: React.FC<React.ComponentProps<
-  typeof TouchableOpacity
+  typeof RaisedButton
 >> = ({...props}) => {
-  return <IconContainer {...props} />;
+  return <IconContainer maskColor={'rgba(238, 238, 238, 0.2)'} {...props} />;
 };
 
 // Components
-const IconContainer = styled.TouchableOpacity`
+const IconContainer = styled(RaisedButton)`
   border-radius: 5px;
 
   padding: 7px;
-  background-color: ${'#E4E4E4'};
+  background-color: ${'#e0e0e0'};
 `;
 
 export default CommonHeaderIconComponent;

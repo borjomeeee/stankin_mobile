@@ -1,4 +1,5 @@
 import React, {useState, useMemo, useEffect} from 'react';
+import {RaisedButton} from 'react-native-material-kit';
 import {Platform, Keyboard} from 'react-native';
 import {useRoute, useNavigation, RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
@@ -111,14 +112,22 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
   return (
     <ScreenContainer>
-      <AddNoteContent showsVerticalScrollIndicator={false}>
+      <AddNoteContent
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always">
         {!keyboardIsOpen && (
           <React.Fragment>
             <OptionContainer>
               <OptionTitle>Предмет</OptionTitle>
 
               <OptionSelectContainer
-                onPress={setVisibleSubjectDropdown.bind(null, true)}>
+                onTouchEnd={setVisibleSubjectDropdown.bind(null, true)}
+                style={{
+                  backgroundColor: '#fff',
+                  borderWidth: 1,
+                  borderColor: COLORS.MEDIUM_GRAY,
+                  marginHorizontal: 2,
+                }}>
                 <OptionSelectText numberOfLines={1}>
                   {subjectNote}
                 </OptionSelectText>
@@ -129,7 +138,13 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
               <OptionTitle>Дата</OptionTitle>
 
               <OptionSelectContainer
-                onPress={setShowDatepicker.bind(null, true)}>
+                onTouchEnd={setShowDatepicker.bind(null, true)}
+                style={{
+                  backgroundColor: '#fff',
+                  borderWidth: 1,
+                  borderColor: COLORS.MEDIUM_GRAY,
+                  marginHorizontal: 2,
+                }}>
                 <OptionSelectBold>
                   {dateToStringExpanded(selectedDate)}
                 </OptionSelectBold>
@@ -186,7 +201,7 @@ const OptionTitle = styled.Text`
   font-family: 'Inter-Bold';
 `;
 
-const OptionSelectContainer = styled.TouchableOpacity`
+const OptionSelectContainer = styled(RaisedButton)`
   margin-top: 5px;
   padding: 10px 30px;
 

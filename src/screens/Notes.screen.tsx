@@ -25,15 +25,15 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
     navigation.navigate('AddNote');
   };
 
-  const notCheckedNotes = Array.from(
-    notes.entries(),
-  ).map(([dateTimestamp, dayNotes]: [number, INote[]]): [
-    number,
-    INotCheckedNote[],
-  ] => [
-    dateTimestamp,
-    dayNotes.filter((note: INote) => !note.isChecked) as INotCheckedNote[],
-  ]);
+  const notCheckedNotes = Array.from(notes.entries())
+    .map(([dateTimestamp, dayNotes]: [number, INote[]]): [
+      number,
+      INotCheckedNote[],
+    ] => [
+      dateTimestamp,
+      dayNotes.filter((note: INote) => !note.isChecked) as INotCheckedNote[],
+    ])
+    .filter((value: [number, INotCheckedNote[]]) => value[1].length > 0);
 
   const checkedNotes = Array.from(notes.entries()).reduce(
     (acc: INote[], [, dayNotes]: [number, INote[]]) => [
@@ -46,19 +46,17 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
   return (
     <ScreenContainer>
       <NotesContent showsVerticalScrollIndicator={false}>
-        {notes.size === 0 ? (
-          <CommonEmptyContainerComponent text="Пока вы не добавили ни одного дедлайна" />
-        ) : (
-          <>
-            <NotesNotCheckedListComponent notes={notCheckedNotes} />
-
-            {checkedNotes.length > 0 && (
-              <CompletedTasksTitle>Выполненные</CompletedTasksTitle>
-            )}
-
-            <CommonNotesListComponent notes={checkedNotes} />
-          </>
+        {notCheckedNotes.length === 0 && (
+          <CommonEmptyContainerComponent text="Пока у вас не запланировано ни одного дедлайна" />
         )}
+
+        <NotesNotCheckedListComponent notes={notCheckedNotes} />
+
+        {checkedNotes.length > 0 && (
+          <CompletedTasksTitle>Выполненные</CompletedTasksTitle>
+        )}
+
+        <CommonNotesListComponent notes={checkedNotes} />
       </NotesContent>
 
       <NotesScreenSubmit>

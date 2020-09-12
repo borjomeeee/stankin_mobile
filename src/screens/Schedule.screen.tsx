@@ -1,5 +1,6 @@
-import React, {useState, useLayoutEffect, useRef} from 'react';
-import {ScrollView, Platform} from 'react-native';
+
+import React, {useState, useLayoutEffect, useRef, useMemo} from 'react';
+import {Platform} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
@@ -28,25 +29,26 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
 }) => {
   const navigation = useNavigation();
 
+  const calendarRef = useRef(null);
+
   // Datepicker
   const [showDatepicker, setShowDatepicker] = useState(false);
 
-  const [startDate] = useState<Date>(new Date());
-  const [currPageDate, setCurrPageDate] = useState<Date>(() => {
+  const [todayDate] = useState<Date>(() => {
     const date = new Date();
 
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   });
 
-  const listLessonsRef = useRef<ScrollView | null>(null);
-
+  const [startDate] = useState<Date>(todayDate);
+  const [currPageDate, setCurrPageDate] = useState<Date>(todayDate);
   const onChangeCurrPageDate = (_: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || currPageDate;
 
     setShowDatepicker(Platform.OS === 'ios');
-    setCurrPageDate(currentDate);
 
-    listLessonsRef.current!.scrollTo({x: 0, y: 0, animated: true});
+    setCurrPageDate(currentDate);
+    // setStartDate(currentDate);
   };
 
   // Set header icon and title
@@ -57,30 +59,41 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
     navigation.setOptions({
       headerRight: () => (
-        <CommonHeaderIconComponent onPress={toggleShowDatepicker}>
+        <CommonHeaderIconComponent onTouchEnd={toggleShowDatepicker}>
           <Icon name="event" color={'#444444'} size={25} />
         </CommonHeaderIconComponent>
       ),
     });
   }, [navigation, showDatepicker]);
 
+  const onClickBackButton = () => {
+    setCurrPageDate(todayDate);
+    // setStartDate(todayDate);
+  };
+
   // Get lessons for currDate and selected user group
-  const lessons = (schedule.get(currPageDate.getTime()) || []).filter(
-    (lesson: ILesson) =>
-      user.lessonGroup === LessonGroup.NONE ||
-      lesson.groupOnLesson === LessonGroup.NONE ||
-      lesson.groupOnLesson === user.lessonGroup,
+  const lessons = useMemo(
+    () =>
+      (schedule.get(currPageDate.getTime()) || []).filter(
+        (lesson: ILesson) =>
+          user.lessonGroup === LessonGroup.NONE ||
+          lesson.groupOnLesson === LessonGroup.NONE ||
+          lesson.groupOnLesson === user.lessonGroup,
+      ),
+    [currPageDate, user.lessonGroup, schedule],
   );
 
   return (
     <ScreenContainer>
-      <ScheduleScreenContent
-        showsVerticalScrollIndicator={false}
-        ref={listLessonsRef}>
+      <ScheduleScreenContent showsVerticalScrollIndicator={false}>
         <ScheduleCalendarComponent
-          todayDate={startDate}
+          style={{}}
+          todayDate={todayDate}
           currDate={currPageDate}
+          startDate={startDate}
           setCurrDate={setCurrPageDate}
+          onBack={onClickBackButton}
+          ref={calendarRef}
         />
 
         <ScheduleDayContainer>
@@ -108,11 +121,12 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
 // Components
 const ScheduleScreenContent = styled.ScrollView`
   margin-top: 10px;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
 `;
 
 const ScheduleDayContainer = styled.View`
   margin: 30px 0px;
+  margin-top: 15px;
 `;
 
 // State

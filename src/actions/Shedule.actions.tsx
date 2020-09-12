@@ -3,6 +3,9 @@ import {
   DOWNLOAD_SHEDULE,
   DOWNLOAD_SHEDULE_SUCCESS,
   DOWNLOAD_SHEDULE_FAILED,
+  UPDATE_SCHEDULE,
+  UPDATE_SCHEDULE_SUCCESS,
+  UPDATE_SCHEDULE_FAILED,
 } from '../utils/constants';
 
 import {IScheduleInitialState, IAppError} from '../redux/store';
@@ -29,14 +32,42 @@ export const downloadSheduleAction = (
     payload: {login, password, groupId},
   } as const);
 
-export const downloadSheduleSuccessAction = (sh: Map<number, ILesson[]>) =>
+export const downloadSheduleSuccessAction = (
+  sh: Map<number, ILesson[]>,
+  date: number,
+) =>
   ({
     type: DOWNLOAD_SHEDULE_SUCCESS,
-    payload: {sh},
+    payload: {sh, date},
   } as const);
 
 export const downloadSheduleFailedAction = (err: IAppError) =>
   ({
     type: DOWNLOAD_SHEDULE_FAILED,
+    payload: {err},
+  } as const);
+
+export const updateScheduleAction = (
+  login: string,
+  password: string,
+  title: string,
+) =>
+  ({
+    type: UPDATE_SCHEDULE,
+    payload: {login, password, title},
+  } as const);
+
+export const updateScheduleSuccessAction = (
+  sh: Map<number, ILesson[]>,
+  date: number,
+) =>
+  ({
+    type: UPDATE_SCHEDULE_SUCCESS,
+    payload: {sh, date},
+  } as const);
+
+export const updateScheduleFailedAction = (err: IAppError) =>
+  ({
+    type: UPDATE_SCHEDULE_FAILED,
     payload: {err},
   } as const);

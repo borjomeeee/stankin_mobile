@@ -30,8 +30,12 @@ const NotesDayContainer = styled.View`
   background-color: ${'#ffffff'};
 `;
 const NotesDayTitle = styled.Text`
+  margin-top: 5px;
+  font-family: 'Inter-Regular';
+
   font-size: 16px;
-  text-decoration: underline;
+
+  color: ${'#444444'};
 
   margin-bottom: 5px;
 `;

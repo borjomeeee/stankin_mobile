@@ -1,4 +1,16 @@
 import React from 'react';
+import {FlatButton} from 'react-native-material-kit';
+
+import 'moment';
+import 'moment/locale/ru';
+import moment from 'moment-timezone';
+
+moment().locale('ru');
+
+import Calendar from 'react-native-calendar-strip';
+
+// @ts-ignore
+const CalendarStrip: React.Element = Calendar;
 
 import styled from 'styled-components/native';
 
@@ -6,74 +18,60 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {compareDates, dateToDateString} from '../../utils/methods';
 
-interface IScheduleCalendarComponent {
+interface IScheduleCalendarComponent
+  extends React.ComponentProps<typeof Calendar> {
   todayDate: Date;
   currDate: Date;
+  startDate: Date;
   setCurrDate: (newDate: Date) => void;
+  onBack: () => void;
 }
 
-interface IScheduleCalendarDay {
-  label: string;
-  date: Date;
+interface INamedDates {
+  [index: string]: {timestamp: number; label: string; backButton: boolean};
 }
 
-interface INamedDate {
-  timestamp: number;
-  label: string;
-  backButton: boolean;
-}
-
-const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
+const ScheduleCalendarComponent: React.FC<
+  IScheduleCalendarComponent & {
+    forwardedRef: React.Ref<typeof CalendarStrip>;
+  }
+> = ({
   todayDate,
   currDate,
+  startDate,
   setCurrDate,
+  onBack,
+
+  forwardedRef,
+
+  ...props
 }) => {
   const startDayOfWeek = currDate.getDay() === 0 ? 7 : currDate.getDay();
   const calendarStartDate = new Date(currDate);
 
   calendarStartDate.setDate(calendarStartDate.getDate() - startDayOfWeek + 1);
 
-  const dates = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(
-    (value: string, index: number) => {
-      const newDate = new Date(calendarStartDate);
-      newDate.setDate(calendarStartDate.getDate() + index);
-
-      return {
-        label: value,
-        date: newDate,
-      } as IScheduleCalendarDay;
-    },
-  );
+  const dates = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
   const onChangeCurrDate = (newDate: Date) => {
     setCurrDate(newDate);
   };
-
-  const onClickBackButton = () => {
-    onChangeCurrDate(todayDate);
-  };
-
+  
   const tommorrowTimestamp = todayDate.getTime() + 86400;
   const yesterdayTimestamp = todayDate.getTime() - 86400;
 
-  const namedDates = new Map<number, INamedDate>([
-    [
-      1,
-      {
-        timestamp: yesterdayTimestamp,
-        label: 'Вчера',
-        backButton: true,
-      },
-    ],
-    [
-      -1,
-      {
-        timestamp: tommorrowTimestamp,
-        label: 'Завтра',
-        backButton: true,
-      },
-    ],
-  ]);
+  const namedDates: INamedDates = {
+    '1': {
+      timestamp: yesterdayTimestamp,
+      label: 'Вчера',
+      backButton: true,
+    },
+    '-1': {
+      timestamp: tommorrowTimestamp,
+      label: 'Завтра',
+      backButton: true,
+    },
+  };
 
   const datesDiff = compareDates(todayDate, currDate);
 
@@ -83,19 +81,16 @@ const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
         <ScheduleRightDateContainer>
           {datesDiff === 0 ? (
             <ScheduleRightDateText>Сегодня</ScheduleRightDateText>
-          ) : namedDates.has(datesDiff) ? (
+          ) : (
             <React.Fragment>
-              <ScheduleRightDateIcon onPress={onClickBackButton}>
+              <ScheduleRightDateIcon onTouchEnd={onBack}>
                 <Icon name="arrow-back" size={18} color={'#444444'} />
               </ScheduleRightDateIcon>
+
               <ScheduleRightDateText>
-                {namedDates.get(datesDiff)?.label || ''}
+                {namedDates[datesDiff.toString()]?.label || ''}
               </ScheduleRightDateText>
             </React.Fragment>
-          ) : (
-            <ScheduleRightDateIcon onPress={onClickBackButton}>
-              <Icon name="arrow-back" size={18} color={'#444444'} />
-            </ScheduleRightDateIcon>
           )}
         </ScheduleRightDateContainer>
 
@@ -106,28 +101,63 @@ const ScheduleCalendarComponent: React.FC<IScheduleCalendarComponent> = ({
         </ScheduleLeftDateContainer>
       </ScheduleCalendarTopLine>
 
-      <ScheduleCalendarDatesList>
-        {dates.map((item: IScheduleCalendarDay) => (
-          <ScheduleCalendarOption key={item.date.getTime()}>
+      <CalendarStrip
+        ref={forwardedRef}
+        scrollable={true}
+        shouldAllowFontScaling={false}
+        iconRight={null}
+        iconLeft={null}
+        startingDate={startDate}
+        selectedDate={currDate}
+        calendarHeaderFormat={'MMMM YYYY'}
+        calendarHeaderPosition={'below'}
+        onDateSelected={(date: Date) => onChangeCurrDate(new Date(date))}
+        calendarHeaderStyle={{
+          textTransform: 'capitalize',
+          fontFamily: 'Inter-Bold',
+          fontWeight: 'normal',
+
+          alignSelf: 'flex-end',
+
+          color: 'lightgrey',
+        }}
+        iconStyle={{width: 0}}
+        dayComponent={(props: any) => (
+          <ScheduleCalendarOption key={new Date(props.date).getTime()}>
             <ScheduleCalendarOptionLabel>
-              {item.label}
+              {dates[new Date(props.date).getDay()]}
             </ScheduleCalendarOptionLabel>
             <ScheduleCalendarOptionDateContainer
-              isSelected={item.date.getTime() === currDate.getTime()}
-              onPress={() => onChangeCurrDate(item.date)}>
+              isSelected={new Date(props.date).getTime() === currDate.getTime()}
+              onTouchEnd={onChangeCurrDate.bind(null, new Date(props.date))}
+              maskBorderRadius={100}
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{padding: 1}}>
               <ScheduleCalendarOptionDate
-                isSelected={item.date.getTime() === currDate.getTime()}>
-                {item.date.getDate()}
+                isSelected={
+                  new Date(props.date).getTime() === currDate.getTime()
+                }>
+                {new Date(props.date).getDate()}
               </ScheduleCalendarOptionDate>
             </ScheduleCalendarOptionDateContainer>
           </ScheduleCalendarOption>
-        ))}
-      </ScheduleCalendarDatesList>
+        )}
+        {...props}
+        style={{
+          height: 90,
+          marginTop: 5,
+          borderTopWidth: 1,
+          borderTopColor: '#e4e4e4',
+        }}
+      />
     </ScheduleCalendarContainer>
   );
 };
 
-const ScheduleCalendarContainer = styled.View``;
+const ScheduleCalendarContainer = styled.View`
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
 
 const ScheduleCalendarTopLine = styled.View`
   display: flex;
@@ -135,19 +165,7 @@ const ScheduleCalendarTopLine = styled.View`
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 5px;
-`;
-
-const ScheduleCalendarDatesList = styled.View`
-  display: flex;
-  flex-direction: row;
-
-  justify-content: space-between;
-
-  border-top-width: 1px;
-  border-top-color: ${'#E4E4E4'};
-
-  padding-top: 10px;
+  /* padding: 10px 0px; */
 `;
 
 const ScheduleCalendarOption = styled.View`
@@ -162,19 +180,19 @@ const ScheduleCalendarOptionLabel = styled.Text`
   color: ${'#C4C4C4'};
 `;
 
-const ScheduleCalendarOptionDateContainer = styled.TouchableOpacity<{
+const ScheduleCalendarOptionDateContainer = styled(FlatButton)<{
   isSelected: boolean;
 }>`
-  margin-top: 2px;
-
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 5px;
+  box-shadow: none;
+
+  border-radius: 14px;
 
   background-color: ${(props) => (props.isSelected ? '#444444' : '#ffffff')};
 `;
@@ -190,10 +208,12 @@ const ScheduleRightDateContainer = styled.View`
   display: flex;
   align-items: center;
   flex-direction: row;
+
+  height: 40px;
 `;
 
-const ScheduleRightDateIcon = styled.TouchableOpacity`
-  margin-right: 10px;
+const ScheduleRightDateIcon = styled(FlatButton)`
+  margin-right: 5px;
 `;
 
 const ScheduleRightDateText = styled.Text`
@@ -212,4 +232,6 @@ const ScheduleLeftDateText = styled.Text`
   color: ${'#444444'};
 `;
 
-export default ScheduleCalendarComponent;
+export default React.forwardRef((props: IScheduleCalendarComponent, ref) => {
+  return <ScheduleCalendarComponent {...props} forwardedRef={ref} />;
+});

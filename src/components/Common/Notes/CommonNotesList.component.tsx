@@ -103,6 +103,7 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
       ItemSeparatorComponent={() => <ItemSeparator />}
       renderHiddenItem={(rowKey) => (
         <HiddenTrashContainer
+          delayPressIn={0}
           onPress={onRemoveNotesListItem.bind(null, rowKey.item.id)}>
           <Icon name="delete" color={COLORS.WHITE} size={25} />
         </HiddenTrashContainer>
@@ -120,6 +121,8 @@ const ItemSeparator = styled.View`
 `;
 
 const HiddenTrashContainer = styled.TouchableOpacity`
+  position: relative;
+
   background-color: ${COLORS.RED};
   height: 100%;
 

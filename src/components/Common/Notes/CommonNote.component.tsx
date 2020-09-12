@@ -26,7 +26,7 @@ const CommonNoteComponent: React.FC<ICommonNoteComponent> = ({
   onClick,
 }) => {
   return (
-    <NoteContainer onPress={onClick.bind(null, id)}>
+    <NoteContainer onPress={onClick.bind(null, id)} delayPressIn={0}>
       <CommonNoteToggleButton isDone={isChecked} size={20} />
 
       <NoteDataContainer>

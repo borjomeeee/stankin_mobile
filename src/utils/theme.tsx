@@ -7,7 +7,6 @@ export const ScreenContainer = styled.View`
 
   padding: 0px 30px;
 
-  font-family: 'Inter-Regular';
   background-color: ${COLORS.WHITE};
 `;
 
@@ -19,6 +18,5 @@ export const AuthScreenContainer = styled.View`
   padding-top: 20px;
   padding-bottom: 15px;
 
-  font-family: 'Inter-Regular';
   background-color: ${COLORS.WHITE};
 `;

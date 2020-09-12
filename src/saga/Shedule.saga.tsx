@@ -1,67 +1,101 @@
-import {takeEvery, put} from 'redux-saga/effects';
+import {takeEvery, put, call} from 'redux-saga/effects';
 
-import Config from 'react-native-config';
-const {SERVER_ADDRESS, SERVER_PORT} = Config;
-
-import {DOWNLOAD_SHEDULE} from '../utils/constants';
+import {DOWNLOAD_SHEDULE, UPDATE_SCHEDULE} from '../utils/constants';
 
 import {
   IDownloadSheduleSaga,
   downloadSheduleSuccessAction,
   downloadSheduleFailedAction,
+  updateScheduleAction,
 } from '../actions/Shedule.actions';
 
 import Lesson, {ILesson} from '../models/Lesson.model';
 
-import {dateStringToDate} from '../utils/methods';
-
 import {AppErrorTypes} from '../enums/App.enums';
+import {fetchAPI} from '../utils/methods';
+
+const processSchedule = (data: any): [Map<number, ILesson[]>, number] => {
+  const updateDate = Date.now();
+
+  const sh = data.reduce((acc: Map<number, ILesson[]>, val: any) => {
+    val.dates.forEach((timestamp: number) => {
+      const date = new Date(timestamp * 1000);
+
+      const resTimestamp = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+      ).getTime();
+
+      let newLesson = new Lesson(
+        val._id,
+        val.title,
+        Lesson.getLessonType(val.type.toLowerCase()),
+        Lesson.getLessonGroup(val.user_group.toLowerCase()),
+        val.room,
+        val.teacher,
+        resTimestamp,
+        val.num,
+      );
+
+      const existedData = acc.get(resTimestamp);
+      if (Array.isArray(existedData)) {
+        existedData.push(newLesson);
+      } else {
+        acc.set(resTimestamp, [newLesson]);
+      }
+    });
+    return acc;
+  }, new Map<number, ILesson[]>());
+  return [sh, updateDate];
+};
 
 export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
   try {
-    const res = yield fetch(
-      `http://${SERVER_ADDRESS}:${SERVER_PORT}/api/load-schedule/${payload.groupId}`,
+    const {status, data} = yield call(
+      fetchAPI,
+      `/api/load-schedule/${payload.groupId}`,
+      'POST',
       {
-        method: 'POST',
-        body: JSON.stringify({
-          login: payload.login,
-          password: payload.password,
-        }),
+        login: payload.login,
+        password: payload.password,
       },
     );
 
-    if (res.status === 200) {
-      const data = yield res.json();
+    if (status === 200) {
+      const [sh, updateDate] = processSchedule(data);
+      yield put(downloadSheduleSuccessAction(sh, updateDate));
+    } else {
       yield put(
-        downloadSheduleSuccessAction(
-          data.reduce((acc: Map<number, ILesson[]>, val: any) => {
-            let dates = val.dates.split(',');
-
-            dates.forEach((item: string) => {
-              let date = dateStringToDate(item).getTime();
-
-              let newLesson = new Lesson(
-                val._id,
-                val.title,
-                Lesson.getLessonType(val.type.toLowerCase()),
-                Lesson.getLessonGroup(val.user_group.toLowerCase()),
-                val.group_id,
-                val.room,
-                val.teacher,
-                item,
-                val.num,
-              );
-
-              if (acc.get(date)) {
-                acc.get(date)?.push(newLesson);
-              } else {
-                acc.set(date, [newLesson]);
-              }
-            });
-            return acc;
-          }, new Map<number, ILesson[]>()),
-        ),
+        downloadSheduleFailedAction({
+          type: AppErrorTypes.ERROR,
+          text: 'Ошибка загрузки расписания!',
+        }),
       );
+    }
+  } catch {
+    yield put(
+      downloadSheduleFailedAction({
+        type: AppErrorTypes.ERROR,
+        text: 'Ошибка загрузки расписания!',
+      }),
+    );
+  }
+}
+
+export function* updateScheduleSaga({
+  payload,
+}: ReturnType<typeof updateScheduleAction>) {
+  try {
+    const {status, data} = yield call(fetchAPI, `/api/load-schedule`, 'POST', {
+      login: payload.login,
+      password: payload.password,
+      title: payload.title,
+    });
+
+    if (status === 200) {
+      const [sh, updateDate] = processSchedule(data);
+      yield put(downloadSheduleSuccessAction(sh, updateDate));
     } else {
       yield put(
         downloadSheduleFailedAction({
@@ -82,4 +116,5 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
 
 export default function* authSaga() {
   yield takeEvery(DOWNLOAD_SHEDULE, downloadSheduleSaga);
+  yield takeEvery(UPDATE_SCHEDULE, updateScheduleSaga);
 }

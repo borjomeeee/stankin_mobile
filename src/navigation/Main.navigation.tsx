@@ -2,9 +2,10 @@ import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {
-  createBottomTabNavigator,
-  BottomTabBarOptions,
-} from '@react-navigation/bottom-tabs';
+  createMaterialBottomTabNavigator,
+  MaterialBottomTabNavigationOptions,
+} from '@react-navigation/material-bottom-tabs';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {IInitialState} from '../redux/store';
@@ -15,43 +16,32 @@ import AppModalScreen from '../screens/AppModal.screen';
 import LoadingScreen from '../screens/Loading.screen';
 import AuthScreen from '../screens/Auth.screen';
 
-import * as COLORS from '../utils/colors';
-
 import SсheduleNavigation from './Schedule.navigation';
 import NotesNavigation from './Notes.navigation';
 import SettingsNavigation from './Settings.navigation';
 
 import {AppErrorTypes} from '../enums/App.enums';
 
-const MainTabs = createBottomTabNavigator();
+const MainTabs = createMaterialBottomTabNavigator();
 
-// Main navigation options
-const AppNavigationBarOptions: BottomTabBarOptions = {
-  keyboardHidesTabBar: true,
-  adaptive: true,
-  showLabel: false,
-
-  activeTintColor: COLORS.BLACK,
-};
-
-const NotesNavigationTabOptions = {
+const NotesNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   tabBarLabel: 'Дедлайны',
-  tabBarIcon: ({color, size}: {color: any; size: any}) => (
-    <Icon name="turned-in-not" color={color} size={size} />
+  tabBarIcon: ({color}: {color: any}) => (
+    <Icon name="turned-in-not" color={color} size={25} />
   ),
 };
 
-const SheduleNavigationTabOptions = {
+const SheduleNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   tabBarLabel: 'Расписание',
-  tabBarIcon: ({color, size}: {color: any; size: any}) => (
-    <Icon name="chrome-reader-mode" color={color} size={size} />
+  tabBarIcon: ({color}: {color: any}) => (
+    <Icon name="chrome-reader-mode" color={color} size={25} />
   ),
 };
 
-const SettingsNavigationTabOptions = {
+const SettingsNavigationTabOptions: MaterialBottomTabNavigationOptions = {
   tabBarLabel: 'Настройки',
-  tabBarIcon: ({color, size}: {color: any; size: any}) => (
-    <Icon name="settings" color={color} size={size} />
+  tabBarIcon: ({color}: {color: any}) => (
+    <Icon name="settings" color={color} size={25} />
   ),
 };
 
@@ -82,7 +72,12 @@ const MainNavigation = ({
   return (
     <MainTabs.Navigator
       initialRouteName="Shedule"
-      tabBarOptions={AppNavigationBarOptions}>
+      labeled={false}
+      activeColor="#444"
+      inactiveColor="#bcbcbc"
+      keyboardHidesNavigationBar={true}
+      sceneAnimationEnabled={true}
+      barStyle={{backgroundColor: '#fff'}}>
       <MainTabs.Screen
         name="Notes"
         options={NotesNavigationTabOptions}

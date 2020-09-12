@@ -1,5 +1,5 @@
 import Config from 'react-native-config';
-const {DEVELOPER_EMAIL} = Config;
+const {DEVELOPER_EMAIL, APP_VERSION} = Config;
 
 import React, {useLayoutEffect, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -16,7 +16,8 @@ import {
   logoutUserAction,
   setUserGroupOnClassesAction,
 } from '../actions/User.actions';
-import {downloadSheduleAction} from '../actions/Shedule.actions';
+
+import {updateScheduleAction} from '../actions/Shedule.actions';
 
 import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
 import CommonTagComponent from '../components/Common/CommonTag.component';
@@ -74,13 +75,8 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <CommonHeaderIconComponent>
-          <Icon
-            name="log-out"
-            size={25}
-            color={'#444444'}
-            onPress={logoutUser}
-          />
+        <CommonHeaderIconComponent onTouch={logoutUser}>
+          <Icon name="log-out" size={25} color={'#444444'} />
         </CommonHeaderIconComponent>
       ),
     });
@@ -157,7 +153,7 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
         <SettingsOption>
           <SettingsOptionKey>Версия приложения:</SettingsOptionKey>
           <SettingsOptionValue>
-            <SettingsOptionText>{app.version}</SettingsOptionText>
+            <SettingsOptionText>{APP_VERSION}</SettingsOptionText>
           </SettingsOptionValue>
         </SettingsOption>
 
@@ -180,7 +176,7 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
             null,
             user.login,
             user.password,
-            user.group.id,
+            user.group.title,
           )}
         />
       </SettingsSubmitButton>
@@ -267,8 +263,8 @@ const mapStateToProps = (state: IInitialState) => ({
 const mapDispatchToProps = {
   logoutUser: () => logoutUserAction(),
   setUserGroup: (group: LessonGroup) => setUserGroupOnClassesAction(group),
-  updateSchedule: (login: string, password: string, groupId: string) =>
-    downloadSheduleAction(login, password, groupId),
+  updateSchedule: (login: string, password: string, title: string) =>
+    updateScheduleAction(login, password, title),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

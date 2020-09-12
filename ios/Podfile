@@ -12,6 +12,8 @@ target 'StankinMobile' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
+  pod 'react-native-material-kit', :path => '../node_modules/react-native-material-kit'
+
   target 'StankinMobileTests' do
     inherit! :complete
     # Pods for testing
