@@ -5,6 +5,18 @@ import {Theme, Fonts} from 'react-native-paper/lib/typescript/src/types';
 
 import * as COLORS from './colors';
 
+declare global {
+  namespace ReactNativePaper {
+    interface ThemeColors {
+      darkGray: string;
+    }
+
+    // interface Theme {
+    //   myOwnProperty: boolean;
+    // }
+  }
+}
+
 export const ScreenContainer = styled.View`
   flex: 1;
 
@@ -31,8 +43,8 @@ const fontConfig: {default: Fonts} = {
       fontWeight: 'normal',
     },
     medium: {
-      fontFamily: 'Inter-Medium',
-      fontWeight: '500',
+      fontFamily: 'Inter-Bold',
+      fontWeight: 'bold',
     },
     thin: {
       fontFamily: 'Inter-Thin',
@@ -45,7 +57,7 @@ const fontConfig: {default: Fonts} = {
   },
 };
 
-export const theme: Theme = {
+export const theme = {
   ...DefaultTheme,
 
   dark: false,
@@ -58,6 +70,8 @@ export const theme: Theme = {
     accent: '#E4E4E4',
 
     background: '#ffffff',
+
+    darkGray: '#c4c4c4',
 
     surface: '#ffffff',
     backdrop: '#ffffff',

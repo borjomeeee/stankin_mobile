@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
+import {StyleProp, TextStyle} from 'react-native';
+
 import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
@@ -9,7 +11,6 @@ import {loginUserAction} from '../actions/User.actions';
 
 import CommonLogoComponent from '../components/Common/CommonLogo.component';
 import CommonInputComponent from '../components/Common/CommonInput.component';
-import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import * as COLORS from '../utils/colors';
 import {AuthScreenContainer} from '../utils/theme';
@@ -18,11 +19,11 @@ import useAuthForm from '../hooks/useAuthForm.hook';
 import useKeyboard from '../hooks/useKeyboard.hook';
 
 import {AppErrorTypes} from '../enums/App.enums';
+import {Button, withTheme} from 'react-native-paper';
 
-const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
-  app,
-  loginUser,
-}) => {
+const AuthScreen: React.FC<
+  ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
+> = ({app, loginUser, theme}) => {
   const {
     loginText,
     changeLoginText,
@@ -37,6 +38,11 @@ const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
     checkValid,
   } = useAuthForm();
+
+  const ButtonStyles: StyleProp<TextStyle> = {
+    ...theme.fonts.medium,
+    letterSpacing: 0.4,
+  };
 
   const {keyboardIsOpen} = useKeyboard();
 
@@ -79,7 +85,14 @@ const AuthScreen: React.FC<ConnectedProps<typeof connector>> = ({
           />
 
           <AuthFormButton>
-            <CommonButtonComponent text="Войти" onClick={onConfirmPassword} />
+            {/* <CommonButtonComponent text="Войти" onClick={onConfirmPassword} /> */}
+
+            <Button
+              mode="contained"
+              onPress={onConfirmPassword}
+              labelStyle={ButtonStyles}>
+              Войти
+            </Button>
           </AuthFormButton>
         </AuthForm>
 
@@ -141,4 +154,4 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(AuthScreen);
+export default withTheme(connector(AuthScreen));

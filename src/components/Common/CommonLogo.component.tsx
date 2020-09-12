@@ -1,44 +1,54 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleProp, ViewStyle, TextStyle} from 'react-native';
 
-const CommonLogoComponent = () => {
+import styled from 'styled-components/native';
+
+import {withTheme} from 'react-native-paper';
+
+const CommonLogoComponent: React.FC<{theme: ReactNativePaper.Theme}> = ({
+  theme,
+}) => {
+  const logoTitleStyles: StyleProp<TextStyle> = {
+    ...theme.fonts.medium,
+    color: theme.colors.primary,
+  };
+  const logoTypeContainerStyles: StyleProp<ViewStyle> = {
+    borderColor: theme.colors.darkGray,
+  };
+
+  const logoTypeText: StyleProp<TextStyle> = {
+    color: theme.colors.darkGray,
+    ...theme.fonts.medium,
+  };
   return (
-    <View style={styles.container}>
-      <Text style={styles.logoTitle}>Станкин</Text>
-      <View style={styles.logoTypeContainer}>
-        <Text style={styles.logoTypeText}>Расписание</Text>
-      </View>
-    </View>
+    <LogoContainer>
+      <LogoTitle style={logoTitleStyles}>Станкин</LogoTitle>
+      <LogoTypeContainer style={logoTypeContainerStyles}>
+        <LogoTypeText style={logoTypeText}>Расписание</LogoTypeText>
+      </LogoTypeContainer>
+    </LogoContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-  logoTitle: {
-    fontFamily: 'Inter-Bold',
+const LogoContainer = styled.View`
+  flex-direction: row;
+`;
 
-    fontSize: 20,
-    textTransform: 'uppercase',
+const LogoTitle = styled.Text`
+  font-size: 20px;
+  text-transform: uppercase;
+`;
 
-    color: '#000',
-  },
-  logoTypeContainer: {
-    borderColor: '#9E9E9E',
-    borderWidth: 1,
+const LogoTypeContainer = styled.View`
+  border-width: 1px;
 
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+  padding: 4px 8px;
 
-    marginLeft: 14,
-  },
-  logoTypeText: {
-    fontFamily: 'Inter-Bold',
-    fontSize: 14,
+  margin-left: 14;
+`;
 
-    color: '#9E9E9E',
-  },
-});
+const LogoTypeText = styled.Text`
+  font-size: 14px;
+`;
 
-export default CommonLogoComponent;
+export default withTheme(CommonLogoComponent);
