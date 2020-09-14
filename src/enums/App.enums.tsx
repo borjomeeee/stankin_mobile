@@ -9,5 +9,5 @@ export enum AppErrorTypes {
   ERROR,
   WARNING,
   PUSH_UP,
-  NONE = 1,
+  NONE,
 }

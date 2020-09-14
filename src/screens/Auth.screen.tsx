@@ -1,152 +1,217 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
+import {compose} from 'redux';
 
-import {Button, withTheme, Text} from 'react-native-paper';
-
-import {StyleProp, TextStyle} from 'react-native';
-
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 import {IInitialState} from '../redux/store';
 
 import {loginUserAction} from '../actions/User.actions';
 
-import CommonLogoComponent from '../components/Common/CommonLogo.component';
 import CommonInputComponent from '../components/Common/CommonInput.component';
 
-import {AuthScreenContainer} from '../utils/theme';
+import theme from '../utils/theme';
 
-import useAuthForm from '../hooks/useAuthForm.hook';
-import useKeyboard from '../hooks/useKeyboard.hook';
+import CommonTextComponent from '../components/Common/CommonText.component';
+
+import styles from './Auth.styles';
+import {clearErrorAction} from '../actions/App.actions';
+import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import {AppErrorTypes} from '../enums/App.enums';
 
-const AuthScreen: React.FC<
-  ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
-> = ({app, loginUser, theme}) => {
-  const {
-    loginText,
-    changeLoginText,
+const monkeyClose = require('../static/images/monkey-close.png');
+const monkeyOpen = require('../static/images/monkey-open.png');
 
-    loginError,
-    setLoginError,
+type IAuthFormInputs = 'login' | 'password';
 
-    passwordText,
-    changePasswordText,
+type IAuthScreenForm = {
+  [I in IAuthFormInputs]: {
+    value: string;
+    error: string;
 
-    passwordError,
-
-    checkValid,
-  } = useAuthForm();
-
-  const buttonStyles: StyleProp<TextStyle> = {
-    ...theme.fonts.medium,
-    letterSpacing: 0.4,
+    isSecure: boolean;
+    isRequired: boolean;
   };
+};
 
-  const footerStyles: StyleProp<TextStyle> = {
-    color: theme.colors.darkGray,
-  };
+interface IAuthScreenComponentProps extends ConnectedProps<typeof connector> {}
+interface IAuthScreenComponentState {
+  form: IAuthScreenForm;
+}
 
-  const {keyboardIsOpen} = useKeyboard();
+const AuthScreenComponent: React.FC<IAuthScreenComponentProps> = ({
+  error,
 
-  // If data is incorrect - image error
-  useEffect(() => {
-    if (app.error.type === AppErrorTypes.WARNING) {
-      setLoginError(app.error.text);
+  loginUser,
+  clearError,
+}) => {
+  // State
+  const [formData, setFormData] = React.useState<IAuthScreenForm>({
+    login: {
+      value: '',
+      error: '',
+      isSecure: false,
+      isRequired: true,
+    },
+    password: {
+      value: '',
+      error: '',
+      isSecure: true,
+      isRequired: true,
+    },
+  });
+
+  // Update
+  React.useEffect(() => {
+    if (error.type !== AppErrorTypes.NONE) {
+      setFormData((state) => ({
+        ...state,
+        login: {...state.login, error: error.text, value: ''},
+        password: {...state.password, value: ''},
+      }));
+      clearError();
     }
-  }, [app.error, setLoginError]);
+  }, [error, clearError]);
 
-  const onConfirmPassword = () => {
-    if (checkValid()) {
-      loginUser(loginText, passwordText);
+  // Methods
+  const handleChangeInputValue = React.useMemo(
+    () => (key: keyof IAuthScreenForm, value: string): void => {
+      setFormData((state) => ({
+        ...state,
+        [key]: {...state[key], value, error: ''},
+      }));
+    },
+    [],
+  );
+
+  const handleChangeLoginInputValue = React.useCallback(
+    (value: string) => {
+      handleChangeInputValue('login', value);
+    },
+    [handleChangeInputValue],
+  );
+
+  const handleChangePasswordInputValue = React.useCallback(
+    (value: string) => {
+      handleChangeInputValue('password', value);
+    },
+    [handleChangeInputValue],
+  );
+
+  const checkEmptyInput = (key: IAuthFormInputs, value: string): boolean => {
+    if (value.length === 0) {
+      setFormData((state) => ({
+        ...state,
+        [key]: {...state[key], error: 'Поле не должно быть пустым'},
+      }));
+      return true;
     }
+    return false;
   };
+
+  const checkValudForm = () => {
+    const checkEmptyInputCallback = (key: IAuthFormInputs) =>
+      checkEmptyInput(key, formData[key].value);
+
+    return !(Object.keys(formData) as IAuthFormInputs[])
+      .filter((value: IAuthFormInputs) => formData[value].isRequired)
+      .sort()
+      .some(checkEmptyInputCallback);
+  };
+
+  const handleToggleShowPassword = () => {
+    setFormData((state) => ({
+      ...state,
+      password: {
+        ...state.password,
+        isSecure: !state.password.isSecure,
+      },
+    }));
+  };
+
+  const handleSubmitAuthForm = () => {
+    if (!checkValudForm()) {
+      return;
+    }
+
+    loginUser(formData.login.value, formData.password.value);
+  };
+
+  // Vars
+  const titleStyles: RN.StyleProp<RN.TextStyle> = React.useMemo(
+    () => ({
+      fontFamily: theme.fonts.bold.fontFamily,
+      fontSize: 20,
+    }),
+    [],
+  );
+
+  const monkeyImage = React.useMemo(
+    () => (formData.password.isSecure ? monkeyClose : monkeyOpen),
+    [formData.password.isSecure],
+  );
+
+  const buttonStyles: RN.StyleProp<RN.ViewStyle> = React.useMemo(
+    () => ({
+      marginTop: 25,
+    }),
+    [],
+  );
 
   return (
-    <AuthScreenContainer>
-      <AuthScreenContent>
-        <CommonLogoComponent />
+    <RN.View style={[styles.container, theme.screen]}>
+      <CommonTextComponent style={titleStyles}>
+        Станкин. Расписание
+      </CommonTextComponent>
 
-        <AuthForm>
-          <AuthFormLabel>Введите данные от ЭОС-а</AuthFormLabel>
+      <CommonInputComponent
+        icon="account-outline"
+        value={formData.login.value}
+        error={formData.login.error}
+        onChangeText={handleChangeLoginInputValue}
+        placeholder="Логин"
+        secureTextEntry={false}
+        containerStyles={styles.loginInputContainer}
+      />
+      <CommonInputComponent
+        icon="lock"
+        placeholder="Пароль"
+        value={formData.password.value}
+        error={formData.password.error}
+        onChangeText={handleChangePasswordInputValue}
+        secureTextEntry={formData.password.isSecure}
+        containerStyles={styles.passwordInputContainer}
+        rightIcon={
+          <RN.TouchableOpacity
+            delayPressIn={0}
+            activeOpacity={0.5}
+            style={styles.monkeyIcon}
+            onPress={handleToggleShowPassword}>
+            <RN.Image source={monkeyImage} />
+          </RN.TouchableOpacity>
+        }
+      />
 
-          <CommonInputComponent
-            label="Логин"
-            value={loginText}
-            onChangeText={changeLoginText}
-            error={!!loginError}
-            errorValue={loginError}
-          />
-          <CommonInputComponent
-            label="Пароль"
-            value={passwordText}
-            onChangeText={changePasswordText}
-            secureTextEntry={true}
-            onSubmitEditing={onConfirmPassword}
-            error={!!passwordError}
-            errorValue={passwordError}
-          />
-
-          <AuthFormButton>
-            <Button
-              mode="contained"
-              onPress={onConfirmPassword}
-              labelStyle={buttonStyles}>
-              Войти
-            </Button>
-          </AuthFormButton>
-        </AuthForm>
-
-        {!keyboardIsOpen && (
-          <FooterText style={footerStyles}>
-            * Для входа в приложение используйте логин и пароль от ЭОС
-          </FooterText>
-        )}
-      </AuthScreenContent>
-    </AuthScreenContainer>
+      <CommonButtonComponent
+        text="Войти"
+        onClick={handleSubmitAuthForm}
+        style={buttonStyles}
+      />
+    </RN.View>
   );
 };
 
-// Components
-const AuthScreenContent = styled.View`
-  flex: 1;
-  max-width: 400px;
-
-  justify-content: space-between;
-`;
-
-const AuthForm = styled.View``;
-
-const AuthFormLabel = styled(Text)`
-  font-size: 16px;
-
-  margin-bottom: 20px;
-`;
-
-const AuthFormButton = styled.View`
-  margin-top: 20px;
-  align-self: center;
-`;
-
-const FooterText = styled(Text)`
-  flex-wrap: wrap;
-
-  font-size: 12px;
-
-  text-align: center;
-`;
-
 // State
 const mapStateToProps = (state: IInitialState) => ({
-  app: state.app,
-  user: state.user,
+  error: state.app.error,
 });
 
-const mapDispatchToProps = {
-  loginUser: loginUserAction,
-};
+const mapDispatchToProps = (dispatch: any) => ({
+  loginUser: compose(dispatch, loginUserAction),
+  clearError: compose(dispatch, clearErrorAction),
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default withTheme(connector(AuthScreen));
+export default connector(AuthScreenComponent);

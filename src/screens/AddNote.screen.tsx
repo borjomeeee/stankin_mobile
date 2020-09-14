@@ -1,5 +1,6 @@
 import React, {useState, useMemo, useEffect} from 'react';
 import {RaisedButton} from 'react-native-material-kit';
+import {Button} from 'react-native-paper';
 import {Platform, Keyboard} from 'react-native';
 import {useRoute, useNavigation, RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
@@ -122,6 +123,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
               <OptionSelectContainer
                 onTouchEnd={setVisibleSubjectDropdown.bind(null, true)}
+                mode="outlined"
                 style={{
                   backgroundColor: '#fff',
                   borderWidth: 1,
@@ -202,9 +204,9 @@ const OptionTitle = styled.Text`
   font-family: 'Inter-Bold';
 `;
 
-const OptionSelectContainer = styled(RaisedButton)`
+const OptionSelectContainer = styled(Button)`
   margin-top: 5px;
-  padding: 10px 30px;
+  /* padding: 10px 30px; */
 
   border: 1px solid ${COLORS.MEDIUM_GRAY};
 

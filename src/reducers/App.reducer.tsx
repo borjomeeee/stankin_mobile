@@ -56,6 +56,7 @@ export default (
       return {...state, error: action.payload.error};
 
     case CLEAR_ERROR:
+      console.log(2);
       return {...state, error: {type: AppErrorTypes.NONE, text: ''}};
     default:
       return state;

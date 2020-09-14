@@ -1,21 +1,77 @@
 import React from 'react';
-import {TextInput, HelperText} from 'react-native-paper';
+import * as RN from 'react-native';
 
-import {View} from 'react-native';
+import styles from './CommonInput.style';
 
-type ICommonInputComponentProps = React.ComponentProps<typeof TextInput> & {
-  errorValue: string;
-};
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import theme from '../../utils/theme';
 
-const CommonInputComponent: React.FC<ICommonInputComponentProps> = (props) => {
+import CommonTextComponent from './CommonText.component';
+
+type ICommonInputComponentProps = {
+  icon: string;
+  error: string;
+
+  rightIcon?: React.ReactNode;
+
+  containerStyles: RN.StyleProp<RN.ViewStyle>;
+} & React.ComponentProps<typeof RN.TextInput>;
+
+const CommonInputComponent: React.FC<ICommonInputComponentProps> = ({
+  containerStyles,
+
+  icon,
+  error,
+
+  rightIcon,
+
+  ...props
+}) => {
+  const [isFocused, setIsFocused] = React.useState<boolean>(false);
+
+  const selectInputStyles: RN.StyleProp<RN.ViewStyle> = {
+    borderColor: error
+      ? theme.colors.primary.error
+      : isFocused
+      ? theme.colors.input.borderSelected
+      : 'transparent',
+  };
+
+  const inputIconColor = error
+    ? theme.colors.primary.error
+    : isFocused
+    ? theme.colors.accent.darkWhite
+    : theme.colors.input.icon;
+
+  const handleToggleSelectTextInput = () => {
+    setIsFocused((state) => !state);
+  };
+
   return (
-    <View>
-      <TextInput mode="outlined" {...props} />
+    <RN.View style={[styles.inputContainer, containerStyles]}>
+      <RN.View style={styles.inputShadowOutsideContainer}>
+        <RN.View style={[styles.inputContentContainer, selectInputStyles]}>
+          <RN.View>
+            <Icon name={icon} color={inputIconColor} size={20} />
+          </RN.View>
+          <RN.TextInput
+            selectionColor={theme.colors.accent.darkWhite}
+            placeholderTextColor={theme.colors.input.icon}
+            onBlur={handleToggleSelectTextInput}
+            onFocus={handleToggleSelectTextInput}
+            {...props}
+            style={[props.style, styles.inputSelf]}
+          />
+          {rightIcon || <></>}
+        </RN.View>
+      </RN.View>
 
-      <HelperText type="error" visible={props.error}>
-        {props.errorValue}
-      </HelperText>
-    </View>
+      {!!error && (
+        <CommonTextComponent style={styles.errorMsg}>
+          {error}
+        </CommonTextComponent>
+      )}
+    </RN.View>
   );
 };
 

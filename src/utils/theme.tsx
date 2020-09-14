@@ -1,8 +1,4 @@
 import styled from 'styled-components/native';
-
-import {DefaultTheme, configureFonts} from 'react-native-paper';
-import {Fonts} from 'react-native-paper/lib/typescript/src/types';
-
 import * as COLORS from './colors';
 
 declare global {
@@ -14,9 +10,9 @@ declare global {
       black: string;
     }
 
-    // interface Theme {
-    //   myOwnProperty: boolean;
-    // }
+    interface Theme {
+      fonts: ThemeFonts;
+    }
   }
 }
 
@@ -39,52 +35,54 @@ export const AuthScreenContainer = styled.View`
   background-color: ${COLORS.WHITE};
 `;
 
-const fontConfig: {default: Fonts} = {
-  default: {
+export default {
+  screen: {
+    flex: 1,
+
+    backgroundColor: '#333333',
+    paddingHorizontal: 20,
+  },
+  colors: {
+    primary: {
+      gray: '#333333',
+      white: '#eeeeee',
+
+      error: '#EA4646',
+    },
+    accent: {
+      darkWhite: '#d0d0d0',
+    },
+    input: {
+      bg: '#1B1B1B',
+      icon: '#393939',
+      borderSelected: '#21679A',
+    },
+    button: {
+      bg: '#5C5C5C',
+    },
+  },
+
+  fonts: {
     regular: {
       fontFamily: 'Inter-Regular',
-      fontWeight: 'normal',
+      fontWeight: '400',
     },
-    medium: {
+    semibold: {
+      fontFamily: 'Inter-SemiBold',
+      fontWeight: '500',
+    },
+    bold: {
       fontFamily: 'Inter-Bold',
       fontWeight: 'bold',
     },
-    thin: {
-      fontFamily: 'Inter-Thin',
-      fontWeight: '100',
-    },
-    light: {
-      fontFamily: 'Inter-Light',
-      fontWeight: '200',
+
+    size: {
+      small: 12,
+      standart: 14,
+      medium: 16,
+      large: 18,
     },
   },
-};
 
-export const theme = {
-  ...DefaultTheme,
-
-  dark: false,
-  mode: 'adaptive',
-
-  roundness: 5,
-  colors: {
-    ...DefaultTheme.colors,
-
-    white: '#ffffff',
-    black: '#000000',
-
-    primary: '#444444',
-    accent: '#E4E4E4',
-
-    background: '#ffffff',
-
-    darkGray: '#c4c4c4',
-
-    surface: '#ffffff',
-    backdrop: '#ffffff',
-
-    error: '#ff0000',
-  },
-
-  fonts: configureFonts(fontConfig),
+  borderRadius: 3,
 };
