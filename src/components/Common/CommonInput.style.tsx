@@ -29,7 +29,6 @@ export default RN.StyleSheet.create({
   },
   inputContainer: {
     minWidth: 280,
-    maxWidth: 280,
   },
   inputIcon: {},
   inputSelf: {

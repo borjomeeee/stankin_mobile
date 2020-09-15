@@ -1,11 +1,9 @@
 import React, {useState, useMemo, useEffect} from 'react';
-import {RaisedButton} from 'react-native-material-kit';
-import {Button} from 'react-native-paper';
-import {Platform, Keyboard} from 'react-native';
+
+import * as RN from 'react-native';
+
 import {useRoute, useNavigation, RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
-
-import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
 
@@ -14,14 +12,16 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import CommonButtonComponent from '../components/Common/CommonButton.component';
 import CommonSubjectsModalComponent from '../components/Common/CommonSubjectsModal.component';
 import CommonInputComponent from '../components/Common/CommonInput.component';
+import CommonTextComponent from '../components/Common/CommonText.component';
 
 import {createNoteAction} from '../actions/Notes.actions';
 
 import {ILesson} from '../models/Lesson.model';
 
-import * as COLORS from '../utils/colors';
 import {dateToStringExpanded} from '../utils/methods';
-import {ScreenContainer} from '../utils/theme';
+
+import theme from '../utils/theme';
+import styles from './AddNote.styles';
 
 const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
   schedule,
@@ -36,12 +36,12 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
   const [keyboardIsOpen, setKeyboardIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setKeyboardIsOpen(true));
-    Keyboard.addListener('keyboardDidHide', () => setKeyboardIsOpen(false));
+    RN.Keyboard.addListener('keyboardDidShow', () => setKeyboardIsOpen(true));
+    RN.Keyboard.addListener('keyboardDidHide', () => setKeyboardIsOpen(false));
 
     return () => {
-      Keyboard.removeAllListeners('keyboardDidShow');
-      Keyboard.removeAllListeners('keyboardDidHide');
+      RN.Keyboard.removeAllListeners('keyboardDidShow');
+      RN.Keyboard.removeAllListeners('keyboardDidHide');
     };
   }, []);
 
@@ -94,7 +94,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
   const onChangeDate = (_: any, date: Date | undefined) => {
     const currentDate = date || selectedDate;
 
-    setShowDatepicker(Platform.OS === 'ios');
+    setShowDatepicker(RN.Platform.OS === 'ios');
 
     setSelectedDate(currentDate);
   };
@@ -112,63 +112,67 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
   };
 
   return (
-    <>
-      <AddNoteContent
+    <RN.View style={[theme.screen, styles.container]}>
+      <RN.ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always">
         {!keyboardIsOpen && (
           <React.Fragment>
-            <OptionContainer>
-              <OptionTitle>Предмет</OptionTitle>
+            <RN.View>
+              <CommonTextComponent style={styles.selectTitle}>
+                Предмет
+              </CommonTextComponent>
 
-              <OptionSelectContainer
-                onTouchEnd={setVisibleSubjectDropdown.bind(null, true)}
-                mode="outlined"
-                style={{
-                  backgroundColor: '#fff',
-                  borderWidth: 1,
-                  borderColor: COLORS.MEDIUM_GRAY,
-                  marginHorizontal: 2,
-                }}>
-                <OptionSelectText numberOfLines={1}>
+              <RN.TouchableOpacity
+                delayPressIn={0}
+                activeOpacity={0.6}
+                onPress={setVisibleSubjectDropdown.bind(null, true)}
+                style={styles.selectSelf}>
+                <CommonTextComponent numberOfLines={1}>
                   {subjectNote}
-                </OptionSelectText>
-              </OptionSelectContainer>
-            </OptionContainer>
+                </CommonTextComponent>
+              </RN.TouchableOpacity>
+            </RN.View>
 
-            <OptionContainer>
-              <OptionTitle>Дата</OptionTitle>
+            <RN.View>
+              <CommonTextComponent style={styles.selectTitle}>
+                Дата
+              </CommonTextComponent>
 
-              <OptionSelectContainer
-                onTouchEnd={setShowDatepicker.bind(null, true)}
-                style={{
-                  backgroundColor: '#fff',
-                  borderWidth: 1,
-                  borderColor: COLORS.MEDIUM_GRAY,
-                  marginHorizontal: 2,
-                }}>
-                <OptionSelectBold>
+              <RN.TouchableOpacity
+                delayPressIn={0}
+                activeOpacity={0.6}
+                onPress={setShowDatepicker.bind(null, true)}
+                style={styles.selectSelf}>
+                <CommonTextComponent style={styles.selectTextBold}>
                   {dateToStringExpanded(selectedDate)}
-                </OptionSelectBold>
-              </OptionSelectContainer>
-            </OptionContainer>
+                </CommonTextComponent>
+              </RN.TouchableOpacity>
+            </RN.View>
           </React.Fragment>
         )}
-        <OptionInputContainer>
-          <OptionTitle>Текст дедлайна</OptionTitle>
+        <RN.View style={styles.inputContainer}>
+          <CommonTextComponent style={[styles.selectTitle, styles.inputLabel]}>
+            Текст дедлайна
+          </CommonTextComponent>
 
-          <OptionInputElement
+          <CommonInputComponent
+            containerStyles={styles.inputSelf}
             value={noteText}
             onChangeText={onChangeNoteText}
             error={noteTextError}
             placeholder="Написать реферат ..."
           />
-        </OptionInputContainer>
+        </RN.View>
 
-        <AddNoteSubmit>
-          <CommonButtonComponent text="Добавить" onClick={onSubmitCreateNote} />
-        </AddNoteSubmit>
-      </AddNoteContent>
+        <RN.View>
+          <CommonButtonComponent
+            text="Добавить"
+            onClick={onSubmitCreateNote}
+            style={styles.sumbit}
+          />
+        </RN.View>
+      </RN.ScrollView>
 
       {showDatepicker && (
         <DateTimePicker
@@ -188,51 +192,9 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
         onSelectSubject={selectItemSubjectDropdown}
         onHide={setVisibleSubjectDropdown.bind(null, false)}
       />
-    </>
+    </RN.View>
   );
 };
-
-// Components
-const AddNoteContent = styled.ScrollView``;
-
-const OptionContainer = styled.View`
-  margin-top: 10px;
-`;
-
-const OptionTitle = styled.Text`
-  font-family: 'Inter-Bold';
-`;
-
-const OptionSelectContainer = styled(Button)`
-  margin-top: 5px;
-  /* padding: 10px 30px; */
-
-  border: 1px solid ${COLORS.MEDIUM_GRAY};
-
-  align-items: center;
-`;
-
-const OptionSelectText = styled.Text`
-  font-size: 14px;
-`;
-
-const OptionSelectBold = styled(OptionSelectText)`
-  font-family: 'Inter-Bold';
-`;
-
-const OptionInputContainer = styled.View`
-  margin-top: 25px;
-`;
-
-const OptionInputElement = styled(CommonInputComponent)`
-  margin-top: 5px;
-`;
-
-const AddNoteSubmit = styled.View`
-  align-items: center;
-
-  margin-top: 25px;
-`;
 
 const mapStateToProps = (state: IInitialState) => ({
   schedule: state.schedule,

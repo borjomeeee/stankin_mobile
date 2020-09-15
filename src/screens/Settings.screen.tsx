@@ -77,7 +77,7 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
           : 'transparent',
     };
     return (
-      <>
+      <React.Fragment key={index}>
         {index !== 0 && <RN.View style={styles.selectOptionSeparator} />}
 
         <RN.TouchableOpacity
@@ -87,7 +87,7 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
           style={[styles.selectOptionContainer, optionContainerStyles]}>
           <CommonTextComponent>{label}</CommonTextComponent>
         </RN.TouchableOpacity>
-      </>
+      </React.Fragment>
     );
   };
 
