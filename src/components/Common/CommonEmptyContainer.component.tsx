@@ -1,6 +1,11 @@
 import React from 'react';
+import * as RN from 'react-native';
 
 import styled from 'styled-components/native';
+
+import CommonTextComponent from './CommonText.component';
+
+import theme from '../../utils/theme';
 
 interface ICommonEmptyContainerComponent {
   text: string;
@@ -10,9 +15,24 @@ const CommonEmptyContainerComponent: React.FC<ICommonEmptyContainerComponent> = 
   text,
 }) => {
   return (
-    <NotesEmptyContainer>
-      <NotesEmptyContainerText>{text}</NotesEmptyContainerText>
-    </NotesEmptyContainer>
+    <RN.View
+      style={{
+        height: 92,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.colors.primary.commonBlack,
+        borderRadius: theme.borderRadius,
+      }}>
+      <CommonTextComponent
+        style={{
+          maxWidth: 150,
+          textAlign: 'center',
+          color: theme.colors.lesson.separator,
+          fontFamily: theme.fonts.semibold.fontFamily,
+        }}>
+        {text}
+      </CommonTextComponent>
+    </RN.View>
   );
 };
 

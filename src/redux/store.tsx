@@ -54,6 +54,7 @@ const transformMapsState = createTransform(
 const storePersistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['app'],
   transforms: [transformMapsState],
 };
 

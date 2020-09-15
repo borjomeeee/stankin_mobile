@@ -1,33 +1,30 @@
-import React, {useState, useLayoutEffect, useRef, useMemo} from 'react';
-import {withTheme, IconButton} from 'react-native-paper';
+import React, {useState, useLayoutEffect, useMemo} from 'react';
 
-import {Platform} from 'react-native';
+import * as RN from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
-
-import styled from 'styled-components/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {IInitialState} from '../redux/store';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 import {ILesson} from '../models/Lesson.model';
-
 import {LessonGroup} from '../enums/Lesson.enums';
 
 import ScheduleDayComponent from '../components/Schedule/ScheduleDay.component';
 import ScheduleCalendarComponent from '../components/Schedule/ScheduleCalendar.component';
 import ScheduleNotesComponent from '../components/Schedule/ScheduleNotes.component';
+import ScheduleDayHeaderComponent from '../components/Schedule/ScheduleDayHeader.component';
+import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
 
-import {ScreenContainer} from '../utils/theme';
+import theme from '../utils/theme';
+import styles from './Schedule.styles';
 
-const SсheduleScreen: React.FC<
-  ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
-> = ({schedule, user, theme}) => {
+const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
+  schedule,
+  user,
+}) => {
   const navigation = useNavigation();
-
-  const calendarRef = useRef(null);
 
   // Datepicker
   const [showDatepicker, setShowDatepicker] = useState(false);
@@ -43,7 +40,7 @@ const SсheduleScreen: React.FC<
   const onChangeCurrPageDate = (_: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || currPageDate;
 
-    setShowDatepicker(Platform.OS === 'ios');
+    setShowDatepicker(RN.Platform.OS === 'ios');
 
     setCurrPageDate(currentDate);
   };
@@ -56,15 +53,13 @@ const SсheduleScreen: React.FC<
 
     navigation.setOptions({
       headerRight: () => (
-        <IconButton
-          icon="calendar"
+        <CommonHeaderIconComponent
+          name="calendar"
           onPress={toggleShowDatepicker}
-          color={theme.colors.primary}
-          size={30}
         />
       ),
     });
-  }, [navigation, theme, showDatepicker]);
+  }, [navigation, showDatepicker]);
 
   const onClickBackButton = () => {
     setCurrPageDate(todayDate);
@@ -83,50 +78,42 @@ const SсheduleScreen: React.FC<
   );
 
   return (
-    <ScreenContainer>
-      <ScheduleScreenContent showsVerticalScrollIndicator={false}>
-        <ScheduleCalendarComponent
-          style={{}}
-          theme={theme}
+    <RN.ScrollView style={[theme.screen, styles.container]}>
+      <ScheduleCalendarComponent
+        style={{}}
+        currDate={currPageDate}
+        startDate={startDate}
+        setCurrDate={setCurrPageDate}
+      />
+
+      <RN.View style={[theme.screen, styles.content]}>
+        <ScheduleDayHeaderComponent
           todayDate={todayDate}
           currDate={currPageDate}
-          startDate={startDate}
-          setCurrDate={setCurrPageDate}
           onBack={onClickBackButton}
-          ref={calendarRef}
         />
 
-        <ScheduleDayContainer>
+        <RN.View style={styles.day}>
           <ScheduleDayComponent lessons={lessons} />
 
           <ScheduleNotesComponent currDate={currPageDate} />
-        </ScheduleDayContainer>
+        </RN.View>
+      </RN.View>
 
-        {showDatepicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={currPageDate}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={onChangeCurrPageDate}
-          />
-        )}
-      </ScheduleScreenContent>
-    </ScreenContainer>
+      {showDatepicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          timeZoneOffsetInMinutes={0}
+          value={currPageDate}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={onChangeCurrPageDate}
+        />
+      )}
+    </RN.ScrollView>
   );
 };
-
-// Components
-const ScheduleScreenContent = styled.ScrollView`
-  padding-bottom: 15px;
-`;
-
-const ScheduleDayContainer = styled.View`
-  margin: 30px 0px;
-  margin-top: 15px;
-`;
 
 // State
 const mapStateToProps = (state: IInitialState) => ({
@@ -139,4 +126,4 @@ const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(withTheme(SсheduleScreen));
+export default connector(SсheduleScreen);

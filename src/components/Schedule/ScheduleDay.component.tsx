@@ -1,7 +1,5 @@
 import React from 'react';
-import {FlatList, SafeAreaView} from 'react-native';
-
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 import ScheduleLessonComponent from './ScheduleLesson.component';
 import ScheduleDayEmptyComponent from './ScheduleDayEmpty.component';
@@ -17,26 +15,26 @@ const ScheduleDayComponent: React.FC<IScheduleDayComponent> = ({lessons}) => {
     return <ScheduleLessonComponent {...item} />;
   };
 
+  const renderSeparator = () => {
+    return <RN.View style={{height: 5}} />;
+  };
+
   return (
     <>
       {lessons.length > 0 ? (
-        <SafeAreaView>
-          <FlatList
+        <RN.SafeAreaView>
+          <RN.FlatList
             data={lessons}
             keyExtractor={(item: ILesson) => item.id}
             renderItem={renderScheduleDayLesson}
-            ItemSeparatorComponent={LessonSeparator}
+            ItemSeparatorComponent={renderSeparator}
           />
-        </SafeAreaView>
+        </RN.SafeAreaView>
       ) : (
         <ScheduleDayEmptyComponent />
       )}
     </>
   );
 };
-
-const LessonSeparator = styled.View`
-  height: 5px;
-`;
 
 export default ScheduleDayComponent;

@@ -1,12 +1,16 @@
 import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 import CommonNotesListComponent from '../Common/Notes/CommonNotesList.component';
 
 import {IInitialState} from '../../redux/store';
 import CommonEmptyContainerComponent from '../Common/CommonEmptyContainer.component';
+import CommonTextComponent from '../Common/CommonText.component';
+
+import theme from '../../utils/theme';
+import styles from './ScheduleNotes.styles';
 
 interface IScheduleNotesComponent extends ConnectedProps<typeof connector> {
   currDate: Date;
@@ -19,33 +23,26 @@ const ScheduleNotesComponent: React.FC<IScheduleNotesComponent> = ({
   const notesForCurrDate = notes.get(currDate.getTime()) || [];
 
   return (
-    <ScheduleNotesComponentContainer>
-      <ScheduleNotesTitle>Дедлайны</ScheduleNotesTitle>
+    <RN.View style={styles.container}>
+      <CommonTextComponent
+        style={{
+          fontFamily: theme.fonts.semibold.fontFamily,
+          fontSize: theme.fonts.size.large,
+        }}>
+        Дедлайны
+      </CommonTextComponent>
 
-      <ScheduleNotesContainer>
+      <RN.View style={styles.notes}>
         <CommonNotesListComponent
           notes={notesForCurrDate}
           emptyContainer={
-            <CommonEmptyContainerComponent text="На текущую дату у вас нет ни одного дедлайна" />
+            <CommonEmptyContainerComponent text="На текущую дату дедлайнов нет" />
           }
         />
-      </ScheduleNotesContainer>
-    </ScheduleNotesComponentContainer>
+      </RN.View>
+    </RN.View>
   );
 };
-
-const ScheduleNotesComponentContainer = styled.View``;
-const ScheduleNotesTitle = styled.Text`
-  font-family: 'Inter-Bold';
-  font-size: 18px;
-
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
-const ScheduleNotesContainer = styled.View`
-  margin-top: 10px;
-`;
 
 const mapStateTopProps = (state: IInitialState) => ({
   notes: state.notes,

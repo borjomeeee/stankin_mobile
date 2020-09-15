@@ -1,5 +1,4 @@
-import styled from 'styled-components/native';
-import * as COLORS from './colors';
+import * as RN from 'react-native';
 
 declare global {
   namespace ReactNativePaper {
@@ -16,25 +15,6 @@ declare global {
   }
 }
 
-export const ScreenContainer = styled.View`
-  flex: 1;
-
-  padding: 0px 30px;
-
-  background-color: ${COLORS.WHITE};
-`;
-
-export const AuthScreenContainer = styled.View`
-  flex: 1;
-
-  padding: 0px 30px;
-
-  padding-top: 20px;
-  padding-bottom: 15px;
-
-  background-color: ${COLORS.WHITE};
-`;
-
 export default {
   screen: {
     flex: 1,
@@ -47,10 +27,22 @@ export default {
       gray: '#333333',
       white: '#eeeeee',
 
+      commonBlack: '#444444',
+      mediumBlack: '#404040',
+      lightBlack: '#969696',
+
       error: '#EA4646',
+
+      transparent: 'transparent',
     },
     accent: {
       darkWhite: '#d0d0d0',
+      darkBlack: '#2B2B2B',
+
+      evilGray: '#666666',
+    },
+    backButton: {
+      bg: '#545454',
     },
     input: {
       bg: '#1B1B1B',
@@ -59,6 +51,23 @@ export default {
     },
     button: {
       bg: '#5C5C5C',
+    },
+    header: {
+      bg: '#2C2C2C',
+    },
+    separator: {
+      bg: '#454545',
+    },
+
+    calendar: {
+      option: 'rgba(208, 208, 208, 0.2)',
+    },
+    lesson: {
+      border: '#313131',
+      bg: '#3C3C3C',
+
+      card: '#222222',
+      separator: '#999999',
     },
   },
 
@@ -76,12 +85,20 @@ export default {
       fontWeight: 'bold',
     },
 
-    size: {
-      small: 12,
-      standart: 14,
-      medium: 16,
-      large: 18,
-    },
+    size:
+      RN.Dimensions.get('screen').width > 375
+        ? {
+            small: 14,
+            standart: 16,
+            medium: 18,
+            large: 20,
+          }
+        : {
+            small: 12,
+            standart: 14,
+            medium: 16,
+            large: 18,
+          },
   },
 
   borderRadius: 3,

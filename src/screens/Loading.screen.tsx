@@ -1,31 +1,23 @@
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import * as RN from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 
-import styled from 'styled-components/native';
+import {BlurView} from '@react-native-community/blur';
 
-import CommonLogoComponent from '../components/Common/CommonLogo.component';
-
-import {AuthScreenContainer} from '../utils/theme';
-import * as COLORS from '../utils/colors';
+import theme from '../utils/theme';
+import styles from './Loading.styles';
 
 const LoadingScreen = () => {
   return (
-    <AuthScreenContainer>
-      <CommonLogoComponent />
-
-      <LoadingScreenContent>
-        <ActivityIndicator color={COLORS.BLACK} size="large" />
-      </LoadingScreenContent>
-    </AuthScreenContainer>
+    <RN.View style={styles.container}>
+      <BlurView blurType="dark" style={styles.container} />
+      <ActivityIndicator
+        size="small"
+        color={theme.colors.primary.white}
+        style={{}}
+      />
+    </RN.View>
   );
 };
-
-// Components
-const LoadingScreenContent = styled.View`
-  flex: 1;
-
-  justify-content: center;
-  align-items: center;
-`;
 
 export default LoadingScreen;

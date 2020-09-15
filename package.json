@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^2.6.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/analytics": "^6.0.0-alpha.25",
@@ -72,6 +73,7 @@
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.0.4",
     "react-dom": "^16.13.1",
+    "react-native-svg-transformer": "^0.14.3",
     "react-test-renderer": "16.13.1",
     "typescript": "^3.8.3"
   },
