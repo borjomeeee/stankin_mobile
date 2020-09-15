@@ -3,6 +3,9 @@ import * as RN from 'react-native';
 
 import Modal from 'react-native-modal';
 
+import theme from '../../utils/theme';
+import styles from './CommonSubjectModal.styles';
+
 import CommonTextComponent from './CommonText.component';
 
 interface ICommonSubjectsModalComponent {
@@ -23,63 +26,34 @@ const CommonSubjectsModalComponent: React.FC<ICommonSubjectsModalComponent> = ({
 }) => {
   const renderSubjectComponent = ({item}: {item: string}) => {
     return (
-      <RN.View
+      <RN.TouchableHighlight
         key={item}
-        onTouchEnd={onSelectSubject.bind(null, item)}
-        style={{alignItems: 'flex-start'}}>
-        <CommonTextComponent>{item}</CommonTextComponent>
-      </RN.View>
+        delayPressIn={0}
+        activeOpacity={0.9}
+        underlayColor={theme.colors.accent.darkWhite}
+        onPress={onSelectSubject.bind(null, item)}
+        style={styles.optionContainer}>
+        <CommonTextComponent style={styles.optionText}>
+          {item}
+        </CommonTextComponent>
+      </RN.TouchableHighlight>
     );
   };
 
   return (
     <Modal isVisible={isVisible} onBackdropPress={onHide}>
-      <RN.View>
-        <RN.View>
+      <RN.View style={styles.container}>
+        <RN.View style={styles.content}>
           <RN.FlatList
             data={subjects}
             keyExtractor={(item) => item}
             renderItem={renderSubjectComponent}
-            ItemSeparatorComponent={() => <RN.View />}
+            ItemSeparatorComponent={() => <RN.View style={styles.separator} />}
           />
         </RN.View>
       </RN.View>
     </Modal>
   );
 };
-
-// // Components
-// const ModalContainer = styled.View`
-//   width: 100%;
-//   height: 100%;
-
-//   align-items: center;
-//   justify-content: center;
-
-//   max-height: 70%;
-// `;
-
-// const ModalContent = styled.ScrollView`
-//   background-color: ${COLORS.WHITE};
-
-//   border-radius: 2px;
-// `;
-
-// const ModalElementContainer = styled(FlatButton)`
-//   padding: 15px 0px;
-// `;
-
-// const SubjectSeparator = styled.View`
-//   width: 100%;
-//   height: 1px;
-
-//   background-color: ${COLORS.MEDIUM_GRAY};
-// `;
-
-// const ModalElementText = styled.Text`
-//   font-size: 16px;
-
-//   padding: 0px 20px;
-// `;
 
 export default CommonSubjectsModalComponent;
