@@ -1,34 +1,35 @@
 import React from 'react';
-
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 // Need for correct view animations with opacity
 const CommonSwipeableItemComponent: React.FC = ({children}) => {
   return (
-    <SwipeableItemContainer>
-      <SwipeableItemCap />
+    <RN.View style={styles.container}>
+      <RN.View style={styles.item} />
 
       {children}
-    </SwipeableItemContainer>
+    </RN.View>
   );
 };
 
-const SwipeableItemContainer = styled.View`
-  position: relative;
-  background-color: ${'#ffffff'};
+const styles = RN.StyleSheet.create({
+  container: {
+    position: 'relative',
+    overflow: 'hidden',
 
-  overflow: hidden;
-`;
+    backgroundColor: '#fff',
+  },
 
-const SwipeableItemCap = styled.View`
-  position: absolute;
+  item: {
+    position: 'absolute',
 
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
 
-  background-color: ${'#ffffff'};
-`;
+    backgroundColor: '#fff',
+  },
+});
 
 export default CommonSwipeableItemComponent;

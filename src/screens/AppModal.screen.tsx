@@ -1,8 +1,7 @@
 import React from 'react';
-import {View} from 'react-native';
-import {connect, ConnectedProps} from 'react-redux';
+import * as RN from 'react-native';
 
-import styled from 'styled-components/native';
+import {connect, ConnectedProps} from 'react-redux';
 
 import Modal from 'react-native-modal';
 
@@ -11,75 +10,46 @@ import {IInitialState} from '../redux/store';
 import {clearErrorAction} from '../actions/App.actions';
 
 import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonTextComponent from '../components/Common/CommonText.component';
 
-import * as COLORS from '../utils/colors';
 import {convertAppErrorToString} from '../utils/methods';
 
 import {AppErrorTypes} from '../enums/App.enums';
+
+import styles from './AppModal.styles';
 
 const AppModalScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
   clearAppError,
 }) => {
   return (
-    <View>
+    <RN.View>
       <Modal
         isVisible={app.error.type !== AppErrorTypes.NONE}
         onBackdropPress={clearAppError.bind(null)}
         supportedOrientations={['portrait', 'landscape']}>
-        <ModalContainer>
-          <ModalContent>
-            <ModalTitle>{convertAppErrorToString(app.error.type)}</ModalTitle>
+        <RN.View style={styles.container}>
+          <RN.View>
+            <CommonTextComponent style={styles.title}>
+              {convertAppErrorToString(app.error.type)}
+            </CommonTextComponent>
 
-            <ModalText>{app.error.text}</ModalText>
+            <CommonTextComponent style={styles.text}>
+              {app.error.text}
+            </CommonTextComponent>
 
-            <ModalButton>
+            <RN.View style={styles.buttonContainer}>
               <CommonButtonComponent
                 text="Ок"
                 onClick={clearAppError.bind(null)}
               />
-            </ModalButton>
-          </ModalContent>
-        </ModalContainer>
+            </RN.View>
+          </RN.View>
+        </RN.View>
       </Modal>
-    </View>
+    </RN.View>
   );
 };
-
-// Components
-const ModalContainer = styled.View`
-  width: 100%;
-  height: 100%;
-
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalContent = styled.View`
-  min-width: 80%;
-  padding: 20px;
-
-  background-color: ${COLORS.WHITE};
-
-  border-radius: 3px;
-`;
-
-const ModalTitle = styled.Text`
-  font-family: 'Inter-Bold';
-  font-size: 22px;
-
-  margin-bottom: 20px;
-`;
-
-const ModalText = styled.Text`
-  font-size: 16px;
-
-  margin-bottom: 20px;
-`;
-
-const ModalButton = styled.View`
-  align-items: center;
-`;
 
 // State
 const mapStateToProps = (state: IInitialState) => ({

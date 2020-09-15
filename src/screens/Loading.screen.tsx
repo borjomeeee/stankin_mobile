@@ -1,6 +1,5 @@
 import React from 'react';
 import * as RN from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
 
 import {BlurView} from '@react-native-community/blur';
 
@@ -11,11 +10,7 @@ const LoadingScreen = () => {
   return (
     <RN.View style={styles.container}>
       <BlurView blurType="dark" style={styles.container} blurAmount={2} />
-      <ActivityIndicator
-        size="small"
-        color={theme.colors.primary.white}
-        style={{}}
-      />
+      <RN.ActivityIndicator size="small" color={theme.colors.primary.white} />
     </RN.View>
   );
 };
