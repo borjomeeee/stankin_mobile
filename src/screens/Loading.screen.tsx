@@ -10,7 +10,7 @@ import styles from './Loading.styles';
 const LoadingScreen = () => {
   return (
     <RN.View style={styles.container}>
-      <BlurView blurType="dark" style={styles.container} />
+      <BlurView blurType="dark" style={styles.container} blurAmount={2} />
       <ActivityIndicator
         size="small"
         color={theme.colors.primary.white}

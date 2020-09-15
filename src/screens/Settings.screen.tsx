@@ -1,18 +1,13 @@
 import Config from 'react-native-config';
 const {DEVELOPER_EMAIL, APP_VERSION} = Config;
 
-import React, {useLayoutEffect, useRef} from 'react';
-
-import {TouchableOpacity, Linking} from 'react-native';
-import {IconButton, withTheme} from 'react-native-paper';
+import React, {useLayoutEffect} from 'react';
+import * as RN from 'react-native';
 
 import {connect, ConnectedProps} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 import {IInitialState} from '../redux/store';
-
-import styled from 'styled-components/native';
-import RNPickerSelect, {PickerStyle} from 'react-native-picker-select';
 
 import {
   logoutUserAction,
@@ -21,238 +16,182 @@ import {
 
 import {updateScheduleAction} from '../actions/Shedule.actions';
 
-import CommonTagComponent from '../components/Common/CommonTag.component';
 import CommonButtonComponent from '../components/Common/CommonButton.component';
+import CommonHeaderIconComponent from '../components/Common/CommonHeaderIcon.component';
+import CommonTextComponent from '../components/Common/CommonText.component';
 
-import * as COLORS from '../utils/colors';
-import {ScreenContainer} from '../utils/theme';
 import {dateToStringExpanded} from '../utils/methods';
+import theme from '../utils/theme';
+
+import styles from './Settings.styles';
 
 import {LessonGroup} from '../enums/Lesson.enums';
 
-const IUserGroupDropdownProps: PickerStyle = {
-  inputAndroid: {
-    width: 100,
-    height: 30,
-
-    borderWidth: 1,
-    borderColor: COLORS.BLACK,
-
-    opacity: 0,
-    zIndex: 100,
-  },
-  inputIOS: {
-    width: 100,
-    height: 30,
-
-    borderWidth: 1,
-    borderColor: COLORS.BLACK,
-
-    opacity: 0,
-    zIndex: 100,
-  },
-};
+interface IUserGroupOption {
+  label: string;
+  value: LessonGroup;
+}
 
 const DEVELOPER_URL = `mailto:${DEVELOPER_EMAIL}`;
 
-const SettingsScreen: React.FC<
-  ConnectedProps<typeof connector> & {theme: ReactNativePaper.Theme}
-> = ({app, user, logoutUser, setUserGroup, updateSchedule, theme}) => {
+const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
+  app,
+  user,
+  logoutUser,
+  setUserGroup,
+  updateSchedule,
+}) => {
   const navigation = useNavigation();
 
-  // Select dropdown
-  let selectRef = useRef(null);
-
-  const userGroups = [
-    {label: 'Без группы', value: LessonGroup.NONE},
-    {label: 'Группа А', value: LessonGroup.GROUP_A},
-    {label: 'Группа Б', value: LessonGroup.GROUP_B},
+  const userGroups: IUserGroupOption[] = [
+    {
+      label: '-',
+      value: LessonGroup.NONE,
+    },
+    {
+      label: 'А',
+      value: LessonGroup.GROUP_A,
+    },
+    {
+      label: 'Б',
+      value: LessonGroup.GROUP_B,
+    },
   ];
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <IconButton
-          icon="logout"
-          onPress={logoutUser}
-          color={theme.colors.primary}
-          size={30}
-        />
+        <CommonHeaderIconComponent name="exit-to-app" onPress={logoutUser} />
       ),
     });
-  }, [logoutUser, navigation, theme]);
+  }, [logoutUser, navigation]);
 
-  const onSelectUserGroup = (value: string | null) => {
-    if (value !== null) {
-      setUserGroup(value as LessonGroup);
-    }
+  const renderUserGroupOption = (
+    {label, value}: IUserGroupOption,
+    index: number,
+  ) => {
+    const optionContainerStyles: RN.StyleProp<RN.ViewStyle> = {
+      backgroundColor:
+        user.lessonGroup === value
+          ? theme.colors.primary.mediumBlack
+          : 'transparent',
+    };
+    return (
+      <>
+        {index !== 0 && <RN.View style={styles.selectOptionSeparator} />}
+
+        <RN.TouchableOpacity
+          delayPressIn={0}
+          activeOpacity={0.6}
+          onPress={setUserGroup.bind(null, value)}
+          style={[styles.selectOptionContainer, optionContainerStyles]}>
+          <CommonTextComponent>{label}</CommonTextComponent>
+        </RN.TouchableOpacity>
+      </>
+    );
   };
 
   const onClickDeveloperLink = async () => {
-    const supported = await Linking.canOpenURL(DEVELOPER_URL);
+    const supported = await RN.Linking.canOpenURL(DEVELOPER_URL);
 
     if (supported) {
       // Opening the link with some app, if the URL scheme is "http" the web link should be opened
       // by some browser in the mobile
-      await Linking.openURL(DEVELOPER_URL);
+      await RN.Linking.openURL(DEVELOPER_URL);
     }
   };
 
   return (
-    <ScreenContainer>
-      <SettingsScreenContent showsVerticalScrollIndicator={false}>
-        <SettingsOption>
-          <SettingsOptionKey>Имя:</SettingsOptionKey>
-          <SettingsOptionValue>
-            <CommonTagComponent text={user.name} />
-          </SettingsOptionValue>
-        </SettingsOption>
+    <RN.View style={[theme.screen, styles.container]}>
+      <RN.ScrollView showsVerticalScrollIndicator={false}>
+        <RN.View>
+          <RN.View style={styles.categoryTitleContainer}>
+            <CommonTextComponent style={styles.categoryTitleText}>
+              О пользователе
+            </CommonTextComponent>
+          </RN.View>
 
-        <SettingsOption>
-          <SettingsOptionKey>Группа:</SettingsOptionKey>
-          <SettingsOptionValue>
-            <CommonTagComponent text={user.group.title.toUpperCase()} />
-          </SettingsOptionValue>
-        </SettingsOption>
+          <RN.View style={styles.option}>
+            <CommonTextComponent>Имя:</CommonTextComponent>
+            <RN.View style={styles.optionValueContainer}>
+              <CommonTextComponent>{user.name}</CommonTextComponent>
+            </RN.View>
+          </RN.View>
 
-        <BlockSeparator />
+          <RN.View style={styles.option}>
+            <CommonTextComponent>Группа:</CommonTextComponent>
+            <RN.View style={styles.optionValueContainer}>
+              <CommonTextComponent>
+                {user.group.title.toUpperCase()}
+              </CommonTextComponent>
+            </RN.View>
+          </RN.View>
 
-        <SettingsOption>
-          <SettingsOptionKey>Группа на парах:</SettingsOptionKey>
-          <SettingsOptionValue>
-            <OptionSelectInput>
-              <OptionSelectText>
-                {user.lessonGroup === LessonGroup.NONE
-                  ? 'Без группы'
-                  : `Группа ${user.lessonGroup}`}
-              </OptionSelectText>
-            </OptionSelectInput>
-          </SettingsOptionValue>
+          <RN.View style={styles.option}>
+            <CommonTextComponent>Подгруппа:</CommonTextComponent>
+            <RN.View
+              style={[
+                styles.optionValueContainer,
+                styles.optionSelectContainer,
+              ]}>
+              {userGroups.map(renderUserGroupOption)}
+            </RN.View>
+          </RN.View>
 
-          <OptionSelect>
-            <RNPickerSelect
-              style={IUserGroupDropdownProps}
-              onValueChange={onSelectUserGroup}
-              items={userGroups}
-              ref={selectRef}
-            />
-          </OptionSelect>
-        </SettingsOption>
+          <RN.View style={styles.categoryTitleContainer}>
+            <CommonTextComponent style={styles.categoryTitleText}>
+              Переменные приложения
+            </CommonTextComponent>
+          </RN.View>
 
-        <SettingsOption>
-          <SettingsOptionKey>Последнее обновление:</SettingsOptionKey>
-          <SettingsOptionValue>
-            <CommonTagComponent
-              text={dateToStringExpanded(new Date(app.lastUpdateSchedule))}
-            />
-          </SettingsOptionValue>
-        </SettingsOption>
+          <RN.View style={styles.option}>
+            <CommonTextComponent>APP_VERSION:</CommonTextComponent>
+            <RN.View style={styles.optionValueContainer}>
+              <CommonTextComponent>{`v${APP_VERSION}`}</CommonTextComponent>
+            </RN.View>
+          </RN.View>
 
-        <BlockSeparator />
+          <RN.View style={styles.option}>
+            <CommonTextComponent>LAST_UPDATE_SCHEDULE:</CommonTextComponent>
+            <RN.View style={styles.optionValueContainer}>
+              <CommonTextComponent>
+                {dateToStringExpanded(new Date(app.lastUpdateSchedule))}
+              </CommonTextComponent>
+            </RN.View>
+          </RN.View>
 
-        <SettingsOption>
-          <SettingsOptionKey>Версия приложения:</SettingsOptionKey>
-          <SettingsOptionValue>
-            <SettingsOptionText>{APP_VERSION}</SettingsOptionText>
-          </SettingsOptionValue>
-        </SettingsOption>
+          <RN.View style={styles.categoryTitleContainer}>
+            <CommonTextComponent style={styles.categoryTitleText}>
+              О разработчике
+            </CommonTextComponent>
+          </RN.View>
 
-        <SettingsOption>
-          <SettingsOptionKey>Разработчик:</SettingsOptionKey>
-          <SettingsOptionValue>
-            <TouchableOpacity onPress={onClickDeveloperLink}>
-              <SettingsOptionLinkText>
-                spiridonov.new@gmail.com
-              </SettingsOptionLinkText>
-            </TouchableOpacity>
-          </SettingsOptionValue>
-        </SettingsOption>
-      </SettingsScreenContent>
+          <RN.View style={styles.option}>
+            <CommonTextComponent>Почта:</CommonTextComponent>
+            <RN.View
+              style={styles.optionValueContainer}
+              onTouchEnd={onClickDeveloperLink}>
+              <CommonTextComponent style={styles.link}>
+                {DEVELOPER_EMAIL}
+              </CommonTextComponent>
+            </RN.View>
+          </RN.View>
+        </RN.View>
+      </RN.ScrollView>
 
-      <SettingsSubmitButton>
-        <CommonButtonComponent
-          text="Обновить расписание"
-          onClick={updateSchedule.bind(
-            null,
-            user.login,
-            user.password,
-            user.group.title,
-          )}
-        />
-      </SettingsSubmitButton>
-    </ScreenContainer>
+      <CommonButtonComponent
+        style={styles.submitButton}
+        text="Обновить расписание"
+        onClick={updateSchedule.bind(
+          null,
+          user.login,
+          user.password,
+          user.group.title,
+        )}
+      />
+    </RN.View>
   );
 };
-
-// Components
-const SettingsScreenContent = styled.ScrollView`
-  margin-top: 10px;
-`;
-
-const SettingsOption = styled.View`
-  height: 30px;
-
-  flex-direction: row;
-  justify-content: space-between;
-
-  align-items: center;
-
-  margin-top: 5px;
-`;
-
-const SettingsOptionKey = styled.Text`
-  font-size: 16px;
-`;
-
-const SettingsOptionValue = styled.View`
-  position: relative;
-`;
-
-const SettingsOptionText = styled.Text``;
-
-const SettingsOptionLinkText = styled.Text`
-  color: ${COLORS.BLUE};
-
-  text-decoration: underline;
-`;
-
-const OptionSelect = styled.View`
-  position: absolute;
-
-  right: 0px;
-  top: 0px;
-
-  opacity: 0;
-`;
-
-const OptionSelectInput = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid ${COLORS.DARK_GRAY};
-
-  padding: 5px 8px;
-  background-color: ${COLORS.WHITE};
-`;
-
-const OptionSelectText = styled.Text`
-  font-family: 'Inter-Bold';
-`;
-
-const BlockSeparator = styled.View`
-  height: 1px;
-
-  margin: 20px 0px 10px 0px;
-
-  background-color: ${COLORS.MEDIUM_GRAY};
-`;
-
-const SettingsSubmitButton = styled.View`
-  margin: 20px 0px;
-
-  align-items: center;
-  justify-content: center;
-`;
 
 // State
 const mapStateToProps = (state: IInitialState) => ({
@@ -269,4 +208,4 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(withTheme(SettingsScreen));
+export default connector(SettingsScreen);

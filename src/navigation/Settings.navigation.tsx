@@ -5,25 +5,25 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack';
 
+import ScreenWrapperComponent from '../containers/ScreenWrapper.component';
 import SettingsScreen from '../screens/Settings.screen';
 
-import * as COLORS from '../utils/colors';
+import theme from '../utils/theme';
 
 const Stack = createStackNavigator();
 
 const SettingsNavigationBarOptions: StackNavigationOptions = {
-  headerTintColor: COLORS.BLACK,
+  headerTintColor: theme.colors.primary.white,
   headerStyle: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: theme.colors.header.bg,
     elevation: 0,
 
-    height: 75,
+    height: 60,
   },
-  headerTitleAlign: 'left',
+  headerTitleAlign: 'center',
   headerTitleStyle: {
-    paddingLeft: 15,
-    fontFamily: 'Inter-Bold',
-    fontSize: 22,
+    fontFamily: theme.fonts.semibold.fontFamily,
+    fontSize: theme.fonts.size.large,
   },
   headerRightContainerStyle: {
     marginRight: 15,
@@ -37,6 +37,12 @@ const SettingsNavigationBarOptions: StackNavigationOptions = {
 
 const SettingsScreenOptions = {headerTitle: 'Настройки'};
 
+const SettingsScreenWrapped = () => (
+  <ScreenWrapperComponent>
+    <SettingsScreen />
+  </ScreenWrapperComponent>
+);
+
 const SettingsNavigation = () => {
   return (
     <Stack.Navigator
@@ -45,7 +51,7 @@ const SettingsNavigation = () => {
       <Stack.Screen
         options={SettingsScreenOptions}
         name="Settings"
-        component={SettingsScreen}
+        component={SettingsScreenWrapped}
       />
     </Stack.Navigator>
   );

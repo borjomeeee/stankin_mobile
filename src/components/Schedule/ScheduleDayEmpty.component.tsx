@@ -1,11 +1,12 @@
 import React from 'react';
 
 import styled from 'styled-components/native';
+import CommonTextComponent from '../Common/CommonText.component';
 
 const ScheduleDayEmptyComponent = () => {
   return (
     <ScheduleEmptyDayContainer>
-      <ScheduleEmptyDayText>На текущую дату пар нет</ScheduleEmptyDayText>
+      <CommonTextComponent>На текущую дату пар нет</CommonTextComponent>
     </ScheduleEmptyDayContainer>
   );
 };
@@ -16,10 +17,6 @@ const ScheduleEmptyDayContainer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-const ScheduleEmptyDayText = styled.Text`
-  font-family: 'Inter-Regular';
-  color: ${'#444444'};
 `;
 
 export default ScheduleDayEmptyComponent;
