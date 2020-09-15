@@ -112,7 +112,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
   };
 
   return (
-    <ScreenContainer>
+    <>
       <AddNoteContent
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always">
@@ -160,8 +160,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
           <OptionInputElement
             value={noteText}
             onChangeText={onChangeNoteText}
-            error={!!noteTextError}
-            errorValue={noteTextError}
+            error={noteTextError}
             placeholder="Написать реферат ..."
           />
         </OptionInputContainer>
@@ -189,7 +188,7 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
         onSelectSubject={selectItemSubjectDropdown}
         onHide={setVisibleSubjectDropdown.bind(null, false)}
       />
-    </ScreenContainer>
+    </>
   );
 };
 

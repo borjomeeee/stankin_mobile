@@ -1,16 +1,13 @@
 import React from 'react';
-
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 import CommonNoteToggleButton from './CommonNoteToggleButton.component';
+import CommonTextComponent from '../CommonText.component';
 
 import {INote} from '../../../models/Note.model';
 
-import * as COLORS from '../../../utils/colors';
-
-interface ICheckedElement {
-  isDone: boolean;
-}
+import theme from '../../../utils/theme';
+import styles from './CommonNote.styles';
 
 interface ICommonNoteComponent extends INote {
   onClick: (noteId: string) => void;
@@ -25,45 +22,35 @@ const CommonNoteComponent: React.FC<ICommonNoteComponent> = ({
 
   onClick,
 }) => {
-  return (
-    <NoteContainer onPress={onClick.bind(null, id)} delayPressIn={0}>
-      <CommonNoteToggleButton isDone={isChecked} size={20} />
+  const noteCheckedTextStyles: RN.StyleProp<RN.TextStyle> = {
+    color: isChecked
+      ? theme.colors.lesson.separator
+      : theme.colors.primary.white,
+    textDecorationLine: isChecked ? 'line-through' : 'none',
+  };
 
-      <NoteDataContainer>
-        <NoteDataSubject numberOfLines={1} isDone={isChecked}>
-          {subject}
-        </NoteDataSubject>
-        <NoteDataText isDone={isChecked}>{text}</NoteDataText>
-      </NoteDataContainer>
-    </NoteContainer>
+  return (
+    <RN.View>
+      <RN.TouchableOpacity
+        delayPressIn={0}
+        activeOpacity={0.9}
+        onPress={onClick.bind(null, id)}
+        style={styles.container}>
+        <CommonNoteToggleButton isDone={isChecked} size={20} />
+
+        <RN.View style={styles.content}>
+          <CommonTextComponent style={styles.label} numberOfLines={1}>
+            {subject}
+          </CommonTextComponent>
+          <CommonTextComponent
+            style={[styles.text, noteCheckedTextStyles]}
+            numberOfLines={1}>
+            {text}
+          </CommonTextComponent>
+        </RN.View>
+      </RN.TouchableOpacity>
+    </RN.View>
   );
 };
-
-const NoteContainer = styled.TouchableOpacity`
-  flex-direction: row;
-
-  align-items: center;
-  background-color: ${'#ffffff'};
-
-  padding: 8px 0px;
-`;
-
-const NoteDataContainer = styled.View`
-  margin-left: 20px;
-`;
-
-const NoteDataSubject = styled.Text<ICheckedElement>`
-  font-family: 'Inter-Bold';
-
-  padding-right: 50px;
-  color: ${(props) => (props.isDone ? COLORS.DARK_GRAY : COLORS.BLACK)};
-`;
-
-const NoteDataText = styled.Text<ICheckedElement>`
-  font-size: 16px;
-
-  color: ${(props) => (props.isDone ? COLORS.MEDIUM_GRAY : COLORS.BLACK)};
-  text-decoration: ${(props) => (props.isDone ? 'line-through' : 'none')};
-`;
 
 export default CommonNoteComponent;

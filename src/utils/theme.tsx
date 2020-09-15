@@ -32,6 +32,7 @@ export default {
       lightBlack: '#969696',
 
       error: '#EA4646',
+      success: '#3DDC84',
 
       transparent: 'transparent',
     },

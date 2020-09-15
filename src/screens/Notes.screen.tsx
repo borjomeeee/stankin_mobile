@@ -1,18 +1,20 @@
 import React from 'react';
+import * as RN from 'react-native';
+
 import {useNavigation} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
-
-import styled from 'styled-components/native';
 
 import {IInitialState} from '../redux/store';
 
 import CommonButtonComponent from '../components/Common/CommonButton.component';
 import CommonNotesListComponent from '../components/Common/Notes/CommonNotesList.component';
 import CommonEmptyContainerComponent from '../components/Common/CommonEmptyContainer.component';
+import CommonTextComponent from '../components/Common/CommonText.component';
 
 import NotesNotCheckedListComponent from '../components/Notes/NotesNotCheckedList.component';
 
-import {ScreenContainer} from '../utils/theme';
+import theme from '../utils/theme';
+import styles from './Notes.styles';
 
 import {toggleIsCheckNoteAction} from '../actions/Notes.actions';
 
@@ -44,8 +46,11 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
   );
 
   return (
-    <ScreenContainer>
-      <NotesContent showsVerticalScrollIndicator={false}>
+    <RN.View style={[theme.screen, styles.container]}>
+      <RN.ScrollView
+        showsVerticalScrollIndicator={false}
+        endFillColor="transtarent"
+        overScrollMode="never">
         {notCheckedNotes.length === 0 && (
           <CommonEmptyContainerComponent text="Пока у вас не запланировано ни одного дедлайна" />
         )}
@@ -53,37 +58,23 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
         <NotesNotCheckedListComponent notes={notCheckedNotes} />
 
         {checkedNotes.length > 0 && (
-          <CompletedTasksTitle>Выполненные</CompletedTasksTitle>
+          <CommonTextComponent style={styles.title}>
+            Выполненные
+          </CommonTextComponent>
         )}
 
         <CommonNotesListComponent notes={checkedNotes} />
-      </NotesContent>
-
-      <NotesScreenSubmit>
+      </RN.ScrollView>
+      <RN.View>
         <CommonButtonComponent
           text="Добавить дедлайн"
           onClick={goAddNoteScreen}
+          style={styles.submit}
         />
-      </NotesScreenSubmit>
-    </ScreenContainer>
+      </RN.View>
+    </RN.View>
   );
 };
-
-// Components
-const NotesContent = styled.ScrollView`
-  margin-top: 10px;
-`;
-const NotesScreenSubmit = styled.View`
-  margin: 20px 0px;
-  align-items: center;
-`;
-
-const CompletedTasksTitle = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-
-  margin: 20px 0px;
-`;
 
 // State
 const mapStateToProps = (state: IInitialState) => ({

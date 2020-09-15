@@ -1,10 +1,9 @@
 import React from 'react';
-import {Dimensions, Animated} from 'react-native';
+import * as RN from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 
 import {SwipeListView} from 'react-native-swipe-list-view';
 
-import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {INote} from '../../../models/Note.model';
@@ -12,12 +11,13 @@ import {INote} from '../../../models/Note.model';
 import CommonNoteComponent from './CommonNote.component';
 import CommonSwipeableItemComponent from '../CommonSwipeableItem.component';
 
-import * as COLORS from '../../../utils/colors';
-
 import {
   toggleIsCheckNoteAction,
   removeNoteAction,
 } from '../../../actions/Notes.actions';
+
+import styles from './CommonNotesList.styles';
+import theme from '../../../utils/theme';
 
 interface ICommonNotesListComponent extends ConnectedProps<typeof connector> {
   notes: INote[];
@@ -26,7 +26,7 @@ interface ICommonNotesListComponent extends ConnectedProps<typeof connector> {
 }
 
 type IRowAnimationValues = {
-  [index: string]: Animated.Value;
+  [index: string]: RN.Animated.Value;
 };
 
 const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
@@ -38,7 +38,7 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
 }) => {
   const rowAnimationValues: IRowAnimationValues = notes.reduce(
     (acc: IRowAnimationValues, item: INote) => {
-      acc[item.id] = new Animated.Value(0);
+      acc[item.id] = new RN.Animated.Value(0);
       return acc;
     },
     {},
@@ -49,8 +49,8 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
   };
 
   const onRemoveNotesListItem = (noteId: string) => {
-    Animated.parallel([
-      Animated.timing(rowAnimationValues[noteId], {
+    RN.Animated.parallel([
+      RN.Animated.timing(rowAnimationValues[noteId], {
         toValue: 1,
         duration: 200,
         useNativeDriver: false,
@@ -60,23 +60,23 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
 
   const renderNoteItem = (note: INote) => {
     return (
-      <Animated.View
+      <RN.Animated.View
         style={{
           transform: [
             {
               translateX: rowAnimationValues[note.id].interpolate({
                 inputRange: [0, 1],
-                outputRange: [0, -Dimensions.get('window').width],
+                outputRange: [0, -RN.Dimensions.get('window').width],
               }),
             },
           ],
           height: rowAnimationValues[note.id].interpolate({
             inputRange: [0, 1],
-            outputRange: [55, 0],
+            outputRange: [60, 0],
           }),
         }}>
         <CommonSwipeableItemComponent key={note.id}>
-          <Animated.View
+          <RN.Animated.View
             style={{
               opacity: rowAnimationValues[note.id].interpolate({
                 inputRange: [0, 0.5, 1],
@@ -84,9 +84,9 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
               }),
             }}>
             <CommonNoteComponent onClick={onClickNotesListItem} {...note} />
-          </Animated.View>
+          </RN.Animated.View>
         </CommonSwipeableItemComponent>
-      </Animated.View>
+      </RN.Animated.View>
     );
   };
 
@@ -100,13 +100,15 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
       data={notes}
       keyExtractor={(item: INote) => item.id}
       renderItem={({item}: {item: INote}) => renderNoteItem(item)}
-      ItemSeparatorComponent={() => <ItemSeparator />}
+      ItemSeparatorComponent={() => <RN.View style={styles.separator} />}
       renderHiddenItem={(rowKey) => (
-        <HiddenTrashContainer
+        <RN.TouchableOpacity
           delayPressIn={0}
+          activeOpacity={0.8}
+          style={styles.noteContainer}
           onPress={onRemoveNotesListItem.bind(null, rowKey.item.id)}>
-          <Icon name="delete" color={COLORS.WHITE} size={25} />
-        </HiddenTrashContainer>
+          <Icon name="delete" color={theme.colors.primary.white} size={25} />
+        </RN.TouchableOpacity>
       )}
       rightOpenValue={-45}
       disableRightSwipe
@@ -114,23 +116,6 @@ const CommonNotesListComponent: React.FC<ICommonNotesListComponent> = ({
     />
   );
 };
-
-const ItemSeparator = styled.View`
-  height: 1px;
-  background-color: ${COLORS.LIGHT_GRAY};
-`;
-
-const HiddenTrashContainer = styled.TouchableOpacity`
-  position: relative;
-
-  background-color: ${COLORS.RED};
-  height: 100%;
-
-  align-items: flex-end;
-  justify-content: center;
-
-  padding-right: 10px;
-`;
 
 const mapStateToProps = () => ({});
 

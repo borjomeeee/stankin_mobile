@@ -1,7 +1,5 @@
 import React from 'react';
-import {FlatList} from 'react-native';
-
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 import {INotCheckedNote} from '../../models/Note.model';
 
@@ -33,20 +31,20 @@ const NotesNotCheckedListComponent: React.FC<INotesNotCheckedListComponent> = ({
     ([, dayNotes]: INotesNotCheckedListItem) => dayNotes.length !== 0,
   );
 
+  const separatorStyles: RN.StyleProp<RN.ViewStyle> = {
+    height: 10,
+  };
+
   return (
-    <FlatList
+    <RN.FlatList
       data={data}
       keyExtractor={(item: INotesNotCheckedListItem) => item[0].toString()}
       renderItem={({item}: {item: INotesNotCheckedListItem}) =>
         renderNotesDay(...item)
       }
-      ItemSeparatorComponent={() => <ItemSeparator />}
+      ItemSeparatorComponent={() => <RN.View style={separatorStyles} />}
     />
   );
 };
-
-const ItemSeparator = styled.View`
-  height: 10px;
-`;
 
 export default NotesNotCheckedListComponent;

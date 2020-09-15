@@ -9,12 +9,12 @@ import theme from '../../utils/theme';
 import CommonTextComponent from './CommonText.component';
 
 type ICommonInputComponentProps = {
-  icon: string;
+  icon?: string;
   error: string;
 
   rightIcon?: React.ReactNode;
 
-  containerStyles: RN.StyleProp<RN.ViewStyle>;
+  containerStyles?: RN.StyleProp<RN.ViewStyle>;
 } & React.ComponentProps<typeof RN.TextInput>;
 
 const CommonInputComponent: React.FC<ICommonInputComponentProps> = ({
@@ -52,7 +52,7 @@ const CommonInputComponent: React.FC<ICommonInputComponentProps> = ({
       <RN.View style={styles.inputShadowOutsideContainer}>
         <RN.View style={[styles.inputContentContainer, selectInputStyles]}>
           <RN.View>
-            <Icon name={icon} color={inputIconColor} size={20} />
+            {icon && <Icon name={icon} color={inputIconColor} size={20} />}
           </RN.View>
           <RN.TextInput
             selectionColor={theme.colors.accent.darkWhite}

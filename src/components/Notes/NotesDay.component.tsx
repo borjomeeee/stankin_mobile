@@ -1,11 +1,13 @@
 import React from 'react';
-
-import styled from 'styled-components/native';
+import * as RN from 'react-native';
 
 import {INotCheckedNote} from '../../models/Note.model';
 
-import {dateToDateString} from '../../utils/methods';
+import CommonTextComponent from '../Common/CommonText.component';
 import CommonNotesListComponent from '../Common/Notes/CommonNotesList.component';
+
+import {dateToDateString} from '../../utils/methods';
+import theme from '../../utils/theme';
 
 interface INotesDayComponent {
   currDate: Date;
@@ -17,27 +19,19 @@ const NotesDayComponent: React.FC<INotesDayComponent> = ({currDate, notes}) => {
     return <></>;
   }
 
+  const dayTitleStyles: RN.StyleProp<RN.TextStyle> = {
+    fontFamily: theme.fonts.semibold.fontFamily,
+    marginVertical: 5,
+  };
+
   return (
-    <NotesDayContainer>
-      <NotesDayTitle>{dateToDateString(currDate)}</NotesDayTitle>
+    <RN.View>
+      <CommonTextComponent style={dayTitleStyles}>
+        {dateToDateString(currDate)}
+      </CommonTextComponent>
 
       <CommonNotesListComponent notes={notes} />
-    </NotesDayContainer>
+    </RN.View>
   );
 };
-
-const NotesDayContainer = styled.View`
-  background-color: ${'#ffffff'};
-`;
-const NotesDayTitle = styled.Text`
-  margin-top: 5px;
-  font-family: 'Inter-Regular';
-
-  font-size: 16px;
-
-  color: ${'#444444'};
-
-  margin-bottom: 5px;
-`;
-
 export default NotesDayComponent;
