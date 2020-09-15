@@ -12,6 +12,11 @@ export default RN.StyleSheet.create({
     paddingTop: 35,
     paddingBottom: 100,
   },
+
+  inputs: {
+    maxWidth: 280,
+    minWidth: 280,
+  },
   monkeyIcon: {
     width: 25,
     height: 25,

@@ -15,9 +15,9 @@ import {AppErrorTypes} from '../enums/App.enums';
 import {fetchAPI} from '../utils/methods';
 
 const processSchedule = (data: any): [Map<number, ILesson[]>, number] => {
-  const updateDate = Date.now();
+  const updateDate = data.last_update * 1000;
 
-  const sh = data.reduce((acc: Map<number, ILesson[]>, val: any) => {
+  const sh = data.sh.reduce((acc: Map<number, ILesson[]>, val: any) => {
     val.dates.forEach((timestamp: number) => {
       const date = new Date(timestamp * 1000);
 

@@ -27,9 +27,7 @@ export default RN.StyleSheet.create({
 
     borderWidth: 1,
   },
-  inputContainer: {
-    minWidth: 280,
-  },
+  inputContainer: {},
   inputIcon: {},
   inputSelf: {
     flex: 1,

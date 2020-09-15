@@ -165,33 +165,35 @@ const AuthScreenComponent: React.FC<IAuthScreenComponentProps> = ({
         Станкин. Расписание
       </CommonTextComponent>
 
-      <CommonInputComponent
-        icon="account-outline"
-        value={formData.login.value}
-        error={formData.login.error}
-        onChangeText={handleChangeLoginInputValue}
-        placeholder="Логин"
-        secureTextEntry={false}
-        containerStyles={styles.loginInputContainer}
-      />
-      <CommonInputComponent
-        icon="lock"
-        placeholder="Пароль"
-        value={formData.password.value}
-        error={formData.password.error}
-        onChangeText={handleChangePasswordInputValue}
-        secureTextEntry={formData.password.isSecure}
-        containerStyles={styles.passwordInputContainer}
-        rightIcon={
-          <RN.TouchableOpacity
-            delayPressIn={0}
-            activeOpacity={0.5}
-            style={styles.monkeyIcon}
-            onPress={handleToggleShowPassword}>
-            <RN.Image source={monkeyImage} />
-          </RN.TouchableOpacity>
-        }
-      />
+      <RN.View style={styles.inputs}>
+        <CommonInputComponent
+          icon="account-outline"
+          value={formData.login.value}
+          error={formData.login.error}
+          onChangeText={handleChangeLoginInputValue}
+          placeholder="Логин"
+          secureTextEntry={false}
+          containerStyles={styles.loginInputContainer}
+        />
+        <CommonInputComponent
+          icon="lock"
+          placeholder="Пароль"
+          value={formData.password.value}
+          error={formData.password.error}
+          onChangeText={handleChangePasswordInputValue}
+          secureTextEntry={formData.password.isSecure}
+          containerStyles={styles.passwordInputContainer}
+          rightIcon={
+            <RN.TouchableOpacity
+              delayPressIn={0}
+              activeOpacity={0.5}
+              style={styles.monkeyIcon}
+              onPress={handleToggleShowPassword}>
+              <RN.Image source={monkeyImage} />
+            </RN.TouchableOpacity>
+          }
+        />
+      </RN.View>
 
       <CommonButtonComponent
         text="Войти"
