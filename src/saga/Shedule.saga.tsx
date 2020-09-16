@@ -24,7 +24,7 @@ const processSchedule = (data: any): [Map<number, ILesson[]>, number] => {
       const resTimestamp = new Date(
         date.getFullYear(),
         date.getMonth(),
-        date.getDate(),
+        date.getDate() - 1, // BUG
       ).getTime();
 
       let newLesson = new Lesson(

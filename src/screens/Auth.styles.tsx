@@ -4,6 +4,8 @@ import theme from '../utils/theme';
 
 export default RN.StyleSheet.create({
   container: {
+    position: 'relative',
+
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -28,5 +30,19 @@ export default RN.StyleSheet.create({
   },
   passwordInputContainer: {
     marginTop: 12,
+  },
+
+  footerContainer: {
+    position: 'absolute',
+
+    maxWidth: 280,
+
+    bottom: 20,
+  },
+  footerText: {
+    fontSize: theme.fonts.size.small,
+    color: theme.colors.accent.evilGray,
+
+    textAlign: 'center',
   },
 });

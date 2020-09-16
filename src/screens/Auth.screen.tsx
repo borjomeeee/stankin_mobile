@@ -36,9 +36,6 @@ type IAuthScreenForm = {
 };
 
 interface IAuthScreenComponentProps extends ConnectedProps<typeof connector> {}
-interface IAuthScreenComponentState {
-  form: IAuthScreenForm;
-}
 
 const AuthScreenComponent: React.FC<IAuthScreenComponentProps> = ({
   error,
@@ -200,6 +197,12 @@ const AuthScreenComponent: React.FC<IAuthScreenComponentProps> = ({
         onClick={handleSubmitAuthForm}
         style={buttonStyles}
       />
+
+      <RN.View style={styles.footerContainer}>
+        <CommonTextComponent style={styles.footerText}>
+          * Для входа в приложение используйте логин и пароль от ЭОС-а
+        </CommonTextComponent>
+      </RN.View>
     </RN.View>
   );
 };
