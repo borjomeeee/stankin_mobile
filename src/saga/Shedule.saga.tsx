@@ -1,4 +1,5 @@
 import {takeEvery, put, call} from 'redux-saga/effects';
+import analytics from '@react-native-firebase/analytics';
 
 import {DOWNLOAD_SHEDULE, UPDATE_SCHEDULE} from '../utils/constants';
 
@@ -24,7 +25,7 @@ const processSchedule = (data: any): [Map<number, ILesson[]>, number] => {
       const resTimestamp = new Date(
         date.getFullYear(),
         date.getMonth(),
-        date.getDate(), // BUG
+        date.getDate(),
       ).getTime();
 
       let newLesson = new Lesson(
@@ -63,9 +64,17 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
     );
 
     if (status === 200) {
+      yield analytics().logEvent('downloadSchedule', {
+        groupId: payload.groupId,
+      });
+
       const [sh, updateDate] = processSchedule(data);
       yield put(downloadSheduleSuccessAction(sh, updateDate));
     } else {
+      yield analytics().logEvent('downloadScheduleFailed', {
+        groupId: payload.groupId,
+      });
+
       yield put(
         downloadSheduleFailedAction({
           type: AppErrorTypes.ERROR,
@@ -74,6 +83,10 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
       );
     }
   } catch {
+    yield analytics().logEvent('downloadScheduleFailed', {
+      groupId: payload.groupId,
+    });
+
     yield put(
       downloadSheduleFailedAction({
         type: AppErrorTypes.ERROR,
@@ -94,9 +107,17 @@ export function* updateScheduleSaga({
     });
 
     if (status === 200) {
+      yield analytics().logEvent('updateSchedule', {
+        groupTitle: payload.title,
+      });
+
       const [sh, updateDate] = processSchedule(data);
       yield put(downloadSheduleSuccessAction(sh, updateDate));
     } else {
+      yield analytics().logEvent('updateScheduleFailed', {
+        groupTitle: payload.title,
+      });
+
       yield put(
         downloadSheduleFailedAction({
           type: AppErrorTypes.ERROR,
@@ -105,6 +126,10 @@ export function* updateScheduleSaga({
       );
     }
   } catch {
+    yield analytics().logEvent('updateScheduleFailed', {
+      groupTitle: payload.title,
+    });
+
     yield put(
       downloadSheduleFailedAction({
         type: AppErrorTypes.ERROR,

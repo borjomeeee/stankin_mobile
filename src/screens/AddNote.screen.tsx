@@ -1,4 +1,5 @@
 import React, {useState, useMemo, useEffect} from 'react';
+import analytics from '@react-native-firebase/analytics';
 
 import * as RN from 'react-native';
 
@@ -80,6 +81,8 @@ const AddNoteScreen: React.FC<ConnectedProps<typeof connector>> = ({
       setNoteTextError('Поле не должно быть пустым!');
       return;
     }
+
+    analytics().logEvent('createDeadline').catch();
 
     const newNoteDate = new Date(
       selectedDate.getFullYear(),

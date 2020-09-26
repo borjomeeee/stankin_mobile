@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "960417629379",
+    "firebase_url": "https://stankinmobile.firebaseio.com",
+    "project_id": "stankinmobile",
+    "storage_bucket": "stankinmobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960417629379:android:60239cf4e2b997a4510e76",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960417629379-ddgl9aaseshh0lk2j0mrp8cdme41u0cu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSQAadFE8KqAFrmH2pAoOgTxDt3hMStWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960417629379-ddgl9aaseshh0lk2j0mrp8cdme41u0cu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960417629379:android:c4cbd0b4de2c8f60510e76",
+        "android_client_info": {
+          "package_name": "com.stankinmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960417629379-ddgl9aaseshh0lk2j0mrp8cdme41u0cu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSQAadFE8KqAFrmH2pAoOgTxDt3hMStWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960417629379-ddgl9aaseshh0lk2j0mrp8cdme41u0cu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

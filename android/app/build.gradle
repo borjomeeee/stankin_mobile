@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services' // <- Add this line
 
 // 2nd line, add a new apply:
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -80,6 +81,26 @@ import com.android.build.OutputFile
  * ]
  */
 
+ project.ext {
+  set('react-native', [
+    versions: [
+      // Overriding Build/Android SDK Versions
+      android : [
+        minSdk    : 16,
+        targetSdk : 29,
+        compileSdk: 29,
+        buildTools: "29.0.3"
+      ],
+
+      // Overriding Library SDK Versions
+      firebase: [
+        // Override Firebase SDK Version
+        bom           : "25.7.0"
+      ],
+    ],
+  ])
+}
+
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
@@ -135,8 +156,8 @@ android {
         applicationId "com.stankinmobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 103
+        versionName "1.0.3"
         multiDexEnabled true
     }
     splits {

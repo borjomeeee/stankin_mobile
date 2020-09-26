@@ -1,4 +1,5 @@
 import {takeLeading, put, call} from 'redux-saga/effects';
+import analytics from '@react-native-firebase/analytics';
 
 import {
   ILoginSaga,
@@ -23,6 +24,11 @@ export function* loginSaga({payload}: ILoginSaga) {
     });
 
     if (status === 200) {
+      yield analytics().logEvent('signIn', {
+        name: data['username'],
+        groupTitle: data['group_title'],
+      });
+
       yield put(
         loginUserSuccessAction(
           new User(
