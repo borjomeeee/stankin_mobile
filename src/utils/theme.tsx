@@ -27,6 +27,8 @@ export default {
       gray: '#333333',
       white: '#eeeeee',
 
+      blue: '#2C9EF1',
+
       commonBlack: '#444444',
       mediumBlack: '#404040',
       lightBlack: '#969696',

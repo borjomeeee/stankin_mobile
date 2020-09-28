@@ -16,6 +16,7 @@ import {INote} from '../models/Note.model';
 import {ILesson} from '../models/Lesson.model';
 
 import {AppErrorTypes} from '../enums/App.enums';
+import {IGroup} from '../models/Group.model';
 
 // Initial state
 export const initialState = {
@@ -27,6 +28,8 @@ export const initialState = {
       type: AppErrorTypes.NONE,
       text: '',
     },
+
+    groups: [] as IGroup[],
   },
 
   user: new User(),

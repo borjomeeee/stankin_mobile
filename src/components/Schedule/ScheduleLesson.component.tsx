@@ -58,7 +58,7 @@ const ScheduleLessonComponent: React.FC<ILesson> = ({
 
         <RN.View style={styles.options}>
           <RN.View style={styles.optionsContent}>
-            {room.length > 0 && renderLessonOption('map-maker', room)}
+            {room.length > 0 && renderLessonOption('map-marker', room)}
 
             {teacher.length > 0 &&
               renderLessonOption('school-outline', teacher)}

@@ -14,6 +14,9 @@ import {
   UPDATE_SCHEDULE,
   UPDATE_SCHEDULE_FAILED,
   UPDATE_SCHEDULE_SUCCESS,
+  LOAD_GROUPS,
+  LOAD_GROUPS_FAILED,
+  LOAD_GROUPS_SUCCESS,
 } from '../utils/constants';
 
 import {AppErrorTypes} from '../enums/App.enums';
@@ -28,11 +31,15 @@ export default (
     case UPDATE_SCHEDULE:
       return {...state, isLoading: true};
 
+    case LOAD_GROUPS:
+      return {...state, isLoading: true};
+
     case LOGIN_USER_FAILED:
       return {...state, isLoading: false, error: action.payload.error};
 
     case UPDATE_SCHEDULE_FAILED:
     case DOWNLOAD_SHEDULE_FAILED:
+    case LOAD_GROUPS_FAILED:
       return {...state, isLoading: false, error: action.payload.err};
 
     case LOGIN_USER_SUCCESS:
@@ -44,6 +51,13 @@ export default (
         ...state,
         isLoading: false,
         lastUpdateSchedule: action.payload.date,
+      };
+
+    case LOAD_GROUPS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        groups: action.payload.groups,
       };
 
     case CHECK_UPDATES_SUCCESS:

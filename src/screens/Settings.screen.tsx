@@ -91,6 +91,8 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
     );
   };
 
+  const handleUpdateUserGroup = () => navigation.navigate('ChoiceGroup');
+
   const onClickDeveloperLink = async () => {
     const supported = await RN.Linking.canOpenURL(DEVELOPER_URL);
 
@@ -189,6 +191,16 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
           user.group.title,
         )}
       />
+
+      <RN.TouchableOpacity
+        style={styles.setGroupContainer}
+        delayPressIn={0}
+        activeOpacity={0.6}
+        onPress={handleUpdateUserGroup}>
+        <CommonTextComponent style={styles.setGroupText}>
+          изменить группу
+        </CommonTextComponent>
+      </RN.TouchableOpacity>
     </RN.View>
   );
 };

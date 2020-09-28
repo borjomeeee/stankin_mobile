@@ -62,8 +62,10 @@ export default RN.StyleSheet.create({
   },
 
   typeContainer: {
-    paddingVertical: 3,
+    paddingVertical: 5,
     paddingHorizontal: 8,
+
+    alignSelf: 'flex-end',
 
     borderRadius: theme.borderRadius,
     backgroundColor: theme.colors.lesson.card,

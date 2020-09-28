@@ -42,7 +42,7 @@ export default RN.StyleSheet.create({
     textDecorationLine: 'underline',
   },
 
-  submitButton: {alignSelf: 'center', marginVertical: 20},
+  submitButton: {alignSelf: 'center', marginTop: 20, marginBottom: 13},
 
   selectOptionSeparator: {
     width: 1,
@@ -55,5 +55,11 @@ export default RN.StyleSheet.create({
     paddingHorizontal: 10,
 
     borderRadius: theme.borderRadius,
+  },
+
+  setGroupContainer: {marginBottom: 20, alignItems: 'center'},
+  setGroupText: {
+    color: theme.colors.primary.blue,
+    textDecorationLine: 'underline',
   },
 });

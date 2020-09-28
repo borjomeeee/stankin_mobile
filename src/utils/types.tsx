@@ -4,8 +4,7 @@ import {
   loginUserFailedAction,
   logoutUserAction,
   setUserGroupOnClassesAction,
-  setUserGroupOnClassesSuccessAction,
-  setUserGroupOnClassesFailedAction,
+  setUserGroupAction,
 } from '../actions/User.actions';
 
 import {
@@ -28,7 +27,10 @@ import {
   checkUpdatesFailedAction,
   checkUpdatesSuccessAction,
   clearErrorAction,
-} from 'src/actions/App.actions';
+  loadGroupsAction,
+  loadGroupsSuccessAction,
+  loadGroupsFailedAction,
+} from '../actions/App.actions';
 
 export type AppActionType =
   | ReturnType<typeof loginUserAction>
@@ -43,6 +45,10 @@ export type AppActionType =
   | ReturnType<typeof checkUpdatesAction>
   | ReturnType<typeof checkUpdatesSuccessAction>
   | ReturnType<typeof checkUpdatesFailedAction>
+  | ReturnType<typeof loadGroupsAction>
+  | ReturnType<typeof loadGroupsSuccessAction>
+  | ReturnType<typeof loadGroupsFailedAction>
+  | ReturnType<typeof checkUpdatesFailedAction>
   | ReturnType<typeof logoutUserAction>
   | ReturnType<typeof clearErrorAction>;
 
@@ -51,9 +57,8 @@ export type UserActionType =
   | ReturnType<typeof loginUserSuccessAction>
   | ReturnType<typeof loginUserFailedAction>
   | ReturnType<typeof logoutUserAction>
+  | ReturnType<typeof setUserGroupAction>
   | ReturnType<typeof setUserGroupOnClassesAction>
-  | ReturnType<typeof setUserGroupOnClassesSuccessAction>
-  | ReturnType<typeof setUserGroupOnClassesFailedAction>
   | ReturnType<typeof checkUpdatesAction>
   | ReturnType<typeof checkUpdatesSuccessAction>
   | ReturnType<typeof checkUpdatesFailedAction>;

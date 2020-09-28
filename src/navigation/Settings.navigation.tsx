@@ -9,6 +9,7 @@ import ScreenWrapperComponent from '../containers/ScreenWrapper.component';
 import SettingsScreen from '../screens/Settings.screen';
 
 import theme from '../utils/theme';
+import ChoiceGroupScreen from '../screens/ChoiceGroup.screen';
 
 const Stack = createStackNavigator();
 
@@ -36,24 +37,26 @@ const SettingsNavigationBarOptions: StackNavigationOptions = {
 };
 
 const SettingsScreenOptions = {headerTitle: 'Настройки'};
-
-const SettingsScreenWrapped = () => (
-  <ScreenWrapperComponent>
-    <SettingsScreen />
-  </ScreenWrapperComponent>
-);
+const ChoiceGroupScreenOptions = {headerTitle: 'Выберите группу'};
 
 const SettingsNavigation = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="Settings"
-      screenOptions={SettingsNavigationBarOptions}>
-      <Stack.Screen
-        options={SettingsScreenOptions}
-        name="Settings"
-        component={SettingsScreenWrapped}
-      />
-    </Stack.Navigator>
+    <ScreenWrapperComponent>
+      <Stack.Navigator
+        initialRouteName="Settings"
+        screenOptions={SettingsNavigationBarOptions}>
+        <Stack.Screen
+          options={SettingsScreenOptions}
+          name="Settings"
+          component={SettingsScreen}
+        />
+        <Stack.Screen
+          options={ChoiceGroupScreenOptions}
+          name="ChoiceGroup"
+          component={ChoiceGroupScreen}
+        />
+      </Stack.Navigator>
+    </ScreenWrapperComponent>
   );
 };
 

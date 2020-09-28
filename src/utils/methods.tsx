@@ -19,7 +19,11 @@ export const fetchAPI = async (
   const status = response.status;
   const resData = await response.json();
 
-  return {status, data: resData['data'], message: resData['message']};
+  return {
+    status,
+    data: resData['data'],
+    message: resData['message'],
+  };
 };
 
 export const mySubstrWithPoints = (str: string, len: number): string => {

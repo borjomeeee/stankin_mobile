@@ -2,9 +2,9 @@ import {takeLeading, put, call} from 'redux-saga/effects';
 import analytics from '@react-native-firebase/analytics';
 
 import {
-  ILoginSaga,
-  loginUserSuccessAction,
+  loginUserAction,
   loginUserFailedAction,
+  loginUserSuccessAction,
 } from '../actions/User.actions';
 import {downloadSheduleAction} from '../actions/Shedule.actions';
 
@@ -16,7 +16,7 @@ import Group from '../models/Group.model';
 import {AppErrorTypes} from '../enums/App.enums';
 import {fetchAPI} from '../utils/methods';
 
-export function* loginSaga({payload}: ILoginSaga) {
+export function* loginSaga({payload}: ReturnType<typeof loginUserAction>) {
   try {
     const {status, data} = yield call(fetchAPI, '/api/login', 'POST', {
       login: payload.login,

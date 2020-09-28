@@ -18,7 +18,7 @@ const ScreenWrapperComponent: React.FC<IScreenWrapperComponent> = ({
 }) => {
   return (
     <>
-      {children}
+      {children || <></>}
 
       {error.type !== AppErrorTypes.NONE && <AppModalScreen />}
       {loading && <LoadingScreen />}
