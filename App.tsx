@@ -21,7 +21,10 @@ import Persisted from './src/redux/store';
 import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
 
-// TODO: Fix bug with show modal while orientation is changed
+// TODO: Replace BlurView another component (BlurView call many bugs)
+// TODO: Replace ScreenWraperComponent to createScreen hook
+// TODO: Redo theme
+
 const App = () => {
   return (
     <Provider store={Persisted.store}>

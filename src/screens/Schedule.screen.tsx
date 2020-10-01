@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useMemo} from 'react';
+import React from 'react';
 
 import * as RN from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
@@ -27,16 +27,16 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
   const navigation = useNavigation();
 
   // Datepicker
-  const [showDatepicker, setShowDatepicker] = useState(false);
+  const [showDatepicker, setShowDatepicker] = React.useState(false);
 
-  const [todayDate] = useState<Date>(() => {
+  const [todayDate] = React.useState<Date>(() => {
     const date = new Date();
 
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   });
 
-  const [startDate] = useState<Date>(todayDate);
-  const [currPageDate, setCurrPageDate] = useState<Date>(todayDate);
+  const [currPageDate, setCurrPageDate] = React.useState<Date>(todayDate);
+
   const onChangeCurrPageDate = (_: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || currPageDate;
 
@@ -45,8 +45,8 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
     setCurrPageDate(currentDate);
   };
 
-  // Set header icon and title
-  useLayoutEffect(() => {
+  // Set header icon
+  React.useLayoutEffect(() => {
     const toggleShowDatepicker = () => {
       setShowDatepicker(!showDatepicker);
     };
@@ -61,31 +61,34 @@ const SсheduleScreen: React.FC<ConnectedProps<typeof connector>> = ({
     });
   }, [navigation, showDatepicker]);
 
-  const onClickBackButton = () => {
-    setCurrPageDate(todayDate);
-  };
+  const onClickBackButton = React.useCallback(
+    () => setCurrPageDate(todayDate),
+    [todayDate],
+  );
 
   // Get lessons for currDate and selected user group
-  const lessons = useMemo(
-    () =>
-      (schedule.get(currPageDate.getTime()) || []).filter(
-        (lesson: ILesson) =>
-          user.lessonGroup === LessonGroup.NONE ||
-          lesson.groupOnLesson === LessonGroup.NONE ||
-          lesson.groupOnLesson === user.lessonGroup,
-      ),
-    [currPageDate, user.lessonGroup, schedule],
-  );
+
+  const lessons = React.useMemo(() => {
+    const onlyForUserGroup = (lesson: ILesson) =>
+      user.lessonGroup === LessonGroup.NONE ||
+      lesson.groupOnLesson === LessonGroup.NONE ||
+      user.lessonGroup === lesson.groupOnLesson;
+
+    const currDateLessons = schedule.get(currPageDate.getTime()) || [];
+
+    return currDateLessons.filter(onlyForUserGroup);
+  }, [currPageDate, user.lessonGroup, schedule]);
 
   return (
     <RN.ScrollView style={[theme.screen, styles.container]}>
       <ScheduleCalendarComponent
         style={{}}
         currDate={currPageDate}
-        startDate={startDate}
+        startDate={todayDate}
         setCurrDate={setCurrPageDate}
       />
 
+      {/* Why i use theme.screen on content component ??? */}
       <RN.View style={[theme.screen, styles.content]}>
         <ScheduleDayHeaderComponent
           todayDate={todayDate}

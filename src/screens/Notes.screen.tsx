@@ -23,9 +23,9 @@ import {INotCheckedNote, INote} from '../models/Note.model';
 const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
   const navigation = useNavigation();
 
-  const goAddNoteScreen = () => {
+  const goAddNoteScreen = React.useCallback(() => {
     navigation.navigate('AddNote');
-  };
+  }, [navigation]);
 
   const notCheckedNotes = Array.from(notes.entries())
     .map(([dateTimestamp, dayNotes]: [number, INote[]]): [

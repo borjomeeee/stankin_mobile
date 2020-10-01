@@ -1,4 +1,5 @@
 import * as RN from 'react-native';
+import {Theme} from '@react-navigation/native';
 
 declare global {
   namespace ReactNativePaper {
@@ -14,6 +15,21 @@ declare global {
     }
   }
 }
+
+export const darkTheme: Theme | {} = {
+  dark: true,
+
+  colors: {
+    primary: '',
+    background: '#333333',
+    card: '#3C3C3C',
+    text: '#EEEEEE',
+    border: '#313131',
+    notification: '#EEEEEE',
+
+    abv: 'asd',
+  },
+};
 
 export default {
   screen: {

@@ -6,7 +6,7 @@ export enum LessonType {
 }
 
 export enum LessonGroup {
-  NONE = '',
+  NONE = '-',
   GROUP_A = 'А',
   GROUP_B = 'Б',
 }
