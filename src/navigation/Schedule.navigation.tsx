@@ -5,7 +5,6 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack';
 
-import ScreenWrapperComponent from '../containers/ScreenWrapper.component';
 import ScheduleScreen from '../screens/Schedule.screen';
 
 import theme from '../utils/theme';
@@ -39,12 +38,6 @@ const SheduleScreenOptions: StackNavigationOptions = {
   headerTitle: 'Расписание',
 };
 
-const ScheduleScreenWrapped = () => (
-  <ScreenWrapperComponent>
-    <ScheduleScreen />
-  </ScreenWrapperComponent>
-);
-
 const SсheduleNavigation = () => {
   return (
     <Stack.Navigator
@@ -53,7 +46,7 @@ const SсheduleNavigation = () => {
       <Stack.Screen
         options={SheduleScreenOptions}
         name="Schedule"
-        component={ScheduleScreenWrapped}
+        component={ScheduleScreen}
       />
     </Stack.Navigator>
   );

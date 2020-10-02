@@ -16,8 +16,6 @@ import SсheduleNavigation from './Schedule.navigation';
 import NotesNavigation from './Notes.navigation';
 import SettingsNavigation from './Settings.navigation';
 
-import ScreenWrapperComponent from '../containers/ScreenWrapper.component';
-
 import theme from '../utils/theme';
 
 import DeadLineIcon from '../static/images/deadline.svg';
@@ -52,11 +50,7 @@ const MainNavigation: React.FC<ConnectedProps<typeof connector>> = ({
   isAuth,
 }) => {
   if (!isAuth) {
-    return (
-      <ScreenWrapperComponent>
-        <AuthScreen />
-      </ScreenWrapperComponent>
-    );
+    return <AuthScreen />;
   }
 
   return (

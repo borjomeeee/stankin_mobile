@@ -20,6 +20,7 @@ import Persisted from './src/redux/store';
 
 import MainNavigation from './src/navigation/Main.navigation';
 import LoadingScreen from './src/screens/Loading.screen';
+import AppWrapperComponent from './src/containers/AppWrapper.component';
 
 // TODO: Replace BlurView another component (BlurView call many bugs)
 // TODO: Replace ScreenWraperComponent to createScreen hook
@@ -30,7 +31,9 @@ const App = () => {
     <Provider store={Persisted.store}>
       <PersistGate loading={<LoadingScreen />} persistor={Persisted.persistor}>
         <NavigationContainer>
-          <MainNavigation />
+          <AppWrapperComponent>
+            <MainNavigation />
+          </AppWrapperComponent>
         </NavigationContainer>
       </PersistGate>
     </Provider>

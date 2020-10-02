@@ -44,7 +44,7 @@ const ScheduleLessonComponent: React.FC<ILesson> = ({
           {endTime}
         </CommonTextComponent>
 
-        {groupOnLesson.length > 0 && (
+        {groupOnLesson !== '-' && (
           <RN.View style={styles.groupCard}>
             <CommonTextComponent style={styles.groupCardText}>
               {groupOnLesson}

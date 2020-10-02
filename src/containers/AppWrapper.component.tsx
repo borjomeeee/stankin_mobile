@@ -8,9 +8,9 @@ import {AppErrorTypes} from '../enums/App.enums';
 import LoadingScreen from '../screens/Loading.screen';
 import AppModalScreen from '../screens/AppModal.screen';
 
-interface IScreenWrapperComponent extends ConnectedProps<typeof connector> {}
+interface IAppWrapperComponentProps extends ConnectedProps<typeof connector> {}
 
-const ScreenWrapperComponent: React.FC<IScreenWrapperComponent> = ({
+const AppWrapperComponent: React.FC<IAppWrapperComponentProps> = ({
   children,
 
   loading,
@@ -35,4 +35,4 @@ const mapDispatchToProps = () => ({});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(ScreenWrapperComponent);
+export default connector(AppWrapperComponent);

@@ -5,7 +5,6 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack';
 
-import ScreenWrapperComponent from '../containers/ScreenWrapper.component';
 import SettingsScreen from '../screens/Settings.screen';
 
 import theme from '../utils/theme';
@@ -41,22 +40,20 @@ const ChoiceGroupScreenOptions = {headerTitle: 'Выберите группу'};
 
 const SettingsNavigation = () => {
   return (
-    <ScreenWrapperComponent>
-      <Stack.Navigator
-        initialRouteName="Settings"
-        screenOptions={SettingsNavigationBarOptions}>
-        <Stack.Screen
-          options={SettingsScreenOptions}
-          name="Settings"
-          component={SettingsScreen}
-        />
-        <Stack.Screen
-          options={ChoiceGroupScreenOptions}
-          name="ChoiceGroup"
-          component={ChoiceGroupScreen}
-        />
-      </Stack.Navigator>
-    </ScreenWrapperComponent>
+    <Stack.Navigator
+      initialRouteName="Settings"
+      screenOptions={SettingsNavigationBarOptions}>
+      <Stack.Screen
+        options={SettingsScreenOptions}
+        name="Settings"
+        component={SettingsScreen}
+      />
+      <Stack.Screen
+        options={ChoiceGroupScreenOptions}
+        name="ChoiceGroup"
+        component={ChoiceGroupScreen}
+      />
+    </Stack.Navigator>
   );
 };
 
