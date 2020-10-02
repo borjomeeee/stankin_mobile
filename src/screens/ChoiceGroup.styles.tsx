@@ -9,9 +9,7 @@ export default RN.StyleSheet.create({
   groupContainer: {
     paddingVertical: 10,
     paddingLeft: 8,
-
-    borderBottomWidth: 1,
-    borderColor: theme.colors.separator.bg,
   },
   footer: {marginVertical: 20},
+  separator: {height: 1, backgroundColor: theme.colors.separator.bg},
 });

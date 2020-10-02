@@ -14,10 +14,12 @@ import CommonButtonComponent from '../components/Common/CommonButton.component';
 
 import theme from '../utils/theme';
 import CommonTextComponent from '../components/Common/CommonText.component';
-import {loginUserSuccessAction} from '../actions/User.actions';
+import {setUserGroupAction} from '../actions/User.actions';
 import {downloadSheduleAction} from '../actions/Shedule.actions';
 
 import styles from './ChoiceGroup.styles';
+
+const GroupSeparator = React.memo(() => <RN.View style={styles.separator} />);
 
 const ChoiceGroupScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
@@ -35,7 +37,7 @@ const ChoiceGroupScreen: React.FC<ConnectedProps<typeof connector>> = ({
 
   const handleSelectUserGroup = (group: IGroup) => {
     downloadSchedule(user.login, user.password, group.id);
-    updateUserGroup({...user, group});
+    updateUserGroup(group);
 
     navigation.navigate('Settings');
   };
@@ -58,8 +60,11 @@ const ChoiceGroupScreen: React.FC<ConnectedProps<typeof connector>> = ({
           <RN.FlatList
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="always"
+            endFillColor="transtarent"
+            overScrollMode="never"
             style={styles.groupsList}
             data={currGroups}
+            ItemSeparatorComponent={GroupSeparator}
             renderItem={({item}) => (
               <RN.TouchableOpacity
                 key={item.id}
@@ -90,7 +95,7 @@ const mapStateToProps = (state: IInitialState) => ({
 
 const mapDispatchToProps = {
   loadGroups: () => loadGroupsAction(),
-  updateUserGroup: loginUserSuccessAction,
+  updateUserGroup: setUserGroupAction,
   downloadSchedule: downloadSheduleAction,
 };
 
