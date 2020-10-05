@@ -23,7 +23,9 @@ export function* loginSaga({payload}: ReturnType<typeof loginUserAction>) {
       password: payload.password,
     });
 
-    if (status === 200) {
+    console.log(status);
+
+    if (status === 0) {
       yield analytics().logEvent('signIn', {
         name: data['username'],
         groupTitle: data['group_title'],
@@ -46,9 +48,14 @@ export function* loginSaga({payload}: ReturnType<typeof loginUserAction>) {
       );
 
       yield put(
-        downloadSheduleAction(payload.login, payload.password, data.group_id),
+        downloadSheduleAction(
+          payload.login,
+          payload.password,
+          data['group_id'],
+          data['group_title'],
+        ),
       );
-    } else if (status === 401) {
+    } else if (status === 2) {
       yield put(
         loginUserFailedAction({
           type: AppErrorTypes.WARNING,

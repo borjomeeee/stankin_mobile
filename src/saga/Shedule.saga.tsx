@@ -4,10 +4,10 @@ import analytics from '@react-native-firebase/analytics';
 import {DOWNLOAD_SHEDULE, UPDATE_SCHEDULE} from '../utils/constants';
 
 import {
-  IDownloadSheduleSaga,
   downloadSheduleSuccessAction,
   downloadSheduleFailedAction,
   updateScheduleAction,
+  downloadSheduleAction,
 } from '../actions/Shedule.actions';
 
 import Lesson, {ILesson} from '../models/Lesson.model';
@@ -51,7 +51,9 @@ const processSchedule = (data: any): [Map<number, ILesson[]>, number] => {
   return [sh, updateDate];
 };
 
-export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
+export function* downloadSheduleSaga({
+  payload,
+}: ReturnType<typeof downloadSheduleAction>) {
   try {
     const {status, data} = yield call(
       fetchAPI,
@@ -63,13 +65,25 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
       },
     );
 
-    if (status === 200) {
+    if (status === 0) {
       yield analytics().logEvent('downloadSchedule', {
         groupId: payload.groupId,
       });
 
       const [sh, updateDate] = processSchedule(data);
       yield put(downloadSheduleSuccessAction(sh, updateDate));
+    } else if (status === 101) {
+      yield analytics().logEvent('userGroupNotFound', {
+        groupName: payload.title,
+      });
+
+      yield put(
+        downloadSheduleFailedAction({
+          type: AppErrorTypes.ERROR,
+          text:
+            'Упс, ваша группа не найдена. В ближайшее время расписание будет добавлено!',
+        }),
+      );
     } else {
       yield analytics().logEvent('downloadScheduleFailed', {
         groupId: payload.groupId,
@@ -83,10 +97,6 @@ export function* downloadSheduleSaga({payload}: IDownloadSheduleSaga) {
       );
     }
   } catch {
-    yield analytics().logEvent('downloadScheduleFailed', {
-      groupId: payload.groupId,
-    });
-
     yield put(
       downloadSheduleFailedAction({
         type: AppErrorTypes.ERROR,
@@ -100,22 +110,26 @@ export function* updateScheduleSaga({
   payload,
 }: ReturnType<typeof updateScheduleAction>) {
   try {
-    const {status, data} = yield call(fetchAPI, `/api/load-schedule`, 'POST', {
-      login: payload.login,
-      password: payload.password,
-      title: payload.title,
-    });
+    const {status, data} = yield call(
+      fetchAPI,
+      `/api/load-schedule/${payload.id}`,
+      'POST',
+      {
+        login: payload.login,
+        password: payload.password,
+      },
+    );
 
-    if (status === 200) {
+    if (status === 0) {
       yield analytics().logEvent('updateSchedule', {
-        groupTitle: payload.title,
+        groupId: payload.id,
       });
 
       const [sh, updateDate] = processSchedule(data);
       yield put(downloadSheduleSuccessAction(sh, updateDate));
     } else {
       yield analytics().logEvent('updateScheduleFailed', {
-        groupTitle: payload.title,
+        groupId: payload.id,
       });
 
       yield put(
@@ -127,7 +141,7 @@ export function* updateScheduleSaga({
     }
   } catch {
     yield analytics().logEvent('updateScheduleFailed', {
-      groupTitle: payload.title,
+      groupId: payload.id,
     });
 
     yield put(

@@ -15,7 +15,7 @@ import CommonButtonComponent from '../components/Common/CommonButton.component';
 import theme from '../utils/theme';
 import CommonTextComponent from '../components/Common/CommonText.component';
 import {setUserGroupAction} from '../actions/User.actions';
-import {downloadSheduleAction} from '../actions/Shedule.actions';
+import {updateScheduleAction} from '../actions/Shedule.actions';
 
 import styles from './ChoiceGroup.styles';
 
@@ -96,7 +96,7 @@ const mapStateToProps = (state: IInitialState) => ({
 const mapDispatchToProps = {
   loadGroups: () => loadGroupsAction(),
   updateUserGroup: setUserGroupAction,
-  downloadSchedule: downloadSheduleAction,
+  downloadSchedule: updateScheduleAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

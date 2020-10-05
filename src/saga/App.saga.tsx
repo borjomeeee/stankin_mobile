@@ -1,4 +1,5 @@
 import {takeEvery, put} from 'redux-saga/effects';
+import analytics from '@react-native-firebase/analytics';
 
 import Config from 'react-native-config';
 const {SERVER_ADDRESS, SERVER_PORT} = Config;
@@ -67,7 +68,9 @@ export function* loadGroupsSaga({}: ReturnType<typeof loadGroupsAction>) {
   try {
     const {status, data} = yield fetchAPI('/api/load-groups', 'POST');
 
-    if (status === 200) {
+    if (status === 0) {
+      yield analytics().logEvent('loadGroupsCatchEvent');
+
       yield put(
         loadGroupsSuccessAction(
           data.map((item: any) => ({
@@ -86,8 +89,6 @@ export function* loadGroupsSaga({}: ReturnType<typeof loadGroupsAction>) {
       );
     }
   } catch (e) {
-    console.error(e);
-
     yield put(
       loadGroupsFailedAction({
         type: AppErrorTypes.ERROR,

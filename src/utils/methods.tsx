@@ -16,14 +16,21 @@ export const fetchAPI = async (
     },
   );
 
-  const status = response.status;
   const resData = await response.json();
 
-  return {
-    status,
-    data: resData['data'],
-    message: resData['message'],
-  };
+  console.log(resData);
+
+  return resData.status !== 500
+    ? {
+        status: resData['status_code'],
+        data: resData['data'],
+        message: resData['message'],
+      }
+    : {
+        status: 1,
+        data: {},
+        message: '',
+      };
 };
 
 export const mySubstrWithPoints = (str: string, len: number): string => {

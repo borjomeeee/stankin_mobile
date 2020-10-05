@@ -64,6 +64,13 @@ const NotesScreen: React.FC<ConnectedProps<typeof connector>> = ({notes}) => {
         )}
 
         <CommonNotesListComponent notes={checkedNotes} />
+        {notCheckedNotes.length + checkedNotes.length > 0 && (
+          <RN.View style={styles.swipeContainer}>
+            <CommonTextComponent style={styles.swipeText}>
+              swipe to remove
+            </CommonTextComponent>
+          </RN.View>
+        )}
       </RN.ScrollView>
       <RN.View>
         <CommonButtonComponent

@@ -26,10 +26,11 @@ export const downloadSheduleAction = (
   login: string,
   password: string,
   groupId: string,
+  title: string,
 ) =>
   ({
     type: DOWNLOAD_SHEDULE,
-    payload: {login, password, groupId},
+    payload: {login, password, groupId, title},
   } as const);
 
 export const downloadSheduleSuccessAction = (
@@ -50,11 +51,11 @@ export const downloadSheduleFailedAction = (err: IAppError) =>
 export const updateScheduleAction = (
   login: string,
   password: string,
-  title: string,
+  id: string,
 ) =>
   ({
     type: UPDATE_SCHEDULE,
-    payload: {login, password, title},
+    payload: {login, password, id},
   } as const);
 
 export const updateScheduleSuccessAction = (

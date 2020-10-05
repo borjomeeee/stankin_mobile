@@ -10,4 +10,6 @@ export default RN.StyleSheet.create({
     fontFamily: theme.fonts.semibold.fontFamily,
   },
   submit: {marginVertical: 20, alignSelf: 'center'},
+  swipeContainer: {alignItems: 'center', paddingVertical: 20},
+  swipeText: {color: theme.colors.accent.evilGray},
 });
