@@ -15,7 +15,7 @@ import CommonButtonComponent from '../components/Common/CommonButton.component';
 import theme from '../utils/theme';
 import CommonTextComponent from '../components/Common/CommonText.component';
 import {setUserGroupAction} from '../actions/User.actions';
-import {updateScheduleAction} from '../actions/Shedule.actions';
+import {downloadSheduleAction} from '../actions/Shedule.actions';
 
 import styles from './ChoiceGroup.styles';
 
@@ -36,7 +36,7 @@ const ChoiceGroupScreen: React.FC<ConnectedProps<typeof connector>> = ({
   }, [loadGroups]);
 
   const handleSelectUserGroup = (group: IGroup) => {
-    downloadSchedule(user.login, user.password, group.id);
+    downloadSchedule(user.login, user.password, group.id, group.title);
     updateUserGroup(group);
 
     navigation.navigate('Settings');
@@ -96,7 +96,7 @@ const mapStateToProps = (state: IInitialState) => ({
 const mapDispatchToProps = {
   loadGroups: () => loadGroupsAction(),
   updateUserGroup: setUserGroupAction,
-  downloadSchedule: updateScheduleAction,
+  downloadSchedule: downloadSheduleAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
