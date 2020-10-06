@@ -23,6 +23,8 @@ import CommonTextComponent from '../components/Common/CommonText.component';
 import {dateToStringExpanded} from '../utils/methods';
 import theme from '../utils/theme';
 
+import DeadLineIcon from '../static/images/google-play.svg';
+
 import styles from './Settings.styles';
 
 import {LessonGroup} from '../enums/Lesson.enums';
@@ -33,6 +35,8 @@ interface IUserGroupOption {
 }
 
 const DEVELOPER_URL = `mailto:${DEVELOPER_EMAIL}`;
+const APP_PAGE_URL =
+  'https://play.google.com/store/apps/details?id=com.stankinmobile';
 
 const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
   app,
@@ -100,6 +104,16 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
       // Opening the link with some app, if the URL scheme is "http" the web link should be opened
       // by some browser in the mobile
       await RN.Linking.openURL(DEVELOPER_URL);
+    }
+  };
+
+  const onClickRateApp = async () => {
+    const supported = await RN.Linking.canOpenURL(APP_PAGE_URL);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await RN.Linking.openURL(APP_PAGE_URL);
     }
   };
 
@@ -176,6 +190,15 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
               <CommonTextComponent style={styles.link}>
                 {DEVELOPER_EMAIL}
               </CommonTextComponent>
+            </RN.View>
+          </RN.View>
+
+          <RN.View style={styles.option}>
+            <CommonTextComponent>Оценить приложение:</CommonTextComponent>
+            <RN.View
+              style={styles.optionValueContainer}
+              onTouchEnd={onClickRateApp}>
+              <DeadLineIcon width={14} height={16} />
             </RN.View>
           </RN.View>
         </RN.View>
