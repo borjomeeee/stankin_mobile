@@ -18,8 +18,6 @@ export const fetchAPI = async (
 
   const resData = await response.json();
 
-  console.log(resData);
-
   return resData.status !== 500
     ? {
         status: resData['status_code'],

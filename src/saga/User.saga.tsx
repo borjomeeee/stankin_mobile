@@ -23,8 +23,6 @@ export function* loginSaga({payload}: ReturnType<typeof loginUserAction>) {
       password: payload.password,
     });
 
-    console.log(status);
-
     if (status === 0) {
       yield analytics().logEvent('signIn', {
         name: data['username'],

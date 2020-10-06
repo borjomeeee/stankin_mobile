@@ -51,11 +51,11 @@ export const downloadSheduleFailedAction = (err: IAppError) =>
 export const updateScheduleAction = (
   login: string,
   password: string,
-  id: string,
+  title: string,
 ) =>
   ({
     type: UPDATE_SCHEDULE,
-    payload: {login, password, id},
+    payload: {login, password, title},
   } as const);
 
 export const updateScheduleSuccessAction = (
