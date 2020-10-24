@@ -51,6 +51,7 @@ const processSchedule = (data: any): [Map<number, ILesson[]>, number] => {
   return [sh, updateDate];
 };
 
+// DEPRECATED
 export function* downloadSheduleSaga({
   payload,
 }: ReturnType<typeof downloadSheduleAction>) {
@@ -110,9 +111,7 @@ export function* updateScheduleSaga({
   payload,
 }: ReturnType<typeof updateScheduleAction>) {
   try {
-    const {status, data} = yield call(fetchAPI, `/api/load-schedule`, 'POST', {
-      login: payload.login,
-      password: payload.password,
+    const {status, data} = yield call(fetchAPI, `/apiv2/load-schedule`, 'POST', {
       title: payload.title,
     });
 

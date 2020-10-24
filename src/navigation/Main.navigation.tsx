@@ -19,6 +19,10 @@ import SettingsNavigation from './Settings.navigation';
 import theme from '../utils/theme';
 
 import DeadLineIcon from '../static/images/deadline.svg';
+import ChoiceGroupScreen from '../screens/ChoiceGroup.screen';
+import AuthNavigation from './Auth.navigation';
+
+import {IGroup} from '../models/Group.model';
 
 const MainTabs = createMaterialBottomTabNavigator();
 
@@ -47,10 +51,10 @@ const SettingsNavigationTabOptions: MaterialBottomTabNavigationOptions = {
 };
 
 const MainNavigation: React.FC<ConnectedProps<typeof connector>> = ({
-  isAuth,
+  group,
 }) => {
-  if (!isAuth) {
-    return <AuthScreen />;
+  if (!group) {
+    return <AuthNavigation />;
   }
 
   return (
@@ -82,7 +86,7 @@ const MainNavigation: React.FC<ConnectedProps<typeof connector>> = ({
 };
 
 const mapStateToProps = (state: IInitialState) => ({
-  isAuth: state.user.isAuth,
+  group: state.user.group,
 });
 const mapDispatchToProps = {};
 

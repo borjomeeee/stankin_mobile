@@ -62,14 +62,6 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
     },
   ];
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <CommonHeaderIconComponent name="exit-to-app" onPress={logoutUser} />
-      ),
-    });
-  }, [logoutUser, navigation]);
-
   const renderUserGroupOption = (
     {label, value}: IUserGroupOption,
     index: number,
@@ -127,21 +119,16 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
             </CommonTextComponent>
           </RN.View>
 
-          <RN.View style={styles.option}>
-            <CommonTextComponent>Имя:</CommonTextComponent>
-            <RN.View style={styles.optionValueContainer}>
-              <CommonTextComponent>{user.name}</CommonTextComponent>
+          {user.group && (
+            <RN.View style={styles.option}>
+              <CommonTextComponent>Группа:</CommonTextComponent>
+              <RN.View style={styles.optionValueContainer}>
+                <CommonTextComponent>
+                  {user.group.title.toUpperCase()}
+                </CommonTextComponent>
+              </RN.View>
             </RN.View>
-          </RN.View>
-
-          <RN.View style={styles.option}>
-            <CommonTextComponent>Группа:</CommonTextComponent>
-            <RN.View style={styles.optionValueContainer}>
-              <CommonTextComponent>
-                {user.group.title.toUpperCase()}
-              </CommonTextComponent>
-            </RN.View>
-          </RN.View>
+          )}
 
           <RN.View style={styles.option}>
             <CommonTextComponent>Подгруппа:</CommonTextComponent>
@@ -207,12 +194,7 @@ const SettingsScreen: React.FC<ConnectedProps<typeof connector>> = ({
       <CommonButtonComponent
         style={styles.submitButton}
         text="Обновить расписание"
-        onClick={updateSchedule.bind(
-          null,
-          user.login,
-          user.password,
-          user.group.title,
-        )}
+        onClick={updateSchedule.bind(null, user.group!.title)}
       />
 
       <RN.TouchableOpacity
@@ -237,8 +219,7 @@ const mapStateToProps = (state: IInitialState) => ({
 const mapDispatchToProps = {
   logoutUser: () => logoutUserAction(),
   setUserGroup: (group: LessonGroup) => setUserGroupOnClassesAction(group),
-  updateSchedule: (login: string, password: string, title: string) =>
-    updateScheduleAction(login, password, title),
+  updateSchedule: (title: string) => updateScheduleAction(title),
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

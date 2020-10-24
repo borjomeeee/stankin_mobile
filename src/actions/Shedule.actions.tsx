@@ -48,14 +48,10 @@ export const downloadSheduleFailedAction = (err: IAppError) =>
     payload: {err},
   } as const);
 
-export const updateScheduleAction = (
-  login: string,
-  password: string,
-  title: string,
-) =>
+export const updateScheduleAction = (title: string) =>
   ({
     type: UPDATE_SCHEDULE,
-    payload: {login, password, title},
+    payload: {title},
   } as const);
 
 export const updateScheduleSuccessAction = (
