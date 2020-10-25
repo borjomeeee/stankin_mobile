@@ -111,7 +111,7 @@ export function* updateScheduleSaga({
   payload,
 }: ReturnType<typeof updateScheduleAction>) {
   try {
-    const {status, data} = yield call(fetchAPI, `/apiv2/load-schedule`, 'POST', {
+    const {status, data} = yield call(fetchAPI, `/api/load-schedule`, 'POST', {
       title: payload.title,
     });
 
